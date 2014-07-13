@@ -1,0 +1,44 @@
+﻿body {
+    background: #fff
+}
+
+h2 {
+    font-size: 14px;
+    margin: 6px 9px;
+}
+
+.title .wrapper {
+    margin: 8px 4px 4px 4px;
+    padding: 1px 4px;
+    border-radius: 3px;
+    background: #aaa;
+    color: #fff;
+}
+
+.books div {
+    padding: 0;
+}
+
+.books .wrapper {
+    background: #fff;
+    color: #393939;
+    border: #f6f6f6 solid 1px;
+    box-shadow: 1px 1px 2px #eee;
+    border-radius: 3px;
+    text-align: center;
+    margin: 4px 3px;
+    padding: 6px 2px;
+}
+
+.books .started{
+    background: #e3e3e3;
+    box-shadow: 1px 1px 2px #aaa;
+    border: none;
+}
+
+.books .completed{
+    background: #23719f;
+    box-shadow: 1px 1px 2px #aaa;
+    color: #FFF;
+    border: none;
+}
