@@ -2,13 +2,13 @@
     background: #fff
 }
 
-h2 {
+.title h2 {
     font-size: 14px;
     margin: 6px 9px;
 }
 
 .title .wrapper {
-    margin: 8px 4px 4px 4px;
+    margin: 14px 4px 4px 4px;
     padding: 1px 4px;
     border-radius: 3px;
     background: #aaa;
