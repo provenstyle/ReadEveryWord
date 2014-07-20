@@ -1,6 +1,7 @@
+using System;
 using System.Collections.Generic;
 
-namespace ProvenStyle.ReadEveryWord.Web.Data.Entities
+namespace WebApplication9.Models
 {
     public partial class AspNetRole
     {

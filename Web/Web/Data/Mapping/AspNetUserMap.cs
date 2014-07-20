@@ -1,7 +1,7 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
-using ProvenStyle.ReadEveryWord.Web.Data.Entities;
 
-namespace ProvenStyle.ReadEveryWord.Web.Data.Mapping
+namespace WebApplication9.Models.Mapping
 {
     public class AspNetUserMap : EntityTypeConfiguration<AspNetUser>
     {
@@ -15,17 +15,27 @@ namespace ProvenStyle.ReadEveryWord.Web.Data.Mapping
                 .IsRequired()
                 .HasMaxLength(128);
 
-            this.Property(t => t.Discriminator)
+            this.Property(t => t.Email)
+                .HasMaxLength(256);
+
+            this.Property(t => t.UserName)
                 .IsRequired()
-                .HasMaxLength(128);
+                .HasMaxLength(256);
 
             // Table & Column Mappings
             this.ToTable("AspNetUsers");
             this.Property(t => t.Id).HasColumnName("Id");
-            this.Property(t => t.UserName).HasColumnName("UserName");
+            this.Property(t => t.Email).HasColumnName("Email");
+            this.Property(t => t.EmailConfirmed).HasColumnName("EmailConfirmed");
             this.Property(t => t.PasswordHash).HasColumnName("PasswordHash");
             this.Property(t => t.SecurityStamp).HasColumnName("SecurityStamp");
-            this.Property(t => t.Discriminator).HasColumnName("Discriminator");
+            this.Property(t => t.PhoneNumber).HasColumnName("PhoneNumber");
+            this.Property(t => t.PhoneNumberConfirmed).HasColumnName("PhoneNumberConfirmed");
+            this.Property(t => t.TwoFactorEnabled).HasColumnName("TwoFactorEnabled");
+            this.Property(t => t.LockoutEndDateUtc).HasColumnName("LockoutEndDateUtc");
+            this.Property(t => t.LockoutEnabled).HasColumnName("LockoutEnabled");
+            this.Property(t => t.AccessFailedCount).HasColumnName("AccessFailedCount");
+            this.Property(t => t.UserName).HasColumnName("UserName");
         }
     }
 }

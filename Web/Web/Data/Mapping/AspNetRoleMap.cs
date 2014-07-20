@@ -1,7 +1,7 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
-using ProvenStyle.ReadEveryWord.Web.Data.Entities;
 
-namespace ProvenStyle.ReadEveryWord.Web.Data.Mapping
+namespace WebApplication9.Models.Mapping
 {
     public class AspNetRoleMap : EntityTypeConfiguration<AspNetRole>
     {
@@ -16,7 +16,8 @@ namespace ProvenStyle.ReadEveryWord.Web.Data.Mapping
                 .HasMaxLength(128);
 
             this.Property(t => t.Name)
-                .IsRequired();
+                .IsRequired()
+                .HasMaxLength(256);
 
             // Table & Column Mappings
             this.ToTable("AspNetRoles");
