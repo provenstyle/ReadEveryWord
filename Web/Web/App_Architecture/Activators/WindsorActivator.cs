@@ -1,0 +1,72 @@
+// [[Highway.Onramp.MVC]]
+
+using System.Collections;
+using System.Configuration;
+using System.Web;
+using Castle.Components.DictionaryAdapter;
+using Castle.MicroKernel;
+using Castle.MicroKernel.Registration;
+using Castle.MicroKernel.Resolvers.SpecializedResolvers;
+using Castle.Windsor;
+using Castle.Windsor.Installer;
+using ProvenStyle.ReadEveryWord.Web.App_Architecture.Activators;
+using ProvenStyle.ReadEveryWord.Web.App_Architecture.Services.Core;
+
+[assembly: WebActivatorEx.PreApplicationStartMethod(
+    typeof(WindsorActivator), 
+    "Startup")]
+namespace ProvenStyle.ReadEveryWord.Web.App_Architecture.Activators
+{
+    public static class WindsorActivator
+    {
+        public static void Startup()
+        {
+#pragma warning disable 618
+            // Create the container
+            IoC.Container = new WindsorContainer();
+
+            // Add the Array Resolver, so we can take dependencies on T[]
+            // while only registering T.
+            IoC.Container.Kernel.Resolver.AddSubResolver(new ArrayResolver(IoC.Container.Kernel));
+
+            // Register the kernel and container, in case an installer needs it.
+            IoC.Container.Register(
+                Component.For<IKernel>().Instance(IoC.Container.Kernel),
+                Component.For<IWindsorContainer>().Instance(IoC.Container)
+                );
+
+            // Our configuration magic, register all interfaces ending in Config from
+            // this assembly, and create implementations using DictionaryAdapter
+            // from the AppSettings in our app.config.
+            var daf = new DictionaryAdapterFactory();
+            IoC.Container.Register(
+                Types
+                    .FromThisAssembly()
+                    .Where(type => type.IsInterface && type.Name.EndsWith("Config"))
+                    .Configure(
+                        reg => reg.UsingFactoryMethod(
+                            (k, m, c) => daf.GetAdapter(m.Implementation, ConfigurationManager.AppSettings)
+                            )
+                    ));
+
+            // Our session magic, register all interfaces ending in Session from
+            // this assembly, and create implementations using DictionaryAdapter
+            // from the current HttpSession
+            IoC.Container.Register(
+                Types
+                    .FromThisAssembly()
+                    .Where(type => type.IsInterface && type.Name.EndsWith("Session"))
+                    .Configure(
+                        reg => reg.UsingFactoryMethod(
+                            (k, m, c) => daf.GetAdapter(m.Implementation, new SessionDictionary(HttpContext.Current.Session) as IDictionary)
+                            )
+                    ).LifestylePerWebRequest());
+
+
+            // Search for an use all installers in this application.
+            IoC.Container.Install(FromAssembly.This());
+
+#pragma warning restore 618
+        }
+    }
+}
