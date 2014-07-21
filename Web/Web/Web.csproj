@@ -241,6 +241,7 @@
     <Compile Include="Controllers\DurandalController.cs" />
     <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OldHomeController.cs" />
     <Compile Include="Data\Entities\AspNetRole.cs" />
     <Compile Include="Data\Entities\AspNetUser.cs" />
     <Compile Include="Data\Entities\AspNetUserClaim.cs" />
@@ -350,9 +351,9 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\OldHome\About.cshtml" />
+    <Content Include="Views\OldHome\Contact.cshtml" />
+    <Content Include="Views\OldHome\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
@@ -369,12 +370,13 @@
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Durandal\Index.cshtml" />
-    <Content Include="Views\Durandal\_splash.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\_splash.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\Queries\" />
     <Folder Include="Data\Scalars\" />
+    <Folder Include="Views\Durandal\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
