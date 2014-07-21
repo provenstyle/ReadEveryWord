@@ -16,11 +16,9 @@ namespace ProvenStyle.ReadEveryWord.Web {
 
       bundles.Add(
         new StyleBundle("~/Content/css")
-          .Include("~/Content/ie10mobile.css")
           .Include("~/Content/bootstrap.min.css")
-          .Include("~/Content/font-awesome.min.css")
-		  .Include("~/Content/durandal.css")
-          .Include("~/Content/starterkit.css")
+          .Include("~/Content/bootstrap.theme.min.css")
+		  .Include("~/Content/book.css")
         );
     }
 

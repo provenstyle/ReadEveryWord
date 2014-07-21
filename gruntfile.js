@@ -33,7 +33,7 @@ module.exports = function(grunt){
 
 	grunt.registerTask('test', 'Run mspec tests', function(){
 		var done = this.async();
-		var mspecPath = "Web/packages/machine.specifications.0.8.3/tools/mspec-clr4.exe"
+		var mspecPath = "packages/machine.specifications.0.8.3/tools/mspec-clr4.exe"
 		var tests = [
 			'Web/Tests/bin/Debug/ProvenStyle.ReadEveryWord.Tests.dll'
 		];
