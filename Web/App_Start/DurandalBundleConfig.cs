@@ -15,9 +15,10 @@ namespace ProvenStyle.ReadEveryWord.Web {
 		);
 
       bundles.Add(
-        new StyleBundle("~/Content/css")
+        new StyleBundle("~/Content/appcss")
           .Include("~/Content/bootstrap.min.css")
           .Include("~/Content/bootstrap.theme.min.css")
+		  .Include("~/Content/durandal.css")
 		  .Include("~/Content/book.css")
         );
     }

@@ -271,6 +271,9 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\UX\Content\books.css">
+      <Link>Content\books.css</Link>
+    </Content>
     <Content Include="App\main.js" />
     <Content Include="App\viewmodels\books.js" />
     <Content Include="App\viewmodels\shell.js" />
