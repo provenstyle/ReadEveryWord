@@ -19,9 +19,15 @@ module.exports = function(grunt){
 
 	grunt.registerTask('watch', ['']);
 
-	grunt.registerTask('iisexpress', 'Starts IISExpress', function(){
+	grunt.registerTask('web', 'Starts IISExpress', function(){
 		var done = this.async();
 		shell.run('C:/Program Files/IIS Express/iisexpress.exe', ['/site:web']).
+			then(done);
+	});
+
+	grunt.registerTask('ux', 'Starts IISExpress', function(){
+		var done = this.async();
+		shell.run('C:/Program Files/IIS Express/iisexpress.exe', ['/site:UX']).
 			then(done);
 	});
 

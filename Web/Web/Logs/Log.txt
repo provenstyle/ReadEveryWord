@@ -1,2 +1,0 @@
-2014-07-21 08:24:40.4418|INFO|Default|Application Shutdown|
-2014-07-21 08:48:10.4938|INFO|Default|Application Startup Completed|
