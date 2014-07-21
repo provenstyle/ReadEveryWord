@@ -233,6 +233,7 @@
     <Compile Include="Configs\IDatabaseInitializerConfig.cs" />
     <Compile Include="Configs\InitializerTypes.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Data\Entities\AspNetRole.cs" />
     <Compile Include="Data\Entities\AspNetUser.cs" />

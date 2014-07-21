@@ -4,9 +4,12 @@ namespace ProvenStyle.ReadEveryWord.Web.Models
 {
     public class History
     {
+        List<Book> _oldTestamentBooks;
+        List<Book> _newTestamentBooks;
+
         public History()
         {
-            OldTestamentBooks = new List<Book>
+            _oldTestamentBooks = new List<Book>
             {
                 new Book("Genesis", "Gen", 50),
                 new Book("Exodus", "Exo", 40),
@@ -49,7 +52,7 @@ namespace ProvenStyle.ReadEveryWord.Web.Models
                 new Book("Malachi", "Mal", 4)
             };
 
-            NewTestamentBooks = new List<Book>
+            _newTestamentBooks = new List<Book>
             {
                 new Book("Matthew", "Mat", 28),
                 new Book("Mark", "Mar", 16),
@@ -80,14 +83,10 @@ namespace ProvenStyle.ReadEveryWord.Web.Models
                 new Book("Revelation", "Rev", 22),
             };
 
-            Books = new List<Book>(OldTestamentBooks);
-            Books.AddRange(NewTestamentBooks);
+            Books = new List<Book>(_oldTestamentBooks);
+            Books.AddRange(_newTestamentBooks);
 
         }
-
-        public List<Book> NewTestamentBooks { get; set; }
-
-        public List<Book> OldTestamentBooks { get; set; }
 
         public List<Book> Books { get; set; }
     }
@@ -96,8 +95,11 @@ namespace ProvenStyle.ReadEveryWord.Web.Models
     {
         public Book(string longName, string shortName, int chapterCount)
         {
+            LongName = longName;
+            ShortName = shortName;
+            ChapterCount = chapterCount;
             Chapters = new List<Chapter>();
-            for (int i = 0; i < chapterCount; i++)
+            for (int i = 0; i < ChapterCount; i++)
             {
                 Chapters.Add(new Chapter(i+1));
             }
@@ -117,6 +119,7 @@ namespace ProvenStyle.ReadEveryWord.Web.Models
             Number = number;
         }
         public int Number { get; set; }
+        public bool Read { get; set; }
 
     }
 }

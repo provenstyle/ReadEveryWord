@@ -19,6 +19,7 @@ namespace ProvenStyle.ReadEveryWord.Web.App_Architecture.Activators
             var activator = IoC.Container.Resolve<IHttpControllerActivator>();
 #pragma warning restore 618
             GlobalConfiguration.Configuration.Services.Replace(typeof(IHttpControllerActivator), activator);
+            GlobalConfiguration.Configuration.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.XmlFormatter);
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings =
                 new JsonSerializerSettings
                 {
