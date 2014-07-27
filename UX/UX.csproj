@@ -58,6 +58,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="about.html" />
+    <Content Include="Content\durandal.css" />
+    <Content Include="Content\starterkit.css" />
     <Content Include="summary.html" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />

@@ -272,9 +272,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App\main.js" />
+    <Content Include="App\services\history.js" />
     <Content Include="App\viewmodels\books.js" />
+    <Content Include="App\viewmodels\chapters.js" />
     <Content Include="App\viewmodels\shell.js" />
     <Content Include="App\views\books.html" />
+    <Content Include="App\views\chapters.html" />
     <Content Include="App\views\shell.html" />
     <Content Include="Content\books.css" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -340,6 +343,8 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\text.js" />
+    <Content Include="Scripts\underscore-min.js" />
+    <Content Include="Scripts\underscore.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -373,6 +378,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\_splash.cshtml" />
+    <Content Include="Scripts\underscore-min.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\Queries\" />

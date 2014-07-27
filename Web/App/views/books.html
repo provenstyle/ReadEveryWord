@@ -1,3 +1,31 @@
 ﻿<div>
-    <h2>Books</h2>
+    <div class="row title">
+        <div class="wrapper">
+            <h2>Old Testament</h2>
+        </div>
+    </div>
+    
+    <div class="row books">
+        <div class="col-xs-2" data-bind="foreach: oldTestament">
+            <div class="wrapper" data-bind="css: {completed: completed, started: started}, click: $parent.toggleRead" >
+                <span class="hidden-xs" data-bind="text: longName">Genesis</span>
+                <span class="visible-xs" data-bind="text: shortName">Gen</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row title">
+        <div class="wrapper">
+            <h2>New Testament</h2>
+        </div>
+    </div>
+    
+    <div class="row books">
+        <div class="col-xs-2" data-bind="foreach: oldTestament">
+            <div class="wrapper completed">
+                <span class="hidden-xs">Genesis</span>
+                <span class="visible-xs">Gen</span>
+            </div>
+        </div>
+    </div>
 </div>

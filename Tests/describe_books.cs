@@ -12,7 +12,8 @@ namespace Tests
 
         Because of = () => { };
 
-        It should_have_all_books = () => Subject.Books.Count().ShouldEqual(66);
-        It chapters_should_start_with_1 = () => Subject.Books.First().Chapters.First().Number.ShouldEqual(1);
+        It should_have_all_oldTestament = () => Subject.OldTestamentBooks.Count().ShouldEqual(39);
+        It should_have_all_newTestament = () => Subject.NewTestamentBooks.Count().ShouldEqual(27);
+        It chapters_should_start_with_1 = () => Subject.OldTestamentBooks.First().Chapters.First().Number.ShouldEqual(1);
     }
 }

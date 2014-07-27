@@ -4,12 +4,12 @@ namespace ProvenStyle.ReadEveryWord.Web.Models
 {
     public class History
     {
-        List<Book> _oldTestamentBooks;
-        List<Book> _newTestamentBooks;
+        public List<Book> OldTestamentBooks { get; set; }
+        public List<Book> NewTestamentBooks { get; set; }
 
         public History()
         {
-            _oldTestamentBooks = new List<Book>
+            OldTestamentBooks = new List<Book>
             {
                 new Book("Genesis", "Gen", 50),
                 new Book("Exodus", "Exo", 40),
@@ -52,7 +52,7 @@ namespace ProvenStyle.ReadEveryWord.Web.Models
                 new Book("Malachi", "Mal", 4)
             };
 
-            _newTestamentBooks = new List<Book>
+            NewTestamentBooks = new List<Book>
             {
                 new Book("Matthew", "Mat", 28),
                 new Book("Mark", "Mar", 16),
@@ -82,13 +82,8 @@ namespace ProvenStyle.ReadEveryWord.Web.Models
                 new Book("Jude", "Jud", 1),
                 new Book("Revelation", "Rev", 22),
             };
-
-            Books = new List<Book>(_oldTestamentBooks);
-            Books.AddRange(_newTestamentBooks);
-
         }
 
-        public List<Book> Books { get; set; }
     }
 
     public class Book

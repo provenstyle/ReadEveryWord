@@ -8,7 +8,8 @@
         },
         activate: function () {
             router.map([
-                { route: '', title:'Books', moduleId: 'viewmodels/books', nav: true },
+                { route: ['Books',''], title:'Books', moduleId: 'viewmodels/books', nav: true },
+                { route: 'Chapters/:name', title:'Chapters', moduleId: 'viewmodels/chapters', nav: true },
                 //{ route: '', title:'Welcome', moduleId: 'viewmodels/welcome', nav: true },
                 //{ route: 'flickr', moduleId: 'viewmodels/flickr', nav: true }
             ]).buildNavigationModel();

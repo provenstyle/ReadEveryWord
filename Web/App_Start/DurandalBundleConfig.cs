@@ -24,6 +24,7 @@ namespace ProvenStyle.ReadEveryWord.Web
                   .Include("~/Scripts/jquery-{version}.js")
                   .Include("~/Scripts/bootstrap.js")
                   .Include("~/Scripts/knockout-{version}.js")
+                  .Include("~/Scripts/underscore-min.js")
               );
 
             var bundle = new StyleBundle("~/Content/css")
