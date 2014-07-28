@@ -272,6 +272,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App\main.js" />
+    <Content Include="App\models\history.js" />
     <Content Include="App\services\history.js" />
     <Content Include="App\viewmodels\books.js" />
     <Content Include="App\viewmodels\chapters.js" />

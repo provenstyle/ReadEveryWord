@@ -1,4 +1,4 @@
-﻿define(['plugins/router', 'durandal/app'], function (router, app) {
+﻿define(['plugins/router', 'durandal/app', 'models/history'], function (router, app, history) {
     return {
         router: router,
         search: function() {
@@ -7,6 +7,8 @@
             app.showMessage('Search not yet implemented...');
         },
         activate: function () {
+
+
             router.map([
                 { route: ['Books',''], title:'Books', moduleId: 'viewmodels/books', nav: true },
                 { route: 'Chapters/:name', title:'Chapters', moduleId: 'viewmodels/chapters', nav: true },
@@ -14,7 +16,7 @@
                 //{ route: 'flickr', moduleId: 'viewmodels/flickr', nav: true }
             ]).buildNavigationModel();
             
-            return router.activate();
+            return $.when(router.activate(), history.prime());
         }
     };
 });

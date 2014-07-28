@@ -48,7 +48,7 @@
 }
 
 .content {
-    margin-top: 44px;   
+    
 }
 
 a.back {
@@ -66,7 +66,7 @@ a.back {
 }
 
 .title .wrapper {
-    margin: 14px 4px 4px 4px;
+    margin: 10px 4px 4px 4px;
     padding: 1px 4px;
     border-radius: 3px;
     background: #aaa;
@@ -80,12 +80,12 @@ a.back {
 .books .wrapper {
     background: #fff;
     color: #393939;
-    border: #f6f6f6 solid 1px;
-    box-shadow: 1px 1px 2px #eee;
+    /*border: #f6f6f6 solid 1px;*/
+    box-shadow: 1px 1px 5px #ddd;
     border-radius: 3px;
     text-align: center;
-    margin: 4px 3px;
-    padding: 6px 2px;
+    margin: 6px 3px;
+    padding: 8px 2px;
     cursor: pointer;
 }
 

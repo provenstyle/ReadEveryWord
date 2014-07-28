@@ -1,20 +1,11 @@
-﻿define(['services/history', 'plugins/router'], function(history, router) {
+﻿define(['models/history', 'plugins/router'], function(history, router) {
     var vm = {};
-    vm.oldTestament = [];
-    vm.newTestament = [];
 
-    vm.activate = function() {
-        return history.getHistory()
-            .done(function(data) {
-                vm.oldTestament = data.oldTestamentBooks;
-                vm.newTestament = data.newTestamentBooks;
-        });
-    };
+    vm.history = history;
 
-    vm.toggleRead = function(chapter) {
-        router.navigate('#chapters/' + chapter.longName);
+    vm.toggleRead = function (chapter) {
+        router.navigate('#chapters/' + encodeURIComponent(chapter.longName));
     }
-    
     
     return vm;
 });
