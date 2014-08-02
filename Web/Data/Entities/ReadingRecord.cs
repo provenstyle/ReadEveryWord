@@ -8,6 +8,6 @@ namespace ProvenStyle.ReadEveryWord.Web.Data.Entities
         public string Book { get; set; }
         public int Chapter { get; set; }
         public DateTime DateTime { get; set; }
-        public int TimesThrough { get; set; }
+        public int TimesRead { get; set; }
     }
 }

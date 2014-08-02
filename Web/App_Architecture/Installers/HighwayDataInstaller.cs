@@ -17,7 +17,10 @@ namespace ProvenStyle.ReadEveryWord.Web.App_Architecture.Installers
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(
-                Component.For<IDomainRepositoryFactory>().ImplementedBy<DomainRepositoryFactory>());
+                Component.For<IDomainRepositoryFactory>().ImplementedBy<DomainRepositoryFactory>(),
+                Component.For<IRepository>().ImplementedBy<Repository>()
+                );
+                
         }
     }
 }

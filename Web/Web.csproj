@@ -15,11 +15,11 @@
     <AssemblyName>ProvenStyle.ReadEveryWord.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort>4800</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -242,18 +242,24 @@
     <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OldHomeController.cs" />
+    <Compile Include="Data\Mapping\TimesReadMap.cs" />
+    <Compile Include="Data\Mapping\ReadingRecordMap.cs" />
+    <Compile Include="Data\Queries\ReadingRecordByUserBookChapterTimesRead.cs" />
+    <Compile Include="Controllers\ValuesController1.cs" />
     <Compile Include="Data\Entities\AspNetRole.cs" />
     <Compile Include="Data\Entities\AspNetUser.cs" />
     <Compile Include="Data\Entities\AspNetUserClaim.cs" />
     <Compile Include="Data\Entities\AspNetUserLogin.cs" />
     <Compile Include="Data\Entities\BaseEntity.cs" />
     <Compile Include="Data\Domain.cs" />
-    <Compile Include="Data\Entities\ChapterRecord.cs" />
+    <Compile Include="Data\Entities\ReadingRecord.cs" />
+    <Compile Include="Data\Entities\TimesRead.cs" />
     <Compile Include="Data\Mapping\AspNetRoleMap.cs" />
     <Compile Include="Data\Mapping\AspNetUserClaimMap.cs" />
     <Compile Include="Data\Mapping\AspNetUserLoginMap.cs" />
     <Compile Include="Data\Mapping\AspNetUserMap.cs" />
     <Compile Include="Data\Mapping\BaseMapping.cs" />
+    <Compile Include="Data\Scalars\TimesRead.cs" />
     <Compile Include="Filters\ExceptionLoggingInjectableFilter.cs" />
     <Compile Include="Filters\IInjectableFilter.cs" />
     <Compile Include="Global.asax.cs">
@@ -262,6 +268,10 @@
     <Compile Include="Migrations\201407202220486_initial.cs" />
     <Compile Include="Migrations\201407202220486_initial.Designer.cs">
       <DependentUpon>201407202220486_initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408022053574_timesRead.cs" />
+    <Compile Include="Migrations\201408022053574_timesRead.Designer.cs">
+      <DependentUpon>201408022053574_timesRead.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -382,8 +392,6 @@
     <Content Include="Scripts\underscore-min.map" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\Queries\" />
-    <Folder Include="Data\Scalars\" />
     <Folder Include="Views\Durandal\" />
   </ItemGroup>
   <ItemGroup>
@@ -393,6 +401,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201407202220486_initial.resx">
       <DependentUpon>201407202220486_initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408022053574_timesRead.resx">
+      <DependentUpon>201408022053574_timesRead.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
@@ -413,7 +424,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>49195</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:4000/</IISUrl>
+          <IISUrl>https://localhost:7800</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
