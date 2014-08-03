@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
-using System.Web.Mvc;
 using Highway.Data;
 using ProvenStyle.ReadEveryWord.Web.BaseTypes;
 using ProvenStyle.ReadEveryWord.Web.Data;
@@ -52,9 +48,6 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
             }
 
         }
-
-        
-
     }
 
     public class ReadingUpdate

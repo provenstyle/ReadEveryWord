@@ -18,7 +18,7 @@ namespace ProvenStyle.ReadEveryWord.Web.App_Architecture.Installers
         {
             container.Register(
                 Component.For<IDomainRepositoryFactory>().ImplementedBy<DomainRepositoryFactory>(),
-                Component.For<IRepository>().ImplementedBy<Repository>()
+                Component.For<IRepository>().ImplementedBy<Repository>().LifestyleTransient()
                 );
                 
         }
