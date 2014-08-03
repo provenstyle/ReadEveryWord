@@ -4,6 +4,7 @@ using Machine.Specifications;
 using ProvenStyle.ReadEveryWord.Web.Controllers;
 using ProvenStyle.ReadEveryWord.Web.Data;
 using ProvenStyle.ReadEveryWord.Web.Data.Entities;
+using ProvenStyle.ReadEveryWord.Web.Models;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable UnusedMember.Local

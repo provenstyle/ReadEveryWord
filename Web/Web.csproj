@@ -242,6 +242,10 @@
     <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OldHomeController.cs" />
+    <Compile Include="Models\Book.cs" />
+    <Compile Include="Models\Chapter.cs" />
+    <Compile Include="Models\ReadingUpdate.cs" />
+    <Compile Include="Data\Queries\ReadingRecordsByUser.cs" />
     <Compile Include="Data\Mapping\TimesReadMap.cs" />
     <Compile Include="Data\Mapping\ReadingRecordMap.cs" />
     <Compile Include="Data\Queries\ReadingRecordByUserBookChapterTimesRead.cs" />

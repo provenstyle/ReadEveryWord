@@ -1,4 +1,4 @@
-﻿define(['models/history'], function(history) {
+﻿define(['durandal/system', 'models/history'], function(system, history) {
     var vm = {};
     vm.book = {};
 
@@ -19,7 +19,8 @@
             .done(function() {
                 chapter.read = read;
             })
-            .fail(function() {
+            .fail(function () {
+                system.log("Failed to save ReadRecord.");
             });
         chapter.read = !chapter.read;
     }

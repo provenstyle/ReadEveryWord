@@ -6,7 +6,7 @@ using Should;
 
 namespace Tests
 {
-    public class when_doing_something : WithSubject<History>
+    public class when_doing_something : WithSubject<Books>
     {
         Establish context = () => { };
 

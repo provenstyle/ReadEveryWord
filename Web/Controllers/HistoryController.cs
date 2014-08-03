@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 using Highway.Data;
 using ProvenStyle.ReadEveryWord.Web.BaseTypes;
@@ -11,22 +13,41 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
     public class HistoryController : BaseApiController
     {
         IRepository _repository;
+        string _userId ="michaelpdudley";
 
         public HistoryController(IRepository repository)
         {
             _repository = repository;
         }
 
-        public History Get()
+        public Books Get()
         {
-            return new History();
+            var history = new Books();
+            var allBooks = new List<Book>();
+            allBooks.AddRange(history.OldTestamentBooks);
+            allBooks.AddRange(history.NewTestamentBooks);
+
+            var records = _repository.Find(new ReadingRecordsByUser(_userId)).ToList();
+            foreach (var record in records)
+            {
+                var book = allBooks.FirstOrDefault(x => x.ShortName == record.Book);
+                if (book != null)
+                {
+                    var chapter = book.Chapters.FirstOrDefault(x => x.Number == record.Chapter);
+                    if (chapter != null)
+                    {
+                        chapter.Read = true;
+                    }
+                }
+            }
+
+            return history;
         }
 
         public void Post([FromBody]ReadingUpdate data)
         {
             var timesRead = 0;
-            var userId = "michaelpdudley";
-            var record = _repository.Find(new ReadingRecordByUserBookChapterTimesRead(userId, data.Book, data.Chapter, timesRead));
+            var record = _repository.Find(new ReadingRecordByUserBookChapterTimesRead(_userId, data.Book, data.Chapter, timesRead));
             if (data.Read && record == null)
             {
                 _repository.Context.Add(new ReadingRecord
@@ -35,7 +56,7 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
                     Chapter = data.Chapter,
                     DateTime = DateTime.Now,
                     TimesRead = timesRead,
-                    UserId = userId
+                    UserId = _userId
                 });
                 _repository.Context.Commit();
 
@@ -48,12 +69,5 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
             }
 
         }
-    }
-
-    public class ReadingUpdate
-    {
-        public string Book { get; set; }
-        public int Chapter { get; set; }
-        public bool Read { get; set; }
     }
 }
