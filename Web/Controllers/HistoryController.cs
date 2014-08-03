@@ -29,18 +29,27 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
         public void Post([FromBody]ReadingUpdate data)
         {
             var timesRead = 0;
-            var userId = "";
-            _repository.Find(new ReadingRecordByUserBookChapterTimesRead(userId, data.Book, data.Chapter, timesRead));
-            var record = new ReadingRecord()
+            var userId = "michaelpdudley";
+            var record = _repository.Find(new ReadingRecordByUserBookChapterTimesRead(userId, data.Book, data.Chapter, timesRead));
+            if (data.Read && record == null)
             {
-                Book = data.Book,
-                Chapter = data.Chapter,
-                DateTime = DateTime.Now,
-                Id = Guid.NewGuid(),
-                TimesRead = 0,
-                UserId = "michaelpdudley"
-            };
+                _repository.Context.Add(new ReadingRecord
+                {
+                    Book = data.Book,
+                    Chapter = data.Chapter,
+                    DateTime = DateTime.Now,
+                    TimesRead = timesRead,
+                    UserId = userId
+                });
+                _repository.Context.Commit();
 
+            }
+
+            if (!data.Read && record != null)
+            {
+                _repository.Context.Remove(record);
+                _repository.Context.Commit();
+            }
 
         }
 
