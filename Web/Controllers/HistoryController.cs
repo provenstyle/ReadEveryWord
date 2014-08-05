@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using Highway.Data;
+using Microsoft.AspNet.Identity;
 using ProvenStyle.ReadEveryWord.Web.BaseTypes;
 using ProvenStyle.ReadEveryWord.Web.Data;
 using ProvenStyle.ReadEveryWord.Web.Data.Entities;

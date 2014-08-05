@@ -237,6 +237,7 @@
     <Compile Include="Configs\IConnectionStringConfig.cs" />
     <Compile Include="Configs\IDatabaseInitializerConfig.cs" />
     <Compile Include="Configs\InitializerTypes.cs" />
+    <Compile Include="Controllers\AccountApiController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DurandalController.cs" />
     <Compile Include="Controllers\HistoryController.cs" />

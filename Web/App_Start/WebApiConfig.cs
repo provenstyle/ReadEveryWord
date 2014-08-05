@@ -15,6 +15,12 @@ namespace ProvenStyle.ReadEveryWord.Web
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
+                name: "accountApi",
+                routeTemplate: "api/accountApi/{action}/{id}",
+                defaults: new { controller = "AccountApi", id = RouteParameter.Optional }
+            );
+
+            config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
