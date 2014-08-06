@@ -47,10 +47,6 @@
     color: #fff;
 }
 
-.content {
-    
-}
-
 a.back {
     margin-left: 4px;
     margin-top: 8px;
@@ -71,6 +67,20 @@ a.back {
     border-radius: 3px;
     background: #aaa;
     color: #fff;
+}
+
+.login form, .register form {
+    margin-bottom: 10px;
+    margin-top: 15px;
+}
+
+.login .actions, .register .actions{
+    margin-top: 25px;
+}
+
+.login .register {
+    margin-top: 10px;
+    text-align: right;
 }
 
 .books div {

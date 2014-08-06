@@ -1,4 +1,4 @@
-﻿<div class="container">
+﻿<div class="container register">
     <h2>Create Account</h2>
     <form role="form">
         <div class="form-group">
@@ -13,7 +13,10 @@
             <label for="confirmPassword">Confirm Password</label>
             <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" data-bind="value: confirmPassword">
         </div>
-        
-        <button type="submit" class="btn btn-default" data-bind="click: create">Create</button>
+        <div class="row actions">
+            <div class="col-xs-6">
+                <button type="submit" class="btn btn-default" data-bind="click: create">Create</button>
+            </div>
+        </div>
     </form>
 </div>

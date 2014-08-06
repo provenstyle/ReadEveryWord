@@ -1,4 +1,4 @@
-﻿<div class="container">
+﻿<div class="container login">
     <h2>Login</h2>
     <!--Try this to force browser to remember https://gist.github.com/kostiklv/968927 -->
     <form role="form">
@@ -10,10 +10,16 @@
             <label for="password">Password</label>
             <input type="password" class="form-control" id="password" placeholder="Password" data-bind="value: password">
         </div>
-
-        <button type="submit" class="btn btn-default" data-bind="click: create">Login</button>
+        
+        <div class="row actions">
+            <div class="col-xs-6">
+                <button type="submit" class="btn btn-default right" data-bind="click: create">Login</button>
+            </div>            
+            <div class="col-xs-6 register">
+                <a href="#register">Create Account</a>
+            </div>            
+        </div>
     </form>
 
 
-    <a href="#register">Create Account</a>
 </div>
