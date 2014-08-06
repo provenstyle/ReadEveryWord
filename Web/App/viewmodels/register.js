@@ -1,4 +1,4 @@
-﻿define(['durandal/system'], function(system) {
+﻿define(['durandal/system', 'models/history'], function (system, history) {
 
     var vm = {};
 
@@ -12,10 +12,13 @@
                 password: vm.password,
                 confirmPassword: vm.confirmPassword
             })
-            .done(function(result) {
-                if (result.status === 200) {
-                    location.hash = "#books";
-                };
+            .done(function () {
+                system.log('New user created.');
+                history.prime()
+                    .done(function () {
+                        location.hash = "#books";
+                    });
+                location.hash = "#books";
             })
             .fail(function(result) {
                 system.log('Failed to create account: ' + result.status);
