@@ -11,13 +11,13 @@
             <label for="password">Password</label>
             <input type="password" class="form-control" id="password" name="password" placeholder="Password" 
                    data-bind="value: password" 
-                   required>
+                   required validpassword>
         </div>
         <div class="form-group">
             <label for="confirmPassword">Confirm Password</label>
             <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" 
                    data-bind="value: confirmPassword" 
-                   required>
+                   required equalTo="#password">
         </div>
         <div class="row actions">
             <div class="col-xs-6">
