@@ -22,6 +22,7 @@ namespace ProvenStyle.ReadEveryWord.Web
             bundles.Add(
               new ScriptBundle("~/Scripts/vendor")
                   .Include("~/Scripts/jquery-{version}.js")
+                  .Include("~/Scripts/jquery.validate.min.js")
                   .Include("~/Scripts/bootstrap.js")
                   .Include("~/Scripts/knockout-{version}.js")
                   .Include("~/Scripts/underscore-min.js")
