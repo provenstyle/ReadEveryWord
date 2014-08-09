@@ -48,10 +48,14 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
         // GET: /Account/Login
         [AllowAnonymous]
         [HttpGet]
-        public IHttpActionResult LoggedIn()
+        public HttpResponseMessage LoggedIn()
         {
-            if (User.Identity.IsAuthenticated) return Ok();
-            return BadRequest();
+            if (User.Identity.IsAuthenticated)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, new { Username = User.Identity.Name});
+            }
+
+            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "User is not authenticated.");
         }
 
         //
@@ -66,12 +70,12 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
                 if (user != null)
                 {
                     await SignInAsync(user, true);
-                    return new HttpResponseMessage(HttpStatusCode.OK);
+                    return Request.CreateResponse(HttpStatusCode.OK, new { Username = user.UserName });
                 }
             }
 
             // If we got this far, something failed, redisplay form
-            return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid Username or Password");
         }
 
         //

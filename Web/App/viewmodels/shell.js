@@ -1,5 +1,6 @@
-﻿define(['plugins/router', 'durandal/app', 'durandal/system', 'models/history'], function (router, app, system, history) {
+﻿define(['plugins/router', 'durandal/app', 'durandal/system', 'models/history', 'models/user', 'services/account'], function (router, app, system, history, user, accountService) {
     return {
+        user: user,
         router: router,
         search: function() {
             //It's really easy to show a message box.
@@ -10,25 +11,23 @@
 
             var def = new $.Deferred();
 
-            $.get('api/AccountApi/LoggedIn')
-                    .done(function (response) {
-                        history.prime()
-                            .done(function () {
-                                system.log('User is logged in.');
-                                configureRouter()
-                                    .done(function () {
-                                        def.resolve();
-                                    });
-                            });
-                    })
-                    .fail(function (a, b, c) {
-                        system.log('User is not logged in. Navigating to login.');
-                        location.hash = '#login';
-                        configureRouter()
-                            .done(function() {
-                                def.resolve();
-                            });
-                    });
+            accountService.loggedIn()
+                .done(function (data, status, xhr) {
+                    history.prime()
+                        .done(function () {
+                            configureRouter()
+                                .done(function () {
+                                    def.resolve();
+                                });
+                        });
+                })
+                .fail(function (xhr) {
+                    location.hash = '#login';
+                    configureRouter()
+                        .done(function () {
+                            def.resolve();
+                        });
+                });
 
             return def;
         },
@@ -37,6 +36,7 @@
                 .done(function () {
                     system.log('Logged off.');
                     router.navigate('#login');
+                    user.clear();
                 })
                 .fail(function(parameters) {
                     system.log('Failled to logoff.');
