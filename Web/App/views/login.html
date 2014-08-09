@@ -1,29 +1,33 @@
 ﻿<div class="container login">
     <h2>Login</h2>
+
+    <div class="alert alert-danger" data-bind="visible: loginError">
+        <p>Invalid username or password.</p>
+    </div>
+
     <!--Try this to force browser to remember https://gist.github.com/kostiklv/968927 -->
     <form id="login" role="form">
         <div class="form-group">
             <label for="email">Email address</label>
-            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" 
-                   data-bind="value: email, valueUpdate: 'afterkeydown'" 
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email"
+                   data-bind="value: email, valueUpdate: 'afterkeydown'"
                    required>
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" name="password" placeholder="Password" 
-                   data-bind="value: password, valueUpdate: 'afterkeydown'" 
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                   data-bind="value: password, valueUpdate: 'afterkeydown'"
                    required>
         </div>
-        
+
         <div class="row actions">
             <div class="col-xs-6">
                 <button class="btn btn-default right" data-bind="click: create">Login</button>
-            </div>            
+            </div>
             <div class="col-xs-6 link">
                 <a href="#register">Create Account</a>
-            </div>            
+            </div>
         </div>
     </form>
-
 
 </div>
