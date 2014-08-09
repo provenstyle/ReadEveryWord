@@ -30,6 +30,17 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (s
     }, "The password must contain a minimum of one lower case character," +
            " one upper case character, one digit and one special character..");
 
+    $.validator.setDefaults({
+        highlight: function(element) {
+            $(element).closest('.form-group').addClass('has-error');
+        },
+        unhighlight: function(element) {
+            $(element).closest('.form-group').removeClass('has-error');
+        },
+        //errorElement: 'label',
+        errorClass: 'control-label has-error'
+    });
+
     app.start().then(function() {
         //Replace 'viewmodels' in the moduleId with 'views' to locate the view.
         //Look for partial views in a 'views' folder in the root.
