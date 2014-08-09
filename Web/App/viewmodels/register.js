@@ -1,20 +1,22 @@
-﻿define(['durandal/system', 'models/history'], function (system, history) {
+﻿define(['durandal/system', 'plugins/observable', 'models/history'], function (system, observable, history) {
 
-    var vm = {}, 
+    var vm = {},
         validator = {};
 
     vm.email = '';
     vm.password = '';
     vm.confirmPassword = '';
+    vm.registrationError = false;
 
     vm.compositionComplete = function () {
         validator = $("#register").validate({
             rules: {
-                password: {
+                newPassword: {
                     validpassword: true
                 }
             }
         });
+
     };
 
     vm.create = function () {
@@ -36,9 +38,20 @@
                 })
                 .fail(function(result) {
                     system.log('Failed to create account: ' + result.status);
+                    vm.registrationError = true;
                 });
         }
     };
+
+    function resetError() {
+        vm.registrationError = false;
+    };
+
+    _.each(['email', 'password', 'confirmPassword'], function(prop) {
+        observable(vm, prop).subscribe(function () {
+            resetError();
+        });
+    });
 
     return vm;
 });

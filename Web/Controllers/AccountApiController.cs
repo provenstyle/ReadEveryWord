@@ -23,6 +23,14 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
         public AccountApiController(ApplicationUserManager userManager)
         {
             UserManager = userManager;
+            UserManager.PasswordValidator = new PasswordValidator
+            {
+                RequireDigit = true,
+                RequiredLength = 8,
+                RequireLowercase = true,
+                RequireNonLetterOrDigit = true,
+                RequireUppercase = true
+            };
         }
 
         public ApplicationUserManager UserManager {

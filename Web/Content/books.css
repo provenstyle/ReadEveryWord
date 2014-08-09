@@ -78,7 +78,7 @@ a.back {
     margin-top: 25px;
 }
 
-.login .register {
+.login .actions .link, .register .actions .link {
     margin-top: 10px;
     text-align: right;
 }
