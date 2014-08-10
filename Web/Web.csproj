@@ -310,9 +310,14 @@
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\ie10mobile.css" />
-    <Content Include="Content\images\icon.png" />
-    <Content Include="Content\images\ios-startup-image-landscape.png" />
-    <Content Include="Content\images\ios-startup-image-portrait.png" />
+    <Content Include="Content\images\AppIcon1536X2048.png" />
+    <Content Include="Content\images\AppIcon320X460.png" />
+    <Content Include="Content\images\AppIcon60x60%402x.png" />
+    <Content Include="Content\images\AppIcon60x60.png" />
+    <Content Include="Content\images\AppIcon640X920.png" />
+    <Content Include="Content\images\AppIcon768X1024.png" />
+    <Content Include="Content\images\AppIcon76x76%402x~ipad.png" />
+    <Content Include="Content\images\AppIcon76x76~ipad.png" />
     <Content Include="Content\starterkit.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />

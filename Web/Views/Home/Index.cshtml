@@ -14,9 +14,43 @@
         <meta name="format-detection" content="telephone=no"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
         
-        <link rel="apple-touch-startup-image" href="~/Content/images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
-        <link rel="apple-touch-startup-image" href="~/Content/images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
-        <link rel="apple-touch-icon" href="~/Content/images/icon.png"/>
+        <link rel="apple-touch-icon" sizes="60X60" href="~/Content/images/AppIcon60x60.png" />
+        <link rel="apple-touch-icon" sizes="76X76" href="~/Content/images/AppIcon76x76~ipad.png" />
+        <link rel="apple-touch-icon" sizes="120X120" href="~/Content/images/AppIcon60x60@2x.png" />
+        <link rel="apple-touch-icon" sizes="152X152" href="~/Content/images/AppIcon76x76@2x~ipad.png" />
+
+        <!-- iPhone -->
+        <link rel="apple-touch-startup-image"
+              media="(device-width: 320px)"
+              href="~/Context/images/AppIcon320x460.png">
+        <!-- iPhone (Retina) -->
+        <link rel="apple-touch-startup-image"
+              media="(device-width: 320px)
+                    and (-webkit-device-pixel-ratio: 2)"
+              href="~/Context/images/AppIcon640x920.png">
+
+        <!-- iPad (portrait) -->
+        <link rel="apple-touch-startup-image"
+              media="(device-width: 768px)
+                     and (orientation: portrait)"
+              href="~/Context/images/AppIcon768x1024.png">
+        <!-- iPad (landscape) -->
+        <link rel="apple-touch-startup-image"
+              media="(device-width: 768px)
+         and (orientation: landscape)"
+              href="~/Context/images/AppIcon768x1024.png">
+        <!-- iPad (Retina, portrait) -->
+        <link rel="apple-touch-startup-image"
+              media="(device-width: 768px)
+                     and (orientation: portrait)
+                     and (-webkit-device-pixel-ratio: 2)"
+              href="~/Context/images/AppIcon1536x2048.png">
+        <!-- iPad (Retina, landscape) -->
+        <link rel="apple-touch-startup-image"
+              media="(device-width: 768px)
+                     and (orientation: landscape)
+                     and (-webkit-device-pixel-ratio: 2)"
+              href="~/Context/images/AppIcon1536x2048.png">
         
         @Styles.Render("~/Content/css")
         
