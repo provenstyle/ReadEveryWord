@@ -6,6 +6,31 @@
     color: #fff;
 }
 
+.splash .message {
+    font-size: 2em;
+    font-weight: bold;
+    text-transform: none;
+}
+
+.splash .fa-spinner {
+    margin-top: 20px;
+    font-size: 3em;
+}
+
+.splash .bigLogo {
+    content: url("images/bigLogo.png");
+    margin: 20px 0;
+}
+
+.splash p {
+    font-weight: bold;
+    text-shadow: rgba(0, 0, 0, 0.5) 0 0 10px;
+    font-size: 1.2em;
+    text-align: left;
+    width: 300px;
+    margin: auto;
+}
+
 .page-host {
     background: #fff;
 }

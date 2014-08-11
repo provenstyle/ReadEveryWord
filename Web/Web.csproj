@@ -317,10 +317,15 @@
     <Content Include="Content\images\640X920StartupImage.png" />
     <Content Include="Content\images\748X1024StartupImage.png" />
     <Content Include="Content\images\768X1004StartupImage.png" />
+    <Content Include="Content\images\AppIcon114x114.png" />
     <Content Include="Content\images\AppIcon120x120.png" />
+    <Content Include="Content\images\AppIcon144x144.png" />
+    <Content Include="Content\images\AppIcon57x57.png" />
     <Content Include="Content\images\AppIcon60x60.png" />
     <Content Include="Content\images\AppIcon152x152.png" />
+    <Content Include="Content\images\AppIcon72x72.png" />
     <Content Include="Content\images\AppIcon76x76.png" />
+    <Content Include="Content\images\BigLogo.png" />
     <Content Include="Content\starterkit.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
