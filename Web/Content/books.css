@@ -6,10 +6,6 @@
     min-height: 44px;
 }
 
-.navbar .container {
-    min-height: 64px;
-}
-
 .navbar-brand {
     height: 44px;
     padding: 12px 8px;
@@ -125,3 +121,14 @@ a.back {
 .newTestament {
     margin-bottom: 50px;
 }
+
+
+/*need media query for iphone*/
+.navbar .container {
+    margin-top: 20px;
+}
+
+.page-host {
+    top: 70px;
+}
+ /* end media query*/
