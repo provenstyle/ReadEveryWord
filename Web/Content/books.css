@@ -20,6 +20,7 @@
 .splash .bigLogo {
     content: url("images/bigLogo.png");
     margin: 20px 0;
+    width: 256px;
 }
 
 .splash p {
