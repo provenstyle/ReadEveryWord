@@ -47,6 +47,14 @@
     color: #fff;
 }
 
+.navbar .container {
+    margin-top: 20px;
+}
+
+.page-host {
+    top: 70px;
+}    
+
 .username {
     padding-top: 13px;
     padding-right: 25px;
@@ -123,12 +131,4 @@ a.back {
 }
 
 
-/*need media query for iphone*/
-.navbar .container {
-    margin-top: 20px;
-}
 
-.page-host {
-    top: 70px;
-}
- /* end media query*/
