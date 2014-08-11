@@ -1,13 +1,14 @@
 ﻿body {
-    background: #fff
+    background: #ef8233;
 }
 
 .splash {
-    background: #EF8233;
     color: #fff;
 }
 
-
+.page-host {
+    background: #fff;
+}
 
 .navbar {
     min-height: 44px;
