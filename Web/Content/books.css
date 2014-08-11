@@ -6,6 +6,10 @@
     min-height: 44px;
 }
 
+.navbar .container {
+    min-height: 64px;
+}
+
 .navbar-brand {
     height: 44px;
     padding: 12px 8px;
