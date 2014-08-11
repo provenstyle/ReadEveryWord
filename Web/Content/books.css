@@ -1,9 +1,10 @@
-﻿body {
+﻿.splash {
     background: #ef8233;
-}
-
-.splash {
     color: #fff;
+    padding: 15px;
+    max-width: 500px;
+    border-radius: 10px;
+    margin: 25px auto;
 }
 
 .splash .message {
@@ -28,7 +29,7 @@
     text-shadow: rgba(0, 0, 0, 0.5) 0 0 10px;
     font-size: 1.2em;
     text-align: left;
-    width: 300px;
+    width: 270px;
     margin: auto;
 }
 
