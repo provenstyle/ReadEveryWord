@@ -2,6 +2,13 @@
     background: #fff
 }
 
+.splash {
+    background: #EF8233;
+    color: #fff;
+}
+
+
+
 .navbar {
     min-height: 44px;
 }
