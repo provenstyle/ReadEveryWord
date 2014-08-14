@@ -13,6 +13,25 @@
             rules: {
                 newPassword: {
                     validpassword: true
+                },
+                newEmail: {
+                    required: true,
+
+                    remote: {
+                        url: "api/accountApi/EmailAvailable",
+                        type: "get",
+                        data: {
+                            email: function() {
+                                return vm.email;
+                            }
+                        }
+                    }
+                }
+            },
+            messages: {
+                newEmail: {
+                    required: "This field is required.",
+                    remote: "Email address already in use."
                 }
             }
         });

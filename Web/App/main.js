@@ -23,23 +23,7 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (s
         observable: true
     });
 
-    //configur validation
-    $.validator.addMethod("validpassword", function (value, element) {
-        return this.optional(element) ||
-            /^.*(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[\d])(?=.*[\W_]).*$/.test(value);
-    }, "The password must contain a minimum of one lower case character," +
-           " one upper case character, one digit and one special character..");
-
-    $.validator.setDefaults({
-        highlight: function(element) {
-            $(element).closest('.form-group').addClass('has-error');
-        },
-        unhighlight: function(element) {
-            $(element).closest('.form-group').removeClass('has-error');
-        },
-        //errorElement: 'label',
-        errorClass: 'control-label has-error'
-    });
+    configureValidation();
 
     app.start().then(function() {
         //Replace 'viewmodels' in the moduleId with 'views' to locate the view.
@@ -49,4 +33,23 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (s
         //Show the app by setting the root view model for our application with a transition.
         app.setRoot('viewmodels/shell', 'entrance');
     });
+
+
+    function configureValidation() {
+        $.validator.addMethod("validpassword", function (value, element) {
+            return this.optional(element) ||
+                /^.*(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[\d])(?=.*[\W_]).*$/.test(value);
+        }, "The password must contain a minimum of one lower case character," +
+           " one upper case character, one digit and one special character..");
+
+        $.validator.setDefaults({
+            highlight: function (element) {
+                $(element).closest('.form-group').addClass('has-error');
+            },
+            unhighlight: function (element) {
+                $(element).closest('.form-group').removeClass('has-error');
+            },
+            errorClass: 'control-label has-error'
+        });
+    }
 });

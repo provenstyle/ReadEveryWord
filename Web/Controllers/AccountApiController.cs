@@ -106,6 +106,13 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
             return new HttpResponseMessage(HttpStatusCode.BadRequest);
         }
 
+        [HttpGet]
+        public HttpResponseMessage EmailAvailable(string email)
+        {
+            var user = UserManager.FindByEmail(email);
+            return Request.CreateResponse(HttpStatusCode.OK, user == null);
+        }
+
         ////
         //// GET: /Account/ConfirmEmail
         //[System.Web.Mvc.AllowAnonymous]
