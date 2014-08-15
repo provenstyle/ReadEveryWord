@@ -11,11 +11,10 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <!--<li><a href="summary.html">Summary</a></li>
-                        <li><a href="about.html">About</a></li>-->
-                    <li class="username" data-bind="text: user.username"></li>
-
-                    <li class="dropdown">
+                    <li class="username">Welcome, <span data-bind="text: user.username"></span></li>
+                    <li class="visible-xs"><a href="#" data-bind="click: logOff">Log Off</a></li>
+                    
+                    <li class="hidden-xs dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span></a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="#" data-bind="click: logOff">Log Off</a></li>
