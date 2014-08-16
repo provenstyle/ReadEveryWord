@@ -46,6 +46,7 @@
                     system.log('Logged off.');
                     router.navigate('#login');
                     user.clear();
+                    history.clear();
                 })
                 .fail(function(parameters) {
                     system.log('Failled to logoff.');

@@ -1,4 +1,4 @@
-﻿define(['services/history'], function(service) {
+﻿define(['durandal/system', 'services/history'], function(system, service) {
 
     var model = {};
 
@@ -20,6 +20,13 @@
             return book.longName === bookName;
         });
     }
+
+    model.clear = function() {
+        model.oldTestament = [];
+        model.newTestament = [];
+        model.allBooks = [];
+        system.log("Cleared reading history.");
+    };
 
     return model;
 

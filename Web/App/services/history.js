@@ -1,7 +1,6 @@
 ﻿define(['plugins/observable'], function(observable) {
 
     function addComputeds(books) {
-        var length = books.length;
 
         _.each(books, function(book) {
             observable.defineProperty(book, 'started', function() {
@@ -13,7 +12,7 @@
             observable.defineProperty(book, 'completed', function() {
                 return _.every(book.chapters, function(chapter) {
                     return chapter.read === true;
-                })
+                });
             });
         });
     }
