@@ -8,7 +8,7 @@
         $.get('api/AccountApi/LoggedIn')
             .done(function (data, status, xhr) {
                 system.log('User is logged in: ' + xhr.status);
-                user.username = data.username;
+                user.authenticated(data.username);
                 def.resolve();
             })
             .fail(function (xhr) {

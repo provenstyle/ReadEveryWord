@@ -1,5 +1,13 @@
-﻿define(['models/history', 'plugins/router'], function(history, router) {
+﻿define(['models/history', 'plugins/router', 'models/user'], function(history, router, user) {
     var vm = {};
+
+    vm.canActivate = function() {
+        if (user.isAuthenticated === true) {
+            return true;
+        }
+
+        return { redirect: '#login' };
+    };
 
     vm.history = history;
 

@@ -26,7 +26,7 @@
         })
             .done(function (data, status, xhr) {
                 system.log('Login successfull');
-                user.username = data.username;
+                user.authenticated(data.username);
                 history.prime()
                     .done(function () {
                         location.hash = "#books";
@@ -35,7 +35,8 @@
             .fail(function () {
                 system.log('Failed to login. Invalid username or password.');
                 vm.loginError = true;
-            });
+                user.clear();
+           });
     };
 
     function resetError() {

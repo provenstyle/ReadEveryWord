@@ -1,4 +1,4 @@
-﻿define(['durandal/system', 'plugins/observable', 'models/history'], function (system, observable, history) {
+﻿define(['durandal/system', 'plugins/observable', 'models/history', 'models/user'], function (system, observable, history, user) {
 
     var vm = {},
         validator = {};
@@ -49,6 +49,7 @@
                 })
                 .done(function() {
                     system.log('New user created.');
+                    user.authenticated(vm.email);
                     history.prime()
                         .done(function() {
                             location.hash = "#books";
