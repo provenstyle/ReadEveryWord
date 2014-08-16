@@ -243,6 +243,7 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MonitorController.cs" />
     <Compile Include="Models\Book.cs" />
     <Compile Include="Models\Chapter.cs" />
     <Compile Include="Models\ReadingUpdate.cs" />
