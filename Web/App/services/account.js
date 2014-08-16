@@ -5,7 +5,7 @@
     module.loggedIn = function() {
         var def = $.Deferred();
 
-        $.get('api/AccountApi/LoggedIn')
+        $.get(rew.config.basePath() + '/api/AccountApi/LoggedIn')
             .done(function (data, status, xhr) {
                 system.log('User is logged in: ' + xhr.status);
                 user.authenticated(data.username);

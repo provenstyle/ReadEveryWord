@@ -41,7 +41,7 @@
             })
         },
         logOff: function() {
-            $.post('api/AccountApi/Logoff')
+            $.post(rew.config.basePath() + '/api/AccountApi/Logoff')
                 .done(function () {
                     system.log('Logged off.');
                     router.navigate('#login');

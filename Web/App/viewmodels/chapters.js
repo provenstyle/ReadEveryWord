@@ -23,7 +23,7 @@
             read: read
         };
 
-        $.post('api/history', data)
+        $.post(rew.config.basePath() + '/api/history', data)
             .done(function() {
                 chapter.read = read;
             })

@@ -20,7 +20,7 @@
     };
 
     function submitForm() {
-        $.post('api/accountApi/login', {
+        $.post(rew.config.basePath() + '/api/accountApi/login', {
             email: vm.email,
             password: vm.password
         })

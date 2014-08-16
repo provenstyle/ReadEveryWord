@@ -20,7 +20,7 @@
     return {
         getHistory: function () {
             var dfd = new $.Deferred();
-            $.get("api/history").done(function (data) {
+            $.get(rew.config.basePath() + '/api/history').done(function (data) {
                 addComputeds(data.oldTestamentBooks);
                 addComputeds(data.newTestamentBooks);
                 dfd.resolve(data);

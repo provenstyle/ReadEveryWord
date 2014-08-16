@@ -301,6 +301,7 @@
     <Content Include="App\views\register.html" />
     <Content Include="App\views\login.html" />
     <Content Include="App\views\shell.html" />
+    <Content Include="config.js" />
     <Content Include="Content\books.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />

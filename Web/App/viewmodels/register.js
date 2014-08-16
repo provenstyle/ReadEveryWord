@@ -18,7 +18,7 @@
                     required: true,
 
                     remote: {
-                        url: "api/accountApi/EmailAvailable",
+                        url: rew.config.basePath() + "/api/accountApi/EmailAvailable",
                         type: "get",
                         data: {
                             email: function() {
@@ -42,7 +42,7 @@
         var valid = validator.form();
         system.log("Registration form valid? " + valid);
         if (valid) {
-            $.post('api/accountApi/register', {
+            $.post(rew.config.basePath() + '/api/accountApi/register', {
                     email: vm.email,
                     password: vm.password,
                     confirmPassword: vm.confirmPassword
