@@ -61,6 +61,8 @@
                 { route: 'register', moduleId: 'viewmodels/register', nav: true },
         ]).buildNavigationModel();
 
+        router.mapUnknownRoutes('viewmodels/books', "#books");
+
         return router.activate();
     }
 });
