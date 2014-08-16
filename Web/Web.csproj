@@ -411,6 +411,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\underscore-min.map" />
     <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Error\NoJavaScript.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Durandal\" />

@@ -13,5 +13,10 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
         {
             return View();
         }
+
+        public ActionResult NoJavaScript()
+        {
+            return View();
+        }
     }
 }
