@@ -11,6 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9A97E8EB-9699-4C9E-9CAA-486C4986ADF6}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		gruntfile.js = gruntfile.js
 		package.json = package.json
 	EndProjectSection

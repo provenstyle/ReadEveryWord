@@ -12,9 +12,9 @@
 
     vm.activate = function(bookName) {
         vm.book = history.bookByName(bookName);
-    }
+    };
 
-    vm.toggleRead = function (chapter) {
+    vm.toggleRead = function(chapter) {
         var read = !chapter.read;
 
         var data = {
@@ -27,11 +27,11 @@
             .done(function() {
                 chapter.read = read;
             })
-            .fail(function () {
+            .fail(function() {
                 system.log("Failed to save ReadRecord.");
             });
         chapter.read = !chapter.read;
-    }
+    };
 
     return vm;
 });

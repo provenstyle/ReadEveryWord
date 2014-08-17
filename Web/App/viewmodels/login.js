@@ -45,11 +45,11 @@
                     self.loginError = true;
                     user.clear();
                 });
-        };
+        }
 
         function resetError() {
             self.loginError = false;
-        };
+        }
 
     };
 

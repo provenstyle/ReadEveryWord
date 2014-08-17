@@ -72,7 +72,7 @@
 
         function resetError() {
             self.registrationError = false;
-        };
+        }
     };
 
     return ctor;

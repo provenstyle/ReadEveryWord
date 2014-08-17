@@ -33,7 +33,7 @@
                         $(".navbar-header .navbar-toggle").trigger("click");
                     }
                 });
-            })
+            });
         },
         logOff: function() {
             $.post(rew.config.basePath() + '/api/AccountApi/Logoff')
@@ -49,7 +49,7 @@
         }
     };
 
-    function configureRouter() {
+    function configureRouter(){
         router.map([
                 { route: ['Books', ''], title: 'Books', moduleId: 'viewmodels/books', nav: true },
                 { route: 'Chapters/:name', title: 'Chapters', moduleId: 'viewmodels/chapters', nav: true },

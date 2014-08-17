@@ -19,7 +19,7 @@
         return _.find(model.allBooks, function(book) {
             return book.longName === bookName;
         });
-    }
+    };
 
     model.clear = function() {
         model.oldTestament = [];
