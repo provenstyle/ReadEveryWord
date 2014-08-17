@@ -4,20 +4,15 @@ module.exports = function(grunt){
 	var wait = require('./util/wait');
 
 	grunt.initConfig({
-		watch:{
-			dlls:{
-				files:['../DallasTechFestDallasTechFest.Web/Views/**'],
-				tasks:[],
-				options:{
-					livereload: 37000
-				}
-			}
-		}
+	    jshint: {
+	        files: ['./Web/App/**/*.js'],
+	        options: {
+
+	        }
+	    },
 	});
 
-	grunt.registerTask('default', ['iisexpress']);
-
-	grunt.registerTask('watch', ['']);
+	grunt.registerTask('default', ['jshint']);
 
 	grunt.registerTask('web', 'Starts IISExpress', function(){
 		var done = this.async();
@@ -42,6 +37,7 @@ module.exports = function(grunt){
 			.done(done);
 	});
 
-	grunt.loadNpmTasks('grunt-contrib-watch');
+
+	grunt.loadNpmTasks('grunt-contrib-jshint');
 };
  

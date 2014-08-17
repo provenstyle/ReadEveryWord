@@ -20,3 +20,4 @@ OADSI.exe.config
 *.ncrunchsolution.user
 *.orig
 packages
+node_modules
