@@ -8,6 +8,7 @@ using ProvenStyle.ReadEveryWord.Web.Models;
 
 namespace ProvenStyle.ReadEveryWord.Web.Controllers
 {
+    [System.Web.Mvc.RequireHttps]
     [Authorize]
     public class AccountController : Controller
     {

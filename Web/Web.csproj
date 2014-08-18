@@ -239,7 +239,6 @@
     <Compile Include="Configs\InitializerTypes.cs" />
     <Compile Include="Controllers\AccountApiController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\DurandalController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -251,7 +250,6 @@
     <Compile Include="Data\Mapping\TimesReadMap.cs" />
     <Compile Include="Data\Mapping\ReadingRecordMap.cs" />
     <Compile Include="Data\Queries\ReadingRecordByUserBookChapterTimesRead.cs" />
-    <Compile Include="Controllers\ValuesController1.cs" />
     <Compile Include="Data\Entities\AspNetRole.cs" />
     <Compile Include="Data\Entities\AspNetUser.cs" />
     <Compile Include="Data\Entities\AspNetUserClaim.cs" />
@@ -415,9 +413,7 @@
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Error\NoJavaScript.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Durandal\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />

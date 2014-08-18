@@ -11,6 +11,7 @@ using ProvenStyle.ReadEveryWord.Web.Models;
 
 namespace ProvenStyle.ReadEveryWord.Web.Controllers
 {
+    [System.Web.Mvc.RequireHttps]
     [System.Web.Mvc.Authorize]
     public class AccountApiController : BaseApiController
     {
