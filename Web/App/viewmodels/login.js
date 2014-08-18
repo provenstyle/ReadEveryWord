@@ -5,9 +5,18 @@
         var self = this,
             validator = {};
 
+
         self.email = '';
         self.password = '';
         self.loginError = false;
+
+        self.canActivate = function() {
+            if (user.isAuthenticated === true) {
+                return { redirect: '#book' };
+            }
+
+            return true;
+        };
 
         self.create = function () {
             var valid = validator.form();

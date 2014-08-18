@@ -9,6 +9,14 @@
         self.confirmPassword = '';
         self.registrationError = false;
 
+        self.canActivate = function () {
+            if (user.isAuthenticated === true) {
+                return { redirect: '#book' };
+            }
+
+            return true;
+        };
+
         self.compositionComplete = function () {
             validator = $("#register").validate({
                 rules: {
