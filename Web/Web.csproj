@@ -207,6 +207,7 @@
     <Compile Include="App_Architecture\Activators\DatabaseInitializerActivator.cs" />
     <Compile Include="App_Architecture\Activators\FilterProviderActivator.cs" />
     <Compile Include="App_Architecture\Activators\WindsorActivator.cs" />
+    <Compile Include="App_Architecture\Installers\AuthenticationInstaller.cs" />
     <Compile Include="App_Architecture\Installers\CommonLoggingInstaller.cs" />
     <Compile Include="App_Architecture\Installers\ControllersInstaller.cs" />
     <Compile Include="App_Architecture\Installers\DefaultConventionInstaller.cs" />

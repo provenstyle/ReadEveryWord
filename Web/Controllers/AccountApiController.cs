@@ -3,10 +3,12 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using Highway.Data;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ProvenStyle.ReadEveryWord.Web.BaseTypes;
+using ProvenStyle.ReadEveryWord.Web.Data.Entities;
 using ProvenStyle.ReadEveryWord.Web.Models;
 
 namespace ProvenStyle.ReadEveryWord.Web.Controllers
@@ -16,14 +18,12 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
     public class AccountApiController : BaseApiController
     {
         private ApplicationUserManager _userManager;
+        private IRepository _repository;
 
-        public AccountApiController()
+        public AccountApiController(IRepository repository)
         {
-        }
+            _repository = repository;
 
-        public AccountApiController(ApplicationUserManager userManager)
-        {
-            UserManager = userManager;
             UserManager.PasswordValidator = new PasswordValidator
             {
                 RequireDigit = true,
@@ -93,12 +93,12 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
                 {
                     await SignInAsync(user, isPersistent: false);
 
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
+                    _repository.Context.Add(new TimesRead
+                    {
+                        Count = 0,
+                        UserId = user.Id
+                    });
+                    _repository.Context.Commit();
                     return new HttpResponseMessage(HttpStatusCode.Created);
                 }
             }

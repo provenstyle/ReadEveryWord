@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using ProvenStyle.ReadEveryWord.Web.BaseTypes;
 using ProvenStyle.ReadEveryWord.Web.Data;
 using ProvenStyle.ReadEveryWord.Web.Data.Entities;
+using ProvenStyle.ReadEveryWord.Web.Data.Scalars;
 using ProvenStyle.ReadEveryWord.Web.Models;
 
 namespace ProvenStyle.ReadEveryWord.Web.Controllers
@@ -52,7 +53,7 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
             var userId = User.Identity.GetUserId();
 
             //Track this in a table
-            var timesRead = 0;
+            var timesRead = _repository.Find(new TimesReadByUser(userId));
 
             var record = _repository.Find(new ReadingRecordByUserBookChapterTimesRead(userId, data.Book, data.Chapter, timesRead));
             if (data.Read && record == null)
