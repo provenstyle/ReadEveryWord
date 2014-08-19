@@ -3,7 +3,9 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using ProvenStyle.ReadEveryWord.Web.CustomModelBinders;
 using ProvenStyle.ReadEveryWord.Web.Migrations;
+using ProvenStyle.ReadEveryWord.Web.Models;
 
 namespace ProvenStyle.ReadEveryWord.Web
 {
@@ -16,6 +18,8 @@ namespace ProvenStyle.ReadEveryWord.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            ModelBinders.Binders.Add(typeof(UserInfo), new UserInfoModelBinder());
 
             RunDbMigrations();
         }

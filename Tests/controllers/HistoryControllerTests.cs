@@ -1,10 +1,12 @@
 ﻿using Highway.Data;
+using Highway.Data.Contexts;
 using Machine.Fakes;
 using Machine.Specifications;
 using ProvenStyle.ReadEveryWord.Web.Controllers;
 using ProvenStyle.ReadEveryWord.Web.Data;
 using ProvenStyle.ReadEveryWord.Web.Data.Entities;
 using ProvenStyle.ReadEveryWord.Web.Models;
+using Should;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable UnusedMember.Local
@@ -28,7 +30,7 @@ namespace ProvenStyle.ReadEveryWord.Testsw.controllers
                 Book = "Gen",
                 Chapter = 1,
                 Read = true
-            });
+            }, new UserInfo());
         };
 
         It should_add_to_data_context = () => The<IDataContext>().WasToldTo(x => x.Add(Param.IsAny<ReadingRecord>()));
@@ -56,7 +58,7 @@ namespace ProvenStyle.ReadEveryWord.Testsw.controllers
                 Book = "Gen",
                 Chapter = 1,
                 Read = true
-            });
+            }, new UserInfo());
         };
 
         It should_not_add_to_data_context = () => The<IDataContext>().WasNotToldTo(x => x.Add(Param.IsAny<ReadingRecord>()));
@@ -83,7 +85,7 @@ namespace ProvenStyle.ReadEveryWord.Testsw.controllers
                 Book = "Gen",
                 Chapter = 1,
                 Read = false
-            });
+            }, new UserInfo());
         };
 
         It should_not_add_to_data_context = () => The<IDataContext>().WasToldTo(x => x.Remove(Param.IsAny<ReadingRecord>()));
@@ -110,10 +112,40 @@ namespace ProvenStyle.ReadEveryWord.Testsw.controllers
                 Book = "Gen",
                 Chapter = 1,
                 Read = false
-            });
+            }, new UserInfo());
         };
 
         It should_not_add_to_data_context = () => The<IDataContext>().WasNotToldTo(x => x.Remove(Param.IsAny<ReadingRecord>()));
         It should_save = () => The<IDataContext>().WasNotToldTo(x => x.Commit());
+    }
+
+    public class when_user_is_on_second_time_through : WithSubject<HistoryController>
+    {
+        Establish context = () =>
+        {
+            
+            _userId = "testUser";
+
+            var _context = new InMemoryDataContext();
+            _context.Add(new TimesRead {Count = 1, UserId = _userId});
+            
+            _context.Add(new ReadingRecord { Book = "Gen", Chapter = 1, TimesRead = 0, UserId = _userId });
+            _context.Add(new ReadingRecord { Book = "Gen", Chapter = 2, TimesRead = 0, UserId = _userId });
+            _context.Add(new ReadingRecord { Book = "Gen", Chapter = 1, TimesRead = 1, UserId = _userId });
+
+            Configure<IDataContext>(_context);
+            Configure<IRepository>(new Repository(_context));
+        };
+
+        Because of = () =>
+        {
+            _history = Subject.Get(new UserInfo{UserId = _userId});
+        };
+
+        It should_have_read_chapter_1 = () => _history.OldTestamentBooks[0].Chapters[0].Read.ShouldBeTrue();
+        It should_not_have_read_chapter_2 = () => _history.OldTestamentBooks[0].Chapters[1].Read.ShouldBeFalse();
+        
+        static string _userId;
+        static Books _history;
     }
 }

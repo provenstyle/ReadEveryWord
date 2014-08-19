@@ -23,15 +23,15 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
             _repository = repository;
         }
 
-        public Books Get()
+        public Books Get(UserInfo userInfo)
         {
-            var userId = User.Identity.GetUserId();
             var history = new Books();
             var allBooks = new List<Book>();
             allBooks.AddRange(history.OldTestamentBooks);
             allBooks.AddRange(history.NewTestamentBooks);
 
-            var records = _repository.Find(new ReadingRecordsByUser(userId)).ToList();
+            var timesRead = _repository.Find(new TimesReadByUser(userInfo.UserId));
+            var records = _repository.Find(new ReadingRecordsByUserAndTimesRead(userInfo.UserId, timesRead)).ToList();
             foreach (var record in records)
             {
                 var book = allBooks.FirstOrDefault(x => x.ShortName == record.Book);
@@ -48,14 +48,11 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
             return history;
         }
 
-        public void Post([FromBody]ReadingUpdate data)
+        public void Post([FromBody]ReadingUpdate data, UserInfo userInfo)
         {
-            var userId = User.Identity.GetUserId();
+            var timesRead = _repository.Find(new TimesReadByUser(userInfo.UserId));
 
-            //Track this in a table
-            var timesRead = _repository.Find(new TimesReadByUser(userId));
-
-            var record = _repository.Find(new ReadingRecordByUserBookChapterTimesRead(userId, data.Book, data.Chapter, timesRead));
+            var record = _repository.Find(new ReadingRecordByUserBookChapterTimesRead(userInfo.UserId, data.Book, data.Chapter, timesRead));
             if (data.Read && record == null)
             {
                 _repository.Context.Add(new ReadingRecord
@@ -64,7 +61,7 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
                     Chapter = data.Chapter,
                     DateTime = DateTime.Now,
                     TimesRead = timesRead,
-                    UserId = userId
+                    UserId = userInfo.UserId
                 });
                 _repository.Context.Commit();
 

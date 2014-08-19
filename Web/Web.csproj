@@ -247,7 +247,7 @@
     <Compile Include="Models\Book.cs" />
     <Compile Include="Models\Chapter.cs" />
     <Compile Include="Models\ReadingUpdate.cs" />
-    <Compile Include="Data\Queries\ReadingRecordsByUser.cs" />
+    <Compile Include="Data\Queries\ReadingRecordsByUserAndTimesRead.cs" />
     <Compile Include="Data\Mapping\TimesReadMap.cs" />
     <Compile Include="Data\Mapping\ReadingRecordMap.cs" />
     <Compile Include="Data\Queries\ReadingRecordByUserBookChapterTimesRead.cs" />
@@ -282,8 +282,10 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Books.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="CustomModelBinders\UserInfoModelBinder.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App\main.js" />
