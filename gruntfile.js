@@ -1,3 +1,4 @@
+/// <reference path="web/scripts/jquery-1.10.2.min.js" />
 module.exports = function(grunt){
 
 	var shell = require('./util/shell');
@@ -9,7 +10,11 @@ module.exports = function(grunt){
 	        options: {
 	            specs: 'JavaScriptTests/spec/**/*Spec.js',
 	            helpers: ['JavaScriptTests/helpers/*Helper.js', 'http://localhost:35729/livereload.js?snipver=1'],
-	            vendor: ['JavaScriptTests/vendor/require.js'],
+	            vendor: [
+                    'Web/Scripts/jquery-1.10.2.min.js',
+                    'Web/Scripts/knockout-3.1.0.js',
+                    'JavaScriptTests/vendor/require.js'
+	            ],
 	            keepRunner: true
 	        }
 	    },

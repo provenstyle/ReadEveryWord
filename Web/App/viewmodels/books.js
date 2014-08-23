@@ -12,7 +12,7 @@
     vm.history = history;
 
     vm.toggleRead = function(chapter) {
-        router.navigate('#chapters/' + encodeURIComponent(chapter.longName));
+        router.navigate('#chapters/' + encodeURIComponent(chapter.shortName));
     };
     
     return vm;

@@ -73,6 +73,20 @@
             new Book("Jude", "Jud", 1),
             new Book("Revelation", "Rev", 22),
         ];
+
+        this.bookIndex = {};
+
+        var book;
+
+        for (var i = 0; i < 39; i++) {
+            book = this.oldTestamentBooks[i];
+            this.bookIndex[book.shortName] = book;
+        }
+
+        for (var j = 0; j < 27; j++) {
+            book = this.newTestamentBooks[j];
+            this.bookIndex[book.shortName] = book;
+        }
     };
 
     return ctor;

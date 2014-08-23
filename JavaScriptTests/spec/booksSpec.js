@@ -23,37 +23,25 @@ describe('books', function () {
         expect(books.newTestamentBooks.length).toEqual(27);
     });
 
+    it('should have 66 books total', function () {
+        var bookCount = propertyCount(books.bookIndex);
+        expect(bookCount).toEqual(66);
+    });
+
     it('chapters should start with 1', function () {
         expect(books.newTestamentBooks[0].chapters[0].number).toEqual(1);
     });
 
     it('should have unique short names', function () {
-        var allBooks = {},
-            book,
-            i;
-
-        for (i = 0; i < 39; i++) {
-            book = books.oldTestamentBooks[i];
-            allBooks[book.shortName] = book;
-        }
-
-        for (i = 0; i < 27; i++) {
-            book = books.newTestamentBooks[i];
-            allBooks[book.shortName] = book;
-        }
-
-        var bookCount = propertyCount(allBooks);
+        var bookCount = propertyCount(books.bookIndex);
         expect(bookCount).toEqual(66);
-
-        function propertyCount(obj) {
-            var size = 0, key;
-            for (key in obj) {
-                if (obj.hasOwnProperty(key)) size++;
-            }
-            return size;
-        }
-
     });
 
-
+    function propertyCount(obj) {
+        var size = 0, key;
+        for (key in obj) {
+            if (obj.hasOwnProperty(key)) size++;
+        }
+        return size;
+    }
 });

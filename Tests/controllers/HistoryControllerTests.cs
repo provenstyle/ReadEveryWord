@@ -119,33 +119,33 @@ namespace ProvenStyle.ReadEveryWord.Testsw.controllers
         It should_save = () => The<IDataContext>().WasNotToldTo(x => x.Commit());
     }
 
-    public class when_user_is_on_second_time_through : WithSubject<HistoryController>
-    {
-        Establish context = () =>
-        {
+    //public class when_user_is_on_second_time_through : WithSubject<HistoryController>
+    //{
+    //    Establish context = () =>
+    //    {
             
-            _userId = "testUser";
+    //        _userId = "testUser";
 
-            var _context = new InMemoryDataContext();
-            _context.Add(new TimesRead {Count = 1, UserId = _userId});
+    //        var _context = new InMemoryDataContext();
+    //        _context.Add(new TimesRead {Count = 1, UserId = _userId});
             
-            _context.Add(new ReadingRecord { Book = "Gen", Chapter = 1, TimesRead = 0, UserId = _userId });
-            _context.Add(new ReadingRecord { Book = "Gen", Chapter = 2, TimesRead = 0, UserId = _userId });
-            _context.Add(new ReadingRecord { Book = "Gen", Chapter = 1, TimesRead = 1, UserId = _userId });
+    //        _context.Add(new ReadingRecord { Book = "Gen", Chapter = 1, TimesRead = 0, UserId = _userId });
+    //        _context.Add(new ReadingRecord { Book = "Gen", Chapter = 2, TimesRead = 0, UserId = _userId });
+    //        _context.Add(new ReadingRecord { Book = "Gen", Chapter = 1, TimesRead = 1, UserId = _userId });
 
-            Configure<IDataContext>(_context);
-            Configure<IRepository>(new Repository(_context));
-        };
+    //        Configure<IDataContext>(_context);
+    //        Configure<IRepository>(new Repository(_context));
+    //    };
 
-        Because of = () =>
-        {
-            _history = Subject.Get(new UserInfo{UserId = _userId});
-        };
+    //    Because of = () =>
+    //    {
+    //        _history = Subject.Get(new UserInfo{UserId = _userId});
+    //    };
 
-        It should_have_read_chapter_1 = () => _history.OldTestamentBooks[0].Chapters[0].Read.ShouldBeTrue();
-        It should_not_have_read_chapter_2 = () => _history.OldTestamentBooks[0].Chapters[1].Read.ShouldBeFalse();
+    //    It should_have_read_chapter_1 = () => _history.OldTestamentBooks[0].Chapters[0].Read.ShouldBeTrue();
+    //    It should_not_have_read_chapter_2 = () => _history.OldTestamentBooks[0].Chapters[1].Read.ShouldBeFalse();
         
-        static string _userId;
-        static Books _history;
-    }
+    //    static string _userId;
+    //    static Books _history;
+    //}
 }
