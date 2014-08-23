@@ -244,8 +244,6 @@
     <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MonitorController.cs" />
-    <Compile Include="Models\Book.cs" />
-    <Compile Include="Models\Chapter.cs" />
     <Compile Include="Models\HistoryModel.cs" />
     <Compile Include="Models\ReadingUpdate.cs" />
     <Compile Include="Data\Queries\ReadingRecordsByUserAndTimesRead.cs" />
@@ -281,7 +279,6 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\Books.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

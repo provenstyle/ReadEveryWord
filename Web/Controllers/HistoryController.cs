@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using Highway.Data;
-using Microsoft.AspNet.Identity;
 using ProvenStyle.ReadEveryWord.Web.BaseTypes;
 using ProvenStyle.ReadEveryWord.Web.Data;
 using ProvenStyle.ReadEveryWord.Web.Data.Entities;
@@ -25,11 +24,6 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
 
         public IEnumerable<HistoryModel> Get(UserInfo userInfo)
         {
-            //var history = new Books();
-            //var allBooks = new List<Book>();
-            //allBooks.AddRange(history.OldTestamentBooks);
-            //allBooks.AddRange(history.NewTestamentBooks);
-
             var timesRead = _repository.Find(new TimesReadByUser(userInfo.UserId));
             var records = _repository.Find(new ReadingRecordsByUserAndTimesRead(userInfo.UserId, timesRead))
                 .Select(x=> new HistoryModel
@@ -39,18 +33,6 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
                     DateTime = x.DateTime
                 })
                 .ToList();
-            //foreach (var record in records)
-            //{
-            //    var book = allBooks.FirstOrDefault(x => x.ShortName == record.Book);
-            //    if (book != null)
-            //    {
-            //        var chapter = book.Chapters.FirstOrDefault(x => x.Number == record.Chapter);
-            //        if (chapter != null)
-            //        {
-            //            chapter.Read = true;
-            //        }
-            //    }
-            //}
 
             return records;
         }
