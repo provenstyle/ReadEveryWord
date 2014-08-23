@@ -4,15 +4,24 @@ module.exports = function(grunt){
 	var wait = require('./util/wait');
 
 	grunt.initConfig({
-	    jshint: {
-	        files: ['./Web/App/**/*.js'],
+	    jasmine: {
+	        src: ['JavaScriptTests/src/scripts/**/*.js'],   //don't include the requirejs modules
 	        options: {
-
+	            specs: 'JavaScriptTests/spec/**/*Spec.js',
+	            helpers: ['JavaScriptTests/spec/helpers/*Helper.js', 'http://localhost:35729/livereload.js?snipver=1'],
+	            vendor: ['JavaScriptTests/vendor/require.js'],
+	            keepRunner: true
 	        }
 	    },
+        jshint: {
+            files: ['./Web/App/**/*.js'],
+            options: {
+
+            }
+        }
 	});
 
-	grunt.registerTask('default', ['jshint']);
+	grunt.registerTask('default', ['jshint', 'jasmine']);
     
 	grunt.registerTask('web', 'Starts IISExpress', function(){
 		var done = this.async();
@@ -39,5 +48,6 @@ module.exports = function(grunt){
 
 
 	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-contrib-jasmine');
 };
  

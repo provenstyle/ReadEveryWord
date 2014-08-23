@@ -246,6 +246,7 @@
     <Compile Include="Controllers\MonitorController.cs" />
     <Compile Include="Models\Book.cs" />
     <Compile Include="Models\Chapter.cs" />
+    <Compile Include="Models\HistoryModel.cs" />
     <Compile Include="Models\ReadingUpdate.cs" />
     <Compile Include="Data\Queries\ReadingRecordsByUserAndTimesRead.cs" />
     <Compile Include="Data\Mapping\TimesReadMap.cs" />
@@ -289,6 +290,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App\main.js" />
+    <Content Include="App\models\books.js" />
+    <Content Include="App\models\book.js" />
+    <Content Include="App\models\chapter.js" />
     <Content Include="App\models\history.js" />
     <Content Include="App\models\user.js" />
     <Content Include="App\services\account.js" />

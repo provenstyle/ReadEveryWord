@@ -23,29 +23,36 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
             _repository = repository;
         }
 
-        public Books Get(UserInfo userInfo)
+        public IEnumerable<HistoryModel> Get(UserInfo userInfo)
         {
-            var history = new Books();
-            var allBooks = new List<Book>();
-            allBooks.AddRange(history.OldTestamentBooks);
-            allBooks.AddRange(history.NewTestamentBooks);
+            //var history = new Books();
+            //var allBooks = new List<Book>();
+            //allBooks.AddRange(history.OldTestamentBooks);
+            //allBooks.AddRange(history.NewTestamentBooks);
 
             var timesRead = _repository.Find(new TimesReadByUser(userInfo.UserId));
-            var records = _repository.Find(new ReadingRecordsByUserAndTimesRead(userInfo.UserId, timesRead)).ToList();
-            foreach (var record in records)
-            {
-                var book = allBooks.FirstOrDefault(x => x.ShortName == record.Book);
-                if (book != null)
+            var records = _repository.Find(new ReadingRecordsByUserAndTimesRead(userInfo.UserId, timesRead))
+                .Select(x=> new HistoryModel
                 {
-                    var chapter = book.Chapters.FirstOrDefault(x => x.Number == record.Chapter);
-                    if (chapter != null)
-                    {
-                        chapter.Read = true;
-                    }
-                }
-            }
+                    Book = x.Book,
+                    Chapter = x.Chapter,
+                    DateTime = x.DateTime
+                })
+                .ToList();
+            //foreach (var record in records)
+            //{
+            //    var book = allBooks.FirstOrDefault(x => x.ShortName == record.Book);
+            //    if (book != null)
+            //    {
+            //        var chapter = book.Chapters.FirstOrDefault(x => x.Number == record.Chapter);
+            //        if (chapter != null)
+            //        {
+            //            chapter.Read = true;
+            //        }
+            //    }
+            //}
 
-            return history;
+            return records;
         }
 
         public void Post([FromBody]ReadingUpdate data, UserInfo userInfo)
