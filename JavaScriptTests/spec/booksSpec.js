@@ -1,9 +1,12 @@
-﻿describe('books', function() {
+﻿/// <reference path="../Scripts/jasmine-2.0.0/jasmine.js"/>
+/// <reference path="../vendor/require.js"/>
+
+describe('books', function () {
     var books;
 
     beforeEach(function(cb) {
-        require(['models/books'], function (Books) {
-            books = new Books();
+        require(['models/books'], function (booksCtor) {
+            books = new booksCtor();
             cb();
         });
     });
