@@ -14,7 +14,11 @@ module.exports = function(grunt){
 	        }
 	    },
         jshint: {
-            files: ['./Web/App/**/*.js'],
+            files: [
+                './Web/App/**/*.js',
+                './JavaScriptTests/spec/**/*.js',
+                './JavaScriptTests/helpers/**/*.js'
+            ],
             options: {
 
             }
