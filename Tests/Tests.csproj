@@ -100,7 +100,6 @@
     <Compile Include="data\ReadingRecordByBookChapterTimesReadTest.cs" />
     <Compile Include="data\ReadingRecordByUserNameAndTimesReadTest.cs" />
     <Compile Include="data\TimesReadByUserTest.cs" />
-    <Compile Include="describe_books.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
