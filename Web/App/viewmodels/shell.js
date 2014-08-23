@@ -55,6 +55,7 @@
                 { route: 'Chapters/:name', title: 'Chapters', moduleId: 'viewmodels/chapters', nav: true },
                 { route: 'login', moduleId: 'viewmodels/login', nav: true },
                 { route: 'register', moduleId: 'viewmodels/register', nav: true },
+                { route: 'readingLog', moduleId: 'viewmodels/readingLog', nav: true }
         ]).buildNavigationModel();
 
         router.mapUnknownRoutes('viewmodels/books', "#books");

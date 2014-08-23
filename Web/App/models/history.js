@@ -1,4 +1,4 @@
-﻿define(['durandal/system', 'services/history', 'models/books'], function(system, service, booksCtor) {
+﻿define(['durandal/system', 'services/history', 'models/books'], function (system, service, booksCtor) {
 
     var model = {};
 
@@ -11,6 +11,8 @@
 
         return service.getHistory()
             .done(function (data) {
+
+                model.historyRecords = data;
                 var dataCount = data.length;
                 for (var i = 0; i < dataCount; i++) {
                     var record = data[i];
@@ -18,15 +20,15 @@
                     var book = model.bookIndex[record.book];
                     var chapter = book.chapters[record.chapter - 1];
                     chapter.read = true;
-                }    
+                }
             });
     };
 
-    model.bookByName = function(bookName) {
+    model.bookByName = function (bookName) {
         return model.bookIndex[bookName];
     };
 
-    model.clear = function() {
+    model.clear = function () {
         model.oldTestament = [];
         model.newTestament = [];
         model.bookIndex = [];

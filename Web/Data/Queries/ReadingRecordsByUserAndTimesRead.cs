@@ -11,7 +11,8 @@ namespace ProvenStyle.ReadEveryWord.Web.Data
         {
             ContextQuery = c => c.AsQueryable<ReadingRecord>()
                 .Where(x => x.UserId == userId &&
-                            x.TimesRead == timesRead);
+                            x.TimesRead == timesRead)
+                .OrderByDescending(x=>x.DateTime);
         }
     }
 }
