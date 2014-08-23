@@ -6,7 +6,7 @@
         this.chapters = [];
 
         for (var i = 0; i < this.chapterCount; i++) {
-            chapters.push(new Chapter(i+1));
+            this.chapters.push(new Chapter(i+1));
         }
     };
 

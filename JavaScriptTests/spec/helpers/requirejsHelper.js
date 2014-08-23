@@ -1,6 +1,6 @@
 requirejs.config({
-	baseUrl: 'JavaScriptTests/src/modules/', 
+	baseUrl: 'Web/App', 
 	paths:{
-		'Squire': '../../spec/squire'
+		'Squire': '../../JavaScriptTests/spec/squire'
 	}
 });

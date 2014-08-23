@@ -1,7 +1,7 @@
 describe('Module a', function(){
 	
 	it('should exist', function(cb){
-		require(['a'], function(a){
+		require(['../../JavaScriptTests/src/modules/a'], function(a){
 			expect(a).toBeDefined();
 			cb();
 		});
