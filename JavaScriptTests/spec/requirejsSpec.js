@@ -1,6 +1,6 @@
-describe('Module a', function(){
+describe('requirejs', function(){
 	
-	it('should exist', function(cb){
+	it('has to work hard to find files in this project', function(cb){
 		require(['../../JavaScriptTests/src/modules/a'], function(a){
 			expect(a).toBeDefined();
 			cb();

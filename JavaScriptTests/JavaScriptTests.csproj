@@ -65,13 +65,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="spec\aSpec.js" />
+    <Content Include="spec\requirejsSpec.js" />
     <Content Include="spec\booksSpec.js" />
-    <Content Include="spec\helpers\requirejsHelper.js" />
-    <Content Include="spec\helpers\SpecHelper.js" />
-    <Content Include="spec\PlayerSpec.js" />
-    <Content Include="spec\squire.js" />
-    <Content Include="spec\testSpec.js" />
+    <Content Include="helpers\requirejsHelper.js" />
+    <Content Include="spec\jasmineSpec.js" />
     <Content Include="spec\vendorFilesSpec.js" />
     <Content Include="src\modules\a.js" />
     <Content Include="src\modules\messageService.js" />

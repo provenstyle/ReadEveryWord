@@ -8,7 +8,7 @@ module.exports = function(grunt){
 	        src: ['JavaScriptTests/src/scripts/**/*.js'],   //don't include the requirejs modules
 	        options: {
 	            specs: 'JavaScriptTests/spec/**/*Spec.js',
-	            helpers: ['JavaScriptTests/spec/helpers/*Helper.js', 'http://localhost:35729/livereload.js?snipver=1'],
+	            helpers: ['JavaScriptTests/helpers/*Helper.js', 'http://localhost:35729/livereload.js?snipver=1'],
 	            vendor: ['JavaScriptTests/vendor/require.js'],
 	            keepRunner: true
 	        }

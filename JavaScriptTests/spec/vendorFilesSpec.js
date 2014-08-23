@@ -13,13 +13,4 @@ describe('Vendor libraries needed for testing', function(){
 			expect(define).toBeDefined();
 		});
 	});
-
-	describe('squire', function(cb){
-		it('has to be loaded with require', function(cb){
-			require(['Squire'], function(Squire){
-				expect(Squire).toBeDefined();
-				cb();
-			});
-		});
-	});
 });
