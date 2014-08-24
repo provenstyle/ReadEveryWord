@@ -26,11 +26,25 @@
         $.post(rew.config.basePath() + '/api/history', data)
             .done(function() {
                 chapter.read = read;
+
+                var historyUpdate = {
+                    book: vm.book.shortName,
+                    chapter: chapter.number
+                };
+
+                if (read === true) {
+                    history.addToHistoryRecords(historyUpdate);
+                }
+
+                if (read === false) {
+                    history.removeHistoryRecords(historyUpdate);
+                }
             })
-            .fail(function() {
+            .fail(function () {
+            chapter.read = !read;
                 system.log("Failed to save ReadRecord.");
             });
-        chapter.read = !chapter.read;
+        chapter.read = read;
     };
 
     return vm;

@@ -41,6 +41,33 @@
         system.log("Cleared reading history.");
     };
 
+    model.addToHistoryRecords = function (data) {
+
+        if (model.historyRecords.years.length === 0) { return; };
+
+        model.historyRecords.years[0].months[0].days.unshift({
+            book: data.book,
+            chapter: data.chapter,
+            day: new Date().getDate()
+        });
+    };
+
+    model.removeHistoryRecords = function(data) {
+        for (var i = 0; i < model.historyRecords.years.length; i++) {
+            var year = model.historyRecords.years[i];
+            for (var j = 0; j < year.months.length; j++) {
+                var month = year.months[j];
+                for (var k = 0; k < month.days.length; k++) {
+                    var day = month.days[k];
+                    if (day.book === data.book && day.chapter === data.chapter) {
+                        month.days.splice(k, 1);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
     return model;
 
 });

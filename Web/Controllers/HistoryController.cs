@@ -28,32 +28,44 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
 
             var timesRead = _repository.Find(new TimesReadByUser(userInfo.UserId));
             var records = _repository.Find(new ReadingRecordsByUserAndTimesRead(userInfo.UserId, timesRead)).ToList();
-            var years = records
-                .GroupBy(r => r.DateTime.Year)
-                .ToList();
-
-            foreach (var year in years)
+            if (records.Any())
             {
-                var readingRecordYear = new ReadingRecordYear { Year = year.Key };
-
-                var months = year
-                    .GroupBy(y => y.DateTime.Month)
+                var years = records
+                    .GroupBy(r => r.DateTime.Year)
                     .ToList();
-                foreach (var month in months)
-                {
-                    var readingRecordMonth = new ReadingRecordMonth
-                    {
-                        Month = new DateTime(2000, month.Key, 1).ToString("MMMM", CultureInfo.InvariantCulture),
-                        Days = month.Select(x=> new ReadingRecordDay
-                        {
-                            Book = x.Book,
-                            Chapter = x.Chapter,
-                            Day = x.DateTime.Day
-                        }).ToList()
-                    };
-                    readingRecordYear.Months.Add(readingRecordMonth);
-                }
 
+                foreach (var year in years)
+                {
+                    var readingRecordYear = new ReadingRecordYear {Year = year.Key};
+
+                    var months = year
+                        .GroupBy(y => y.DateTime.Month)
+                        .ToList();
+                    foreach (var month in months)
+                    {
+                        var readingRecordMonth = new ReadingRecordMonth
+                        {
+                            Month = new DateTime(2000, month.Key, 1).ToString("MMMM", CultureInfo.InvariantCulture),
+                            Days = month.Select(x => new ReadingRecordDay
+                            {
+                                Book = x.Book,
+                                Chapter = x.Chapter,
+                                Day = x.DateTime.Day
+                            }).ToList()
+                        };
+                        readingRecordYear.Months.Add(readingRecordMonth);
+                    }
+
+                    readingLogModel.Years.Add(readingRecordYear);
+                }
+            }
+            else
+            {
+                //make sure the structure is created
+                var date = DateTime.Now;
+                var readingRecordMonth = new ReadingRecordMonth{Month = date.ToString("MMMM", CultureInfo.InvariantCulture)};
+                var readingRecordYear = new ReadingRecordYear {Year = date.Year};
+                readingRecordYear.Months.Add(readingRecordMonth);
                 readingLogModel.Years.Add(readingRecordYear);
             }
 
