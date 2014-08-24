@@ -175,5 +175,26 @@ a.back {
     margin-bottom: 50px;
 }
 
+.readingLog {
+    max-width: 400px;
+}
+
+.readingLog .day {
+    display: inline-block;
+    width: 60px;
+    text-align: center;
+    border-right: 1px solid  #ddd
+}
+
+.readingLog .book {
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.readingLog .chapter {
+    width: 30px;
+    text-align: center;
+    display: inline-block;
+}
 
 

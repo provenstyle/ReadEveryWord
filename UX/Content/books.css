@@ -101,3 +101,8 @@ a.back {
     color: #FFF;
     border: none;
 }
+
+#readingLog .day {
+    margin-left: 10px;
+    margin-right: 10px;
+}
