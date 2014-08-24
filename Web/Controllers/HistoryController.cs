@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web.Http;
 using Highway.Data;
@@ -22,19 +22,42 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
             _repository = repository;
         }
 
-        public IEnumerable<HistoryModel> Get(UserInfo userInfo)
+        public ReadingLogModel Get(UserInfo userInfo)
         {
+            var readingLogModel = new ReadingLogModel();
+
             var timesRead = _repository.Find(new TimesReadByUser(userInfo.UserId));
-            var records = _repository.Find(new ReadingRecordsByUserAndTimesRead(userInfo.UserId, timesRead))
-                .Select(x=> new HistoryModel
-                {
-                    Book = x.Book,
-                    Chapter = x.Chapter,
-                    DateTime = x.DateTime
-                })
+            var records = _repository.Find(new ReadingRecordsByUserAndTimesRead(userInfo.UserId, timesRead)).ToList();
+            var years = records
+                .GroupBy(r => r.DateTime.Year)
                 .ToList();
 
-            return records;
+            foreach (var year in years)
+            {
+                var readingRecordYear = new ReadingRecordYear { Year = year.Key };
+
+                var months = year
+                    .GroupBy(y => y.DateTime.Month)
+                    .ToList();
+                foreach (var month in months)
+                {
+                    var readingRecordMonth = new ReadingRecordMonth
+                    {
+                        Month = new DateTime(2000, month.Key, 1).ToString("MMMM", CultureInfo.InvariantCulture),
+                        Days = month.Select(x=> new ReadingRecordDay
+                        {
+                            Book = x.Book,
+                            Chapter = x.Chapter,
+                            Day = x.DateTime.Day
+                        }).ToList()
+                    };
+                    readingRecordYear.Months.Add(readingRecordMonth);
+                }
+
+                readingLogModel.Years.Add(readingRecordYear);
+            }
+
+            return readingLogModel;
         }
 
         public void Post([FromBody]ReadingUpdate data, UserInfo userInfo)

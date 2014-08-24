@@ -244,7 +244,10 @@
     <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MonitorController.cs" />
-    <Compile Include="Models\HistoryModel.cs" />
+    <Compile Include="Models\ReadingRecordDay.cs" />
+    <Compile Include="Models\ReadingLogModel.cs" />
+    <Compile Include="Models\ReadingRecordMonth.cs" />
+    <Compile Include="Models\ReadingRecordYear.cs" />
     <Compile Include="Models\ReadingUpdate.cs" />
     <Compile Include="Data\Queries\ReadingRecordsByUserAndTimesRead.cs" />
     <Compile Include="Data\Mapping\TimesReadMap.cs" />

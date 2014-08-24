@@ -13,6 +13,9 @@ namespace ProvenStyle.ReadEveryWord.Web.Data
                 .Where(x => x.UserId == userId &&
                             x.TimesRead == timesRead)
                 .OrderByDescending(x=>x.DateTime);
+
+
+            //.GroupBy(r => new {r.DateTime.Year, r.DateTime.Month})
         }
     }
 }

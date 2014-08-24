@@ -1,9 +1,19 @@
 ﻿<div class="container">
-    <ul data-bind="foreach: history.historyRecords">
+    <ul data-bind="foreach: history.historyRecords.years">
+        <li><h2 data-bind="text: year"></h2></li>
         <li>
-            <span data-bind="text: dateTime"></span>
-            <span data-bind="text: book"></span>
-            <span data-bind="text: chapter"></span>
+            <ul data-bind="foreach: months">
+                <li><h3 data-bind="text: month"></h3></li>
+                <li>
+                    <ul data-bind="foreach: days">
+                        <li>
+                            <span data-bind="text: day"></span> -
+                            <span data-bind="text: book"></span>
+                            <span data-bind="text: chapter"></span>
+                        </li>
+                    </ul>    
+                </li>
+            </ul>    
         </li>
     </ul>
 </div>

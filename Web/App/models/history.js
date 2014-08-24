@@ -13,13 +13,19 @@
             .done(function (data) {
 
                 model.historyRecords = data;
-                var dataCount = data.length;
-                for (var i = 0; i < dataCount; i++) {
-                    var record = data[i];
 
-                    var book = model.bookIndex[record.book];
-                    var chapter = book.chapters[record.chapter - 1];
-                    chapter.read = true;
+                for (var i = 0; i < data.years.length; i++) {
+                    var year = data.years[i];
+                    for (var j = 0; j < year.months.length; j++) {
+                        var month = year.months[j];
+                        for (var k = 0; k < month.days.length; k++) {
+                            var day = month.days[k];
+
+                                var book = model.bookIndex[day.book];
+                                var chapter = book.chapters[day.chapter - 1];
+                                chapter.read = true;
+                        }
+                    }
                 }
             });
     };
