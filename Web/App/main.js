@@ -23,7 +23,6 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'services/moc
         observable: true
     });
 
-    configureAjax();
     mockServices.mock();
     configureValidation();
 
@@ -52,15 +51,6 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'services/moc
                 $(element).closest('.form-group').removeClass('has-error');
             },
             errorClass: 'control-label has-error'
-        });
-    }
-
-    function configureAjax() {
-        $(document).ajaxSend(function (event, xhr, settings) {
-            if (!navigator.onLine) {
-                toastr.warn("Cannot connect to the internet.");
-                xhr.abort();
-            }
         });
     }
 });
