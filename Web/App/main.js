@@ -52,4 +52,8 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (s
             errorClass: 'control-label has-error'
         });
     }
+
+    function mockServices() {
+        
+    }
 });

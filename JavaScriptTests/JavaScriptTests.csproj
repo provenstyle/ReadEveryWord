@@ -75,6 +75,7 @@
     <Content Include="spec\booksSpec.js" />
     <Content Include="helpers\requirejsHelper.js" />
     <Content Include="spec\jasmineSpec.js" />
+    <Content Include="spec\sinonSpec.js" />
     <Content Include="spec\vendorFilesSpec.js" />
     <Content Include="src\modules\a.js" />
     <Content Include="vendor\require.js" />

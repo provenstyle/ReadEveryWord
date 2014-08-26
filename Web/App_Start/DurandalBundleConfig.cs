@@ -26,6 +26,7 @@ namespace ProvenStyle.ReadEveryWord.Web
                   .Include("~/Scripts/bootstrap.js")
                   .Include("~/Scripts/knockout-{version}.js")
                   .Include("~/Scripts/underscore-min.js")
+                  .Include("~/Scripts/sinon-server-1.10.3.js")
               );
 
             var bundle = new StyleBundle("~/Content/css")

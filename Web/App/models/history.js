@@ -43,7 +43,7 @@
 
     model.addToHistoryRecords = function (data) {
 
-        if (model.historyRecords.years.length === 0) { return; };
+        if (model.historyRecords.years.length === 0) { return; }
 
         model.historyRecords.years[0].months[0].days.unshift({
             book: data.book,
@@ -66,7 +66,7 @@
                 }
             }
         }
-    }
+    };
 
     return model;
 
