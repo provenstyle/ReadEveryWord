@@ -10,7 +10,7 @@
 define('jquery', function () { return jQuery; });
 define('knockout', ko);
 
-define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (system, app, viewLocator) {
+define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'services/mockServices'],  function (system, app, viewLocator, mockServices) {
     //>>excludeStart("build", true);
     system.debug(true);
     //>>excludeEnd("build");
@@ -23,6 +23,7 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (s
         observable: true
     });
 
+    mockServices.mock();
     configureValidation();
 
     app.start().then(function() {
@@ -51,9 +52,5 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (s
             },
             errorClass: 'control-label has-error'
         });
-    }
-
-    function mockServices() {
-        
     }
 });
