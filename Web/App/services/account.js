@@ -1,8 +1,8 @@
-﻿define(['durandal/system', 'models/user'], function(system, user) {
+﻿define(['durandal/system', 'models/user'], function (system, user) {
 
     var module = {};
 
-    module.loggedIn = function() {
+    module.loggedIn = function () {
         var def = $.Deferred();
 
         $.get(rew.config.basePath() + '/api/AccountApi/LoggedIn')
@@ -13,8 +13,8 @@
             })
             .fail(function (xhr) {
                 system.log('User is not logged in: ' + xhr.status);
-            def.reject();
-        });
+                def.reject();
+            });
 
         return def;
     };

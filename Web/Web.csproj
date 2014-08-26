@@ -337,6 +337,8 @@
     <Content Include="Content\images\AppIcon76x76.png" />
     <Content Include="Content\images\BigLogo.png" />
     <Content Include="Content\starterkit.css" />
+    <Content Include="Content\toastr.css" />
+    <Content Include="Content\toastr.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -353,6 +355,8 @@
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="readme.md" />
+    <Content Include="Content\toastr.scss" />
+    <Content Include="Content\toastr.less" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\almond-custom.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -390,6 +394,8 @@
     <Content Include="Scripts\sinon-1.9.1.js" />
     <Content Include="Scripts\sinon-server-1.10.3.js" />
     <Content Include="Scripts\text.js" />
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\underscore-min.js" />
     <Content Include="Scripts\underscore.js" />
     <Content Include="Scripts\_references.js" />
@@ -424,6 +430,7 @@
     <Content Include="Scripts\underscore-min.map" />
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Error\NoJavaScript.cshtml" />
+    <Content Include="Scripts\toastr.min.js.map" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -16,5 +16,9 @@ describe('Vendor libraries needed for testing', function(){
 	    it('has a sinon function', function() {
 	        expect(sinon).toBeDefined();
 	    });
+
+	    it('has a toastr object', function() {
+	        expect(toastr).toBeDefined();
+	    });
 	});
 });

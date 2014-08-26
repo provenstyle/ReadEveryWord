@@ -27,6 +27,7 @@ namespace ProvenStyle.ReadEveryWord.Web
                   .Include("~/Scripts/knockout-{version}.js")
                   .Include("~/Scripts/underscore-min.js")
                   .Include("~/Scripts/sinon-server-1.10.3.js")
+                  .Include("~/Scripts/toastr.min.js")
               );
 
             var bundle = new StyleBundle("~/Content/css")
@@ -35,6 +36,7 @@ namespace ProvenStyle.ReadEveryWord.Web
                 .Include("~/Content/bootstrap-theme.min.css")
                 .Include("~/Content/durandal.css")
                 .Include("~/Content/starterkit.css")
+                .Include("~/Content/toastr.css")
                 .Include("~/Content/books.css");
             bundle.Orderer = new NonOrderingBundleOrderer();
 

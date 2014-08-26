@@ -27,7 +27,7 @@
             var matched = false;
 
             function isMatch(matcher) {
-                return uri.indexOf(matcher) > -1;
+                return (uri.indexOf(matcher.uri) > -1 && matcher.method === method);
             }
 
             // Check all matchers to see if one matches the incoming URI.
@@ -52,8 +52,18 @@
                 setUpFakeServer();
 
                 if (params.getHistory) {
-                    urisToMock.push('/api/history');
+                    urisToMock.push({
+                        method: 'GET',
+                        uri: '/api/history'
+                    });
                     server.respondWith('GET', '/api/history', [Number(params.getHistory), {}, '']);
+                }
+
+                if (params.postHistory) {
+                    urisToMock.push({
+                        method: 'POST',
+                        uri: '/api/history'});
+                    server.respondWith('POST', '/api/history', [Number(params.postHistory), {}, '']);
                 }
             }
         }

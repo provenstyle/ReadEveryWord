@@ -8,7 +8,7 @@
                     dfd.resolve(data);
                 })
                 .fail(function () {
-                    system.log('Failed to get the history.');
+                    toastr.error('Unable to get reading history.');
                 });
 
             return dfd;

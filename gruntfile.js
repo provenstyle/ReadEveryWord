@@ -13,6 +13,8 @@ module.exports = function(grunt){
 	            vendor: [
                     'Web/Scripts/jquery-1.10.2.min.js',
                     'Web/Scripts/knockout-3.1.0.js',
+                    'Web/Scripts/toastr.min.js',
+
                     //sinon has to load before requirejs
                     'Web/Scripts/sinon-server-1.10.3.js',
                     'JavaScriptTests/vendor/require.js'
