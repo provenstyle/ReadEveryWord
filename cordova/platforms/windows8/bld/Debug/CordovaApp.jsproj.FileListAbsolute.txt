@@ -1,0 +1,17 @@
+c:\development\ReadEveryWord\cordova\platforms\windows8\bin\Debug\resources.pri
+c:\development\ReadEveryWord\cordova\platforms\windows8\bin\Debug\AppxManifest.xml
+c:\development\ReadEveryWord\cordova\platforms\windows8\bin\Debug\CordovaApp.build.appxrecipe
+c:\development\ReadEveryWord\cordova\platforms\windows8\bld\Debug\priconfig.xml
+c:\development\ReadEveryWord\cordova\platforms\windows8\bld\Debug\priconfig.xml.intermediate
+c:\development\ReadEveryWord\cordova\platforms\windows8\bld\Debug\layout.resfiles
+c:\development\ReadEveryWord\cordova\platforms\windows8\bld\Debug\layout.resfiles.intermediate
+c:\development\ReadEveryWord\cordova\platforms\windows8\bld\Debug\resources.resfiles
+c:\development\ReadEveryWord\cordova\platforms\windows8\bld\Debug\resources.resfiles.intermediate
+c:\development\ReadEveryWord\cordova\platforms\windows8\bld\Debug\pri.resfiles
+c:\development\ReadEveryWord\cordova\platforms\windows8\bld\Debug\pri.resfiles.intermediate
+c:\development\ReadEveryWord\cordova\platforms\windows8\bld\Debug\qualifiers.txt
+c:\development\ReadEveryWord\cordova\platforms\windows8\bld\Debug\qualifiers.txt.intermediate
+c:\development\ReadEveryWord\cordova\platforms\windows8\bld\Debug\MultipleQualifiersPerDimensionFound.txt
+c:\development\ReadEveryWord\cordova\platforms\windows8\bld\Debug\resources.pri.xml
+c:\development\ReadEveryWord\cordova\platforms\windows8\bld\Debug\ProjectArchitectures.txt
+c:\development\ReadEveryWord\cordova\platforms\windows8\bld\Debug\package.map.txt
