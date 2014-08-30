@@ -1,1 +1,1 @@
-c:\development\ReadEveryWord\cordova\platforms\windows8\CordovaApp.jsproj;neutral
+C:\dev\ReadEveryWord\cordova\platforms\windows8\CordovaApp.jsproj;neutral
