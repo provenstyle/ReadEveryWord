@@ -62,7 +62,8 @@ module.exports = function (grunt) {
                         'Web/Scripts/knockout-3.1.0.js',
                         'Web/Scripts/underscore-min.js',
                         'Web/Scripts/sinon-server-1.10.3.js',
-                        'Web/Scripts/toastr.min.js'
+                        'Web/Scripts/toastr.min.js',
+                        'Web/cordova/cordovaConfig.js'
                     ]
                 }
 
@@ -72,9 +73,12 @@ module.exports = function (grunt) {
             cordova: {
                 files: [
                     //expand:true and flatten:true keep it from pasting the full path
+                    { expand: true, src: 'Web/cordova/index.html', dest: 'cordova/www/', flatten: true},
                     { expand: true, src: 'build/min.css', dest: 'cordova/www/css/', flatten: true},
                     { expand: true, src: 'build/vendor.js', dest: 'cordova/www/Scripts/', flatten: true},
-                    { expand: true, src: 'Web/Scripts/require.js', dest: 'cordova/www/Scripts/', flatten: true}
+                    { expand: true, src: 'Web/Scripts/require.js', dest: 'cordova/www/Scripts/', flatten: true},
+                    { expand: true, src: 'Web/Scripts/text.js', dest: 'cordova/www/Scripts/', flatten: true}
+                    //{ expand: true, src: 'Web/cordovaConfig.js', dest: 'cordova/www/Scripts/', flatten: true}
                 ]
             }
         }
