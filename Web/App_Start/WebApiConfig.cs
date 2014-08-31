@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web.Cors;
 using System.Web.Http;
@@ -13,7 +14,8 @@ namespace ProvenStyle.ReadEveryWord.Web
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
-            var cors = new EnableCorsAttribute("*", "*", "GET,POST");
+            var origins = ConfigurationManager.AppSettings["CorsOrigins"];
+            var cors = new EnableCorsAttribute(origins, "*", "GET,POST");
             config.EnableCors(cors);
 
             // Web API routes
