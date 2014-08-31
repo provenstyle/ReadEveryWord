@@ -77,8 +77,9 @@ module.exports = function (grunt) {
                     { expand: true, src: 'build/min.css', dest: 'cordova/www/css/', flatten: true},
                     { expand: true, src: 'build/vendor.js', dest: 'cordova/www/Scripts/', flatten: true},
                     { expand: true, src: 'Web/Scripts/require.js', dest: 'cordova/www/Scripts/', flatten: true},
-                    { expand: true, src: 'Web/Scripts/text.js', dest: 'cordova/www/Scripts/', flatten: true}
-                    //{ expand: true, src: 'Web/cordovaConfig.js', dest: 'cordova/www/Scripts/', flatten: true}
+                    { expand: true, src: 'Web/Scripts/text.js', dest: 'cordova/www/Scripts/', flatten: true},
+                    { expand: true, src: 'Web/fonts/*', dest: 'cordova/www/fonts/', flatten: true },
+                    { expand: true, src: 'Web/Content/images/*', dest: 'cordova/www/css/images/', flatten: true }
                 ]
             }
         }
