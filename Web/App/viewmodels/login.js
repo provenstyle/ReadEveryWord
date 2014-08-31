@@ -1,10 +1,9 @@
-﻿define(['durandal/system', 'plugins/observable', 'models/history', 'models/user'], function (system, observable, history, user) {
+﻿define(['durandal/system', 'plugins/observable', 'models/history', 'models/user', 'services/account'], function (system, observable, history, user, accountService) {
 
     var ctor = function() {
 
         var self = this,
             validator = {};
-
 
         self.email = '';
         self.password = '';
@@ -37,23 +36,17 @@
         });
 
         function submitForm() {
-            $.post(rew.config.basePath() + '/api/accountApi/login', {
-                email: self.email,
-                password: self.password
+            accountService.login(self.email, self.password)
+            .done(function () {
+                history.prime()
+                    .done(function () {
+                        location.hash = "#books";
+                    });
             })
-                .done(function (data, status, xhr) {
-                    system.log('Login successfull');
-                    user.authenticated(data.username);
-                    history.prime()
-                        .done(function () {
-                            location.hash = "#books";
-                        });
-                })
-                .fail(function () {
-                    system.log('Failed to login. Invalid username or password.');
-                    self.loginError = true;
-                    user.clear();
-                });
+            .fail(function () {
+                system.log('Failed to login. Invalid username or password.');
+                self.loginError = true;
+            });
         }
 
         function resetError() {

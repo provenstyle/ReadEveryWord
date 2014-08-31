@@ -1,4 +1,4 @@
-﻿define(['durandal/system', 'plugins/observable', 'models/history', 'models/user'], function (system, observable, history, user) {
+﻿define(['durandal/system', 'plugins/observable', 'models/history', 'models/user', 'services/account'], function (system, observable, history, user, accountService) {
 
     var ctor = function() {
         var self = this,
@@ -51,24 +51,16 @@
             var valid = validator.form();
             system.log("Registration form valid? " + valid);
             if (valid) {
-                $.post(rew.config.basePath() + '/api/accountApi/register', {
-                    email: self.email,
-                    password: self.password,
-                    confirmPassword: self.confirmPassword
+                accountService.register(self.email, self.password, self.confirmPassword)
+                .done(function () {
+                    history.prime()
+                        .done(function () {
+                            location.hash = "#books";
+                        });
                 })
-                    .done(function () {
-                        system.log('New user created.');
-                        user.authenticated(self.email);
-                        history.prime()
-                            .done(function () {
-                                location.hash = "#books";
-                            });
-                        location.hash = "#books";
-                    })
-                    .fail(function (result) {
-                        system.log('Failed to create account: ' + result.status);
-                        self.registrationError = true;
-                    });
+                .fail(function () {
+                    self.registrationError = true;
+                });
             }
         };
 
