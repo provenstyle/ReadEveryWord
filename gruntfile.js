@@ -49,17 +49,41 @@ module.exports = function (grunt) {
                 }
             }
         },
+        uglify: {
+            vendor: {
+                options: {
+                    mangle: false,
+                },
+                files: {
+                    'build/vendor.js': [
+                        'Web/Scripts/jquery-1.10.2.min.js',
+                        'Web/Scripts/jquery.validate.min.js',
+                        'Web/Scripts/bootstrap.min.js',
+                        'Web/Scripts/knockout-3.1.0.js',
+                        'Web/Scripts/underscore-min.js',
+                        'Web/Scripts/sinon-server-1.10.3.js',
+                        'Web/Scripts/toastr.min.js'
+                    ]
+                }
+
+            }  
+        },
         copy: {
             cordova: {
                 files: [
                     //expand:true and flatten:true keep it from pasting the full path
-                    { expand: true, src: 'build/min.css', dest: 'cordova/www/css/', flatten: true}
+                    { expand: true, src: 'build/min.css', dest: 'cordova/www/css/', flatten: true},
+                    { expand: true, src: 'build/vendor.js', dest: 'cordova/www/Scripts/', flatten: true},
+                    { expand: true, src: 'Web/Scripts/require.js', dest: 'cordova/www/Scripts/', flatten: true}
                 ]
             }
         }
     });
 
     grunt.registerTask('default', ['jshint', 'jasmine']);
+
+    grunt.registerTask('cordova', 'Bundles and Copies fies for cordova.',
+        ['default', 'cssmin:combine', 'uglify:vendor', 'copy:cordova']);
 
     grunt.registerTask('web', 'Starts IISExpress', function () {
         var done = this.async();
@@ -89,5 +113,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
    
 };
