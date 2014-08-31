@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>392C3010-0A0A-401A-80A8-8254637DC6D4</string>
+	<key>IDESourceControlProjectName</key>
+	<string>readEveryWord</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>7D83FF92-3EF0-43E6-A836-F376142A8687</key>
+		<string>ssh://github.com/provenstyle/ReadEveryWord.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>cordova/platforms/ios/readEveryWord.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>7D83FF92-3EF0-43E6-A836-F376142A8687</key>
+		<string>../../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/provenstyle/ReadEveryWord.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>7D83FF92-3EF0-43E6-A836-F376142A8687</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>7D83FF92-3EF0-43E6-A836-F376142A8687</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ReadEveryWord</string>
+		</dict>
+	</array>
+</dict>
+</plist>
