@@ -69,21 +69,264 @@ Powershell -ExecutionPolicy RemoteSigned Unblock-File '$(ProjectDir)\cordova\lib
     </PreBuildEvent>
     </PropertyGroup>
     <ItemGroup>
+        <Content Include="www\App\main.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\App\models\book.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\App\models\books.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\App\models\chapter.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\App\models\history.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\App\models\user.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\App\services\account.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\App\services\history.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\App\services\mockServices.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\App\viewmodels\books.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\App\viewmodels\chapters.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\App\viewmodels\login.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\App\viewmodels\readingLog.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\App\viewmodels\register.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\App\viewmodels\shell.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\App\views\books.html" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\App\views\chapters.html" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\App\views\login.html" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\App\views\readingLog.html" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\App\views\register.html" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\App\views\shell.html" />
+    </ItemGroup>
+    <ItemGroup>
         <Content Include="www\cordova.js" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="www\cordova_plugins.js" />
     </ItemGroup>
     <ItemGroup>
+        <Content Include="www\css\books.css" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\css\bootstrap-theme.min.css" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\css\bootstrap.min.css" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\css\durandal.css" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\css\font-awesome.min.css" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\css\images\1496X2048StartupImage.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\css\images\1536X2008StartupImage.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\css\images\320X460StartupImage.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\css\images\640X1096StartupImage.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\css\images\640X920StartupImage.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\css\images\748X1024StartupImage.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\css\images\768X1004StartupImage.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\css\images\AppIcon114x114.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\css\images\AppIcon120x120.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\css\images\AppIcon144x144.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\css\images\AppIcon152x152.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\css\images\AppIcon57x57.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\css\images\AppIcon60x60.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\css\images\AppIcon72x72.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\css\images\AppIcon76x76.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\css\images\BigLogo.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\css\images\logo.png" />
+    </ItemGroup>
+    <ItemGroup>
         <Content Include="www\css\index.css" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\css\starterkit.css" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\css\toastr.min.css" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\fonts\fontawesome-webfont.eot" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\fonts\fontawesome-webfont.svg" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\fonts\fontawesome-webfont.ttf" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\fonts\fontawesome-webfont.woff" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\fonts\FontAwesome.otf" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\fonts\glyphicons-halflings-regular.eot" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\fonts\glyphicons-halflings-regular.svg" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\fonts\glyphicons-halflings-regular.ttf" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\fonts\glyphicons-halflings-regular.woff" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="www\img\logo.png" />
     </ItemGroup>
     <ItemGroup>
-        <Content Include="www\index.html" />
+        <Content Include="www\Index.html" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="www\js\index.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\bootstrap.min.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\config.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\durandal\activator.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\durandal\app.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\durandal\binder.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\durandal\composition.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\durandal\events.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\durandal\plugins\dialog.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\durandal\plugins\history.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\durandal\plugins\http.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\durandal\plugins\observable.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\durandal\plugins\router.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\durandal\plugins\serializer.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\durandal\plugins\widget.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\durandal\system.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\durandal\transitions\entrance.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\durandal\viewEngine.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\durandal\viewLocator.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\index.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\jquery-1.10.2.min.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\jquery.validate.min.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\knockout-3.1.0.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\require.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\sinon-server-1.10.3.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\text.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\toastr.min.js" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="www\Scripts\underscore-min.js" />
     </ItemGroup>
 </Project>

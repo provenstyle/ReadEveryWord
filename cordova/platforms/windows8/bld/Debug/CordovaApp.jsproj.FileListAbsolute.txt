@@ -33,3 +33,5 @@ c:\dev\ReadEveryWord\cordova\platforms\windows8\bld\Debug\MultipleQualifiersPerD
 c:\dev\ReadEveryWord\cordova\platforms\windows8\bld\Debug\ProjectArchitectures.txt
 =======
 >>>>>>> 9a9103ec46aaa2c0e23a0a95e9158e40b954b9a9
+c:\dev\ReadEveryWord\cordova\platforms\windows8\bld\Debug\package.map.txt
+c:\dev\ReadEveryWord\cordova\platforms\windows8\bld\Debug\_pkginfo.txt
