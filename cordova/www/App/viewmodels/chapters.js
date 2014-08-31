@@ -1,4 +1,4 @@
-﻿define(['durandal/system', 'models/history', 'models/user'], function (system, history, user) {
+﻿define(['durandal/system', 'models/history', 'models/user', 'services/history'], function (system, history, user, service) {
     var vm = {};
     vm.book = {};
 
@@ -16,14 +16,7 @@
 
     vm.toggleRead = function (chapter) {
         var read = !chapter.read;
-
-        var data = {
-            book: vm.book.shortName,
-            chapter: chapter.number,
-            read: read
-        };
-
-        $.post(rew.config.basePath() + '/api/history', data)
+        service.postHistory(vm.book.shortName, chapter.number, read)
             .done(function () {
                 chapter.read = read;
 
@@ -40,10 +33,8 @@
                     history.removeHistoryRecords(historyUpdate);
                 }
             })
-            .fail(function (xhr) {
+            .fail(function () {
                 chapter.read = !read;
-                system.log("Failed to save ReadRecord: " + xhr.status);
-                toastr.error("Unable to save.");
             });
         chapter.read = read;
     };

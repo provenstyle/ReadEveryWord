@@ -6,7 +6,9 @@
 
             $.ajax({
                 url: rew.config.basePath() + '/api/history',
-                withCredentials: true
+                xhrFields: {
+                    withCredentials: true
+                }
             })
                 .done(function (data) {
                     dfd.resolve(data);
@@ -29,7 +31,9 @@
                 type: 'POST',
                 url: rew.config.basePath() + '/api/history',
                 data: data,
-                withCredentials: true
+                xhrFields: {
+                    withCredentials: true
+                }
             })
             .done(function () {
                     system.log("Successfully updated history" + bookShortName + " " + chapter + " " + read);

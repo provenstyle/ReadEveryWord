@@ -8,7 +8,9 @@
         $.ajax({
             type: 'GET',
             url: rew.config.basePath() + '/api/AccountApi/LoggedIn',
-            withCredentials: true
+            xhrFields: {
+                withCredentials: true
+            }
         })
             .done(function (data, status, xhr) {
                 system.log('User is logged in: ' + xhr.status);
@@ -34,11 +36,13 @@
             type: 'POST',
             url: rew.config.basePath() + '/api/accountApi/login',
             data: data,
-            withCredentials: true
+            xhrFields: {
+                withCredentials: true
+            }
         })
-        .done(function () {
+        .done(function (response) {
             system.log('Login successfull');
-            user.authenticated(data.username);
+            user.authenticated(response.username);
         })
         .fail(function () {
             system.log('Failed to login. Invalid username or password.');
@@ -58,7 +62,9 @@
                 type: 'POST',
                 url: rew.config.basePath() + '/api/accountApi/register',
                 data: data,
-                withCredentials: true
+                xhrFields: {
+                    withCredentials: true
+                }
             })
             .done(function() {
                 system.log('New user created.');
@@ -73,7 +79,9 @@
         return $.ajax({
                 type: 'POST',
                 url: rew.config.basePath() + '/api/AccountApi/Logoff',
-                withCredentials: true
+                xhrFields: {
+                    withCredentials: true
+                }
             })
             .done(function() {
                 system.log('Logged off.');
