@@ -3,6 +3,7 @@
   <index root="\" startIndexAt="bld\Debug\layout.resfiles">
     <default>
       <qualifier name="Language" value="en-US" />
+<<<<<<< HEAD
       <qualifier name="Contrast" value="standard" />
       <qualifier name="Scale" value="100" />
       <qualifier name="HomeRegion" value="001" />
@@ -10,12 +11,15 @@
       <qualifier name="LayoutDirection" value="LTR" />
       <qualifier name="Configuration" value="" />
       <qualifier name="AlternateForm" value="" />
+=======
+>>>>>>> 9a9103ec46aaa2c0e23a0a95e9158e40b954b9a9
     </default>
     <indexer-config type="RESFILES" qualifierDelimiter="." />
   </index>
   <index root="\" startIndexAt="bld\Debug\resources.resfiles">
     <default>
       <qualifier name="Language" value="en-US" />
+<<<<<<< HEAD
       <qualifier name="Contrast" value="standard" />
       <qualifier name="Scale" value="100" />
       <qualifier name="HomeRegion" value="001" />
@@ -23,6 +27,8 @@
       <qualifier name="LayoutDirection" value="LTR" />
       <qualifier name="Configuration" value="" />
       <qualifier name="AlternateForm" value="" />
+=======
+>>>>>>> 9a9103ec46aaa2c0e23a0a95e9158e40b954b9a9
     </default>
     <indexer-config type="RESW" convertDotsToSlashes="true" />
     <indexer-config type="RESJSON" />
@@ -31,6 +37,7 @@
   <index root="\" startIndexAt="bld\Debug\pri.resfiles">
     <default>
       <qualifier name="Language" value="en-US" />
+<<<<<<< HEAD
       <qualifier name="Contrast" value="standard" />
       <qualifier name="Scale" value="100" />
       <qualifier name="HomeRegion" value="001" />
@@ -38,6 +45,8 @@
       <qualifier name="LayoutDirection" value="LTR" />
       <qualifier name="Configuration" value="" />
       <qualifier name="AlternateForm" value="" />
+=======
+>>>>>>> 9a9103ec46aaa2c0e23a0a95e9158e40b954b9a9
     </default>
     <indexer-config type="PRI" />
     <indexer-config type="RESFILES" qualifierDelimiter="." />

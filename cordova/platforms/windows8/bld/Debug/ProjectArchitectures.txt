@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 C:\dev\ReadEveryWord\cordova\platforms\windows8\CordovaApp.jsproj;neutral
+=======
+c:\development\ReadEveryWord\cordova\platforms\windows8\CordovaApp.jsproj;neutral
+>>>>>>> 9a9103ec46aaa2c0e23a0a95e9158e40b954b9a9
