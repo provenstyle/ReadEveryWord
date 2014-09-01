@@ -36,7 +36,7 @@
             });
         },
         logOff: function () {
-            accountService.logOff
+            accountService.logOff()
                 .done(function () {
                     router.navigate('#login');
                 });
