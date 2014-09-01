@@ -10,7 +10,7 @@
 define('jquery', function () { return jQuery; });
 define('knockout', ko);
 
-define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'services/mockServices'],  function (system, app, viewLocator, mockServices) {
+define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'services/mockServices'], function(system, app, viewLocator, mockServices) {
     //>>excludeStart("build", true);
     system.debug(true);
     //>>excludeEnd("build");
@@ -25,6 +25,9 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'services/moc
 
     mockServices.mock();
     configureValidation();
+    toastr.options = {
+        timeOut: 1000
+    };
 
     app.start().then(function() {
         //Replace 'viewmodels' in the moduleId with 'views' to locate the view.

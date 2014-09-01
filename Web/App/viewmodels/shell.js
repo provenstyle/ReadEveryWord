@@ -40,6 +40,12 @@
                 .done(function () {
                     router.navigate('#login');
                 });
+        },
+        refresh: function() {
+            history.refresh()
+                .done(function() {
+                toastr.success("Refreshed Data");
+            });
         }
     };
 

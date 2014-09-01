@@ -11,6 +11,7 @@
                 }
             })
                 .done(function (data) {
+                    system.log('Get history was successful.');
                     dfd.resolve(data);
                 })
                 .fail(function () {

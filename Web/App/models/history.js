@@ -9,8 +9,12 @@
         model.newTestament = books.newTestamentBooks;
         model.bookIndex = books.bookIndex;
 
+        return model.updateHistory();
+    };
+
+    model.updateHistory = function() {
         return service.getHistory()
-            .done(function (data) {
+            .done(function(data) {
 
                 model.historyRecords = data;
 
@@ -21,9 +25,9 @@
                         for (var k = 0; k < month.days.length; k++) {
                             var day = month.days[k];
 
-                                var book = model.bookIndex[day.book];
-                                var chapter = book.chapters[day.chapter - 1];
-                                chapter.read = true;
+                            var book = model.bookIndex[day.book];
+                            var chapter = book.chapters[day.chapter - 1];
+                            chapter.read = true;
                         }
                     }
                 }
@@ -35,10 +39,23 @@
     };
 
     model.clear = function () {
-        model.oldTestament = [];
-        model.newTestament = [];
-        model.bookIndex = [];
+
+        function reset(chapter) {
+            chapter.read = false;
+        }
+
+        for (var prop in model.bookIndex) {
+            var book = model.bookIndex[prop];
+            if (book.chapters) {
+                _.each(book.chapters, reset);
+            }
+        }
         system.log("Cleared reading history.");
+    };
+
+    model.refresh = function() {
+        model.clear();
+        return model.updateHistory();
     };
 
     model.addToHistoryRecords = function (data) {
