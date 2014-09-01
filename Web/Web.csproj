@@ -301,6 +301,7 @@
     <Compile Include="CustomModelBinders\UserInfoModelBinder.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AppBuilt\main-built.js" />
     <Content Include="App\main.js" />
     <Content Include="App\models\books.js" />
     <Content Include="App\models\book.js" />

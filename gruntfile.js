@@ -108,14 +108,24 @@ module.exports = function (grunt) {
                     { expand: true, src: 'Web/fonts/*', dest: 'cordova/www/fonts/', flatten: true },
                     { expand: true, src: 'Web/Content/images/*', dest: 'cordova/www/css/images/', flatten: true }
                 ]
+            },
+            mvc: {
+                files: [
+                    { expand: true, src: 'build/app/main-built.js', dest: 'Web/AppBuilt/', flatten: true }
+                ]
             }
         }
     });
 
     grunt.registerTask('default', ['jshint', 'jasmine']);
 
-    grunt.registerTask('cordova', 'Bundles and Copies fies for cordova.',
+    grunt.registerTask('build', ['buildCordova', 'buildMvc']);
+
+    grunt.registerTask('buildCordova', 'Bundles and copies files for cordova.',
         ['jshint', 'jasmine', 'durandal', 'uglify:durandal', 'cssmin:combine', 'uglify:vendor', 'copy:cordova']);
+
+    grunt.registerTask('buildMvc', 'Bundles and copies files for asp.net mvc',
+        ['jshint', 'jasmine', 'durandal', 'uglify:durandal', 'copy:mvc']);
 
     grunt.registerTask('web', 'Starts IISExpress', function () {
         var done = this.async();
