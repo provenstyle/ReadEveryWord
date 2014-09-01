@@ -4,6 +4,17 @@ module.exports = function (grunt) {
     var shell = require('./util/shell');
     var wait = require('./util/wait');
 
+    var mixIn = require('mout/object/mixIn');
+    var requireConfig = {
+        baseUrl: './Web/App/',
+        paths: {
+            'text': '../Scripts/text',
+            'durandal': '../Scripts/durandal',
+            'plugins': '../Scripts/durandal/plugins',
+            'transitions': '../Scripts/durandal/transitions'
+        }
+    };
+
     grunt.initConfig({
         jasmine: {
             src: ['JavaScriptTests/src/scripts/**/*.js'],   //don't include the requirejs modules
@@ -32,6 +43,20 @@ module.exports = function (grunt) {
             ],
             options: {
 
+            }
+        },
+        durandal: {
+            main: {
+                src: ['./Web/App/**/*.*', './Web/Scripts/durandal/**/*.js'],
+                options: {
+                    name: '../Scripts/almond-custom',
+                    baseUrl: requireConfig.baseUrl,
+                    mainPath: 'app/main',
+                    paths: mixIn({}, requireConfig.paths, { 'almond': '../Scripts/almond-custom.js' }),
+                    exclude: [],
+                    optimize: 'none',
+                    out: 'build/app/main.js'
+                }
             }
         },
         cssmin: {
@@ -66,8 +91,11 @@ module.exports = function (grunt) {
                         'Web/cordova/cordovaConfig.js'
                     ]
                 }
-
-            }  
+            },
+            durandal: {
+                src: 'build/app/main.js',
+                dest: 'build/app/main-built.js'
+            }
         },
         copy: {
             cordova: {
@@ -76,8 +104,7 @@ module.exports = function (grunt) {
                     { expand: true, src: 'Web/cordova/index.html', dest: 'cordova/www/', flatten: true},
                     { expand: true, src: 'build/min.css', dest: 'cordova/www/css/', flatten: true},
                     { expand: true, src: 'build/vendor.js', dest: 'cordova/www/Scripts/', flatten: true},
-                    { expand: true, src: 'Web/Scripts/require.js', dest: 'cordova/www/Scripts/', flatten: true},
-                    { expand: true, src: 'Web/Scripts/text.js', dest: 'cordova/www/Scripts/', flatten: true},
+                    { expand: true, src: 'build/app/main-built.js', dest: 'cordova/www/Scripts/', flatten: true},
                     { expand: true, src: 'Web/fonts/*', dest: 'cordova/www/fonts/', flatten: true },
                     { expand: true, src: 'Web/Content/images/*', dest: 'cordova/www/css/images/', flatten: true }
                 ]
@@ -88,7 +115,7 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['jshint', 'jasmine']);
 
     grunt.registerTask('cordova', 'Bundles and Copies fies for cordova.',
-        ['default', 'cssmin:combine', 'uglify:vendor', 'copy:cordova']);
+        ['jshint', 'jasmine', 'durandal', 'uglify:durandal', 'cssmin:combine', 'uglify:vendor', 'copy:cordova']);
 
     grunt.registerTask('web', 'Starts IISExpress', function () {
         var done = this.async();
@@ -119,5 +146,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-durandal');
    
 };
