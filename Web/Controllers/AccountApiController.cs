@@ -25,11 +25,11 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
 
             UserManager.PasswordValidator = new PasswordValidator
             {
-                RequireDigit = true,
-                RequiredLength = 8,
-                RequireLowercase = true,
-                RequireNonLetterOrDigit = true,
-                RequireUppercase = true
+                RequireDigit = false,
+                RequiredLength = 7,
+                RequireLowercase = false,
+                RequireNonLetterOrDigit = false,
+                RequireUppercase = false
             };
         }
 

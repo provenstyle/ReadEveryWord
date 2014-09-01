@@ -20,12 +20,8 @@
         self.compositionComplete = function () {
             validator = $("#register").validate({
                 rules: {
-                    newPassword: {
-                        validpassword: true
-                    },
                     newEmail: {
                         required: true,
-
                         remote: {
                             url: rew.config.basePath() + "/api/accountApi/EmailAvailable",
                             type: "get",
