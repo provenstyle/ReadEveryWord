@@ -128,10 +128,10 @@ module.exports = function (grunt) {
     grunt.registerTask('build', ['buildCordova', 'buildMvc']);
 
     grunt.registerTask('buildCordova', 'Bundles and copies files for cordova.',
-        ['jshint', 'jasmine', 'durandal', 'uglify:durandal', 'cssmin:combine', 'uglify:vendor', 'copy:cordova']);
+        ['jshint', 'jasmine', 'clean:cordova', 'durandal', 'uglify:durandal', 'cssmin:combine', 'uglify:vendor', 'copy:cordova']);
 
     grunt.registerTask('buildMvc', 'Bundles and copies files for asp.net mvc',
-        ['jshint', 'jasmine', 'durandal', 'uglify:durandal', 'copy:mvc']);
+        ['jshint', 'jasmine', 'clean:mvc', 'durandal', 'uglify:durandal', 'copy:mvc']);
 
     grunt.registerTask('web', 'Starts IISExpress', function () {
         var done = this.async();
