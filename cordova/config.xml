@@ -9,6 +9,8 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
+    <preference name="Orientation" value="default"/>
+    <preference name="DisallowOverscroll" value="true"/>
     <platform name="ios">
         <icon src="www/res/icons/ios/AppIcon29X29.png" width="29" height="29"/>
         <icon src="www/res/icons/ios/AppIcon40X40.png" width="40" height="40"/>
