@@ -97,6 +97,10 @@ module.exports = function (grunt) {
                 dest: 'build/app/main-built.js'
             }
         },
+        clean: {
+            cordova: ['cordova/www/*'],
+            mvc:['Web/AppBuilt/*']
+        },
         copy: {
             cordova: {
                 files: [
@@ -143,7 +147,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', 'Run mspec tests', function () {
         var done = this.async();
-        var mspecPath = "packages/machine.specifications.0.8.3/tools/mspec-clr4.exe"
+        var mspecPath = "packages/machine.specifications.0.8.3/tools/mspec-clr4.exe";
         var tests = [
 			'Web/Tests/bin/Debug/ProvenStyle.ReadEveryWord.Tests.dll'
         ];
@@ -159,5 +163,5 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-durandal');
-   
+    grunt.loadNpmTasks('grunt-contrib-clean');
 };
