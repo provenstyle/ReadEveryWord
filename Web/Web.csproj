@@ -301,6 +301,9 @@
     <Compile Include="CustomModelBinders\UserInfoModelBinder.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\cordova\config.xml">
+      <Link>cordova\config.xml</Link>
+    </Content>
     <Content Include="AppBuilt\main-built.js" />
     <Content Include="App\main.js" />
     <Content Include="App\models\books.js" />
@@ -340,14 +343,20 @@
     <Content Include="Content\images\640X920StartupImage.png" />
     <Content Include="Content\images\748X1024StartupImage.png" />
     <Content Include="Content\images\768X1004StartupImage.png" />
+    <Content Include="Content\images\AppIcon100x100.png" />
     <Content Include="Content\images\AppIcon114x114.png" />
     <Content Include="Content\images\AppIcon120x120.png" />
     <Content Include="Content\images\AppIcon144x144.png" />
+    <Content Include="Content\images\AppIcon29x29.png" />
+    <Content Include="Content\images\AppIcon40x40.png" />
+    <Content Include="Content\images\AppIcon50x50.png" />
     <Content Include="Content\images\AppIcon57x57.png" />
+    <Content Include="Content\images\AppIcon58x58.png" />
     <Content Include="Content\images\AppIcon60x60.png" />
     <Content Include="Content\images\AppIcon152x152.png" />
     <Content Include="Content\images\AppIcon72x72.png" />
     <Content Include="Content\images\AppIcon76x76.png" />
+    <Content Include="Content\images\AppIcon80x80.png" />
     <Content Include="Content\images\BigLogo.png" />
     <Content Include="Content\starterkit.css" />
     <Content Include="Content\toastr.css" />
