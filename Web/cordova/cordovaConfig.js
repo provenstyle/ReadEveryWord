@@ -2,7 +2,7 @@
     rew.config = {
         basePath: function() {
             //return location.protocol + '//' + location.host; //from the web
-            return 'https://readeveryword.azurewebsites.net'; //cordova
+            return 'https://bible.readeveryword.com'; //cordova
         }
     }
 
