@@ -106,7 +106,9 @@ module.exports = function (grunt) {
                     { expand: true, src: 'build/vendor.js', dest: 'cordova/www/Scripts/', flatten: true},
                     { expand: true, src: 'build/app/main-built.js', dest: 'cordova/www/Scripts/', flatten: true},
                     { expand: true, src: 'Web/fonts/*', dest: 'cordova/www/fonts/', flatten: true },
-                    { expand: true, src: 'Web/Content/images/AppIcong*', dest: 'cordova/www/res/ios/', flatten: true }
+                    { expand: true, src: 'Web/Content/images/BigLogo.png', dest: 'cordova/www/css/images/', flatten: true },
+                    { expand: true, src: 'Web/Content/images/AppIcon*', dest: 'cordova/www/res/icons/ios/', flatten: true },
+                    { expand: true, src: 'startupScreens/ios/*', dest: 'cordova/www/res/screens/ios/', flatten: true }
                 ]
             },
             mvc: {
