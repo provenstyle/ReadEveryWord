@@ -17,7 +17,7 @@
  under the License.
  */
 //
-// Prefix header for all source files of the 'readEveryWord' target in the 'readEveryWord' project
+// Prefix header for all source files of the 'ReadEveryWord' target in the 'ReadEveryWord' project
 //
 
 #ifdef __OBJC__
