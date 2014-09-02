@@ -197,4 +197,21 @@ a.back {
     display: inline-block;
 }
 
+.about {
+    max-width: 500px;
+}
+
+.about .branding {
+    height: 350px;
+}
+
+.about .description {
+    margin: 40px 15px;
+    color: #777;
+    font-size: 1.5em;
+    text-align: center;
+}
+.about q {
+    text-align: left;
+}
 
