@@ -69,7 +69,10 @@ module.exports = function (grunt) {
                         'Web/Content/durandal.css',
                         'Web/Content/starterkit.css',
                         'Web/Content/toastr.min.css',
-                        'Web/Content/books.css'
+
+                        'Web/Content/navbar.css',
+                        'Web/Content/splash.css',
+                        'Web/Content/readEveryWord.css'
                     ]
                 }
             }

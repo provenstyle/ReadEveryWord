@@ -1,0 +1,52 @@
+﻿.navbar {
+    min-height: 70px;
+}
+
+.navbar-brand {
+    height: 44px;
+    padding: 12px 8px;
+    font-size: 14px;
+}
+
+.navbar-brand .glyphicon {
+    margin-right: 6px;
+}
+
+.navbar-toggle {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.navbar-inverse {
+    background: #aaa;
+    border-color: #777;
+    color: #fff;
+}
+
+.navbar-inverse .navbar-brand {
+    color: #fff;
+}
+
+.navbar-inverse .navbar-toggle {
+    border-color: #fff;
+}
+
+.navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
+    background-color: #888;
+}
+
+.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover, .navbar-inverse .navbar-nav>.open>a:focus {
+    background-color: #888;
+}
+
+.navbar-inverse .navbar-nav>li>a {
+    color: #fff;
+}
+
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    border-color: #fff;
+}
+
+.navbar .container {
+    margin-top: 20px;
+}

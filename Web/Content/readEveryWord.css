@@ -1,0 +1,124 @@
+﻿.page-host {
+    background: #fff;
+}
+
+.page-host {
+    top: 70px;
+}    
+
+.username {
+    padding-top: 13px;
+    padding-right: 25px;
+    padding-left: 15px;
+    text-align: center;
+}
+
+a.back {
+    margin-left: 4px;
+    margin-top: 8px;
+}
+
+.back .glyphicon {
+    margin-right: 5px;
+}
+
+.title h2 {
+    font-size: 14px;
+    margin: 6px 9px;
+}
+
+.title .wrapper {
+    margin: 10px 4px 4px 4px;
+    padding: 1px 4px;
+    border-radius: 3px;
+    background: #aaa;
+    color: #fff;
+}
+
+.login form, .register form {
+    margin-bottom: 10px;
+    margin-top: 15px;
+}
+
+.login .actions, .register .actions{
+    margin-top: 25px;
+}
+
+.login .actions .link, .register .actions .link {
+    margin-top: 10px;
+    text-align: right;
+}
+
+.books div {
+    padding: 0;
+}
+
+.books .wrapper {
+    background: #fff;
+    color: #393939;
+    /*border: #f6f6f6 solid 1px;*/
+    box-shadow: 1px 1px 5px #ddd;
+    border-radius: 3px;
+    text-align: center;
+    margin: 6px 3px;
+    padding: 8px 2px;
+    cursor: pointer;
+}
+
+.books .started{
+    background: #e3e3e3;
+    box-shadow: 1px 1px 2px #aaa;
+    border: none;
+}
+
+.books .completed{
+    background: #23719f;
+    box-shadow: 1px 1px 2px #aaa;
+    color: #FFF;
+    border: none;
+}
+
+.newTestament {
+    margin-bottom: 50px;
+}
+
+.readingLog {
+    max-width: 400px;
+}
+
+.readingLog .day {
+    display: inline-block;
+    width: 60px;
+    text-align: center;
+    border-right: 1px solid  #ddd
+}
+
+.readingLog .book {
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.readingLog .chapter {
+    width: 30px;
+    text-align: center;
+    display: inline-block;
+}
+
+.about {
+    max-width: 500px;
+}
+
+.about .branding {
+    height: 350px;
+}
+
+.about .description {
+    margin: 40px 15px;
+    color: #777;
+    font-size: 1.5em;
+    text-align: center;
+}
+.about q {
+    text-align: left;
+}
+

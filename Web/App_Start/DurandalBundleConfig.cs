@@ -37,7 +37,10 @@ namespace ProvenStyle.ReadEveryWord.Web
                 .Include("~/Content/durandal.css")
                 .Include("~/Content/starterkit.css")
                 .Include("~/Content/toastr.css")
-                .Include("~/Content/books.css");
+
+                .Include("~/Content/navbar.css")
+                .Include("~/Content/splash.css")
+                .Include("~/Content/readEveryWord.css");
             bundle.Orderer = new NonOrderingBundleOrderer();
 
             bundles.Add(bundle);

@@ -236,7 +236,6 @@
     <Compile Include="App_Architecture\Services\Data\HighwayContextConfiguration.cs" />
     <Compile Include="App_Architecture\Services\Data\HighwayMappingConfiguration.cs" />
     <Compile Include="App_Architecture\Services\Data\MigrationDataContext.cs" />
-    <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\DurandalBundleConfig.cs" />
     <Compile Include="App_Start\DurandalConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -328,7 +327,9 @@
     <Content Include="App\views\login.html" />
     <Content Include="App\views\shell.html" />
     <Content Include="config.js" />
-    <Content Include="Content\books.css" />
+    <Content Include="Content\splash.css" />
+    <Content Include="Content\navbar.css" />
+    <Content Include="Content\readEveryWord.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
