@@ -17,11 +17,12 @@
             return true;
         };
 
-        self.create = function () {
+        self.create = function (model, el) {
             var valid = validator.form();
             system.log("Login form valid? " + valid);
             if (valid === true) {
-                submitForm();
+                var target = $(el.target);
+                submitForm(target);
             }
         };
 
@@ -35,7 +36,10 @@
             });
         });
 
-        function submitForm() {
+        function submitForm(target) {
+
+            target.prop('disabled', true);
+
             accountService.login(self.email, self.password)
             .done(function () {
                 history.prime()
@@ -46,6 +50,7 @@
             .fail(function () {
                 system.log('Failed to login. Invalid username or password.');
                 self.loginError = true;
+                target.prop('disabled', false);
             });
         }
 

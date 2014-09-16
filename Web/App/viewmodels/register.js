@@ -43,8 +43,11 @@
 
         };
 
-        self.create = function () {
+        self.create = function (model, el) {
             var valid = validator.form();
+            var target = $(el.target);
+            target.prop('disabled', true);
+
             system.log("Registration form valid? " + valid);
             if (valid) {
                 accountService.register(self.email, self.password, self.confirmPassword)
@@ -56,6 +59,7 @@
                 })
                 .fail(function () {
                     self.registrationError = true;
+                    target.prop('disabled', false);
                 });
             }
         };
