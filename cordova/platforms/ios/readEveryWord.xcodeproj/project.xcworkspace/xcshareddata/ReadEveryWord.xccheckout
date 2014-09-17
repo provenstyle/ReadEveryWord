@@ -5,19 +5,19 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>92ECDC3D-AD63-477B-BE1C-E05693A671C8</string>
+	<string>B2F918DD-60C3-44D5-9775-B30A85FFE86D</string>
 	<key>IDESourceControlProjectName</key>
 	<string>ReadEveryWord</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>6359A840-6918-41F0-AEA0-E7D5B33F3C40</key>
+		<key>5C34DFE7-CECE-417F-B64E-1C6C788812B1</key>
 		<string>ssh://github.com/provenstyle/ReadEveryWord.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>cordova/platforms/ios/ReadEveryWord.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>6359A840-6918-41F0-AEA0-E7D5B33F3C40</key>
+		<key>5C34DFE7-CECE-417F-B64E-1C6C788812B1</key>
 		<string>../../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
@@ -25,14 +25,14 @@
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>6359A840-6918-41F0-AEA0-E7D5B33F3C40</string>
+	<string>5C34DFE7-CECE-417F-B64E-1C6C788812B1</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>6359A840-6918-41F0-AEA0-E7D5B33F3C40</string>
+			<string>5C34DFE7-CECE-417F-B64E-1C6C788812B1</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ReadEveryWord</string>
 		</dict>
