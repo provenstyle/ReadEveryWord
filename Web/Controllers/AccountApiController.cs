@@ -49,6 +49,7 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
         [AllowAnonymous]
         public async Task<HttpResponseMessage> Login([FromBody]LoginViewModel model)
         {
+            System.Threading.Thread.Sleep(1000);
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindAsync(model.Email, model.Password);
@@ -67,6 +68,7 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
         [AllowAnonymous]
         public async Task<HttpResponseMessage> Register(RegisterViewModel model)
         {
+            System.Threading.Thread.Sleep(1000);
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };

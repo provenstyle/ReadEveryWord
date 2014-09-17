@@ -10,7 +10,8 @@
             url: rew.config.basePath() + '/api/AccountApi/LoggedIn',
             xhrFields: {
                 withCredentials: true
-            }
+            },
+            cache: false
         })
             .done(function (data, status, xhr) {
                 system.log('User is logged in: ' + xhr.status);
@@ -38,7 +39,8 @@
             data: data,
             xhrFields: {
                 withCredentials: true
-            }
+            },
+            cache: false
         })
         .done(function (response) {
             system.log('Login successfull');
@@ -64,7 +66,8 @@
                 data: data,
                 xhrFields: {
                     withCredentials: true
-                }
+                },
+                cache: false
             })
             .done(function() {
                 system.log('New user created.');
@@ -81,7 +84,8 @@
                 url: rew.config.basePath() + '/api/AccountApi/Logoff',
                 xhrFields: {
                     withCredentials: true
-                }
+                },
+                cache: false
             })
             .done(function() {
                 system.log('Logged off.');

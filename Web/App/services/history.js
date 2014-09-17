@@ -8,7 +8,8 @@
                 url: rew.config.basePath() + '/api/history',
                 xhrFields: {
                     withCredentials: true
-                }
+                },
+                cache: false
             })
                 .done(function (data) {
                     system.log('Get history was successful.');
@@ -34,7 +35,8 @@
                 data: data,
                 xhrFields: {
                     withCredentials: true
-                }
+                },
+                cache: false
             })
             .done(function () {
                     system.log("Successfully updated history" + bookShortName + " " + chapter + " " + read);
