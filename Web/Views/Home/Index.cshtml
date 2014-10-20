@@ -94,8 +94,8 @@
             }
         </script>
     </head>
-    <body class="container">
-        <div id="applicationHost">
+    <body class="container" ng-app="readEveryWord">
+        <div id="applicationHost" ng-view>
             <div class="splash">
                 <div class="message">
                     Read Every Word
@@ -111,7 +111,11 @@
         <script src="~/config.js"></script>
         @if (HttpContext.Current.IsDebuggingEnabled)
         {
-            <script type="text/javascript" src="~/Scripts/require.js" data-main="App/main"></script>
+            <script type="text/javascript" src="~/Scripts/angular.min.js"></script>
+            <script type="text/javascript" src="~/Scripts/angular-route.min.js"></script>
+            <script type="text/javascript" src="~/App/app.js"></script>
+            <script type="text/javascript" src="~/App/config/route.js"></script>
+            <script type="text/javascript" src="~/App/controllers/aboutController.js"></script>
         }
         else
         {
