@@ -1,0 +1,34 @@
+﻿<div class="container register">
+    <h2>Create Account</h2>
+    <div class="alert alert-danger" data-bind="visible: registrationError">
+        <p>Failed to create user.</p>
+    </div>
+    <form id="register" role="form">
+        <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" class="form-control" id="newEmail" name="newEmail" placeholder="Enter email" value="" autocomplete="off"
+                   data-bind="value: email, valueUpdate: 'afterkeydown'">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Password"  value="" autocomplete="off"
+                   data-bind="value: password, valueUpdate: 'afterkeydown'" 
+                   required minlength="7" >
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" 
+                   data-bind="value: confirmPassword, valueUpdate: 'afterkeydown'" 
+                   required equalTo="#newPassword">
+        </div>
+        <div class="row actions">
+            <div class="col-xs-6">
+                <button type="submit" class="btn btn-default" data-bind="click: create">Create</button>
+            </div>
+            <div class="col-xs-6 link">
+                <a href="#login">Cancel</a>
+            </div>
+        </div>
+    </form>
+
+</div>

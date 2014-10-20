@@ -252,6 +252,7 @@
     <Compile Include="Controllers\AccountApiController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HistoryController.cs" />
+    <Compile Include="Controllers\DurandalController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MonitorController.cs" />
     <Compile Include="Models\ReadingRecordDay.cs" />
@@ -303,29 +304,29 @@
       <Link>cordova\config.xml</Link>
     </Content>
     <Content Include="AppBuilt\main-built.js" />
-    <Content Include="App\main.js" />
-    <Content Include="App\models\books.js" />
-    <Content Include="App\models\book.js" />
-    <Content Include="App\models\chapter.js" />
-    <Content Include="App\models\history.js" />
-    <Content Include="App\models\user.js" />
-    <Content Include="App\services\account.js" />
-    <Content Include="App\services\history.js" />
-    <Content Include="App\services\mockServices.js" />
-    <Content Include="App\viewmodels\about.js" />
-    <Content Include="App\viewmodels\books.js" />
-    <Content Include="App\viewmodels\chapters.js" />
-    <Content Include="App\viewmodels\readingLog.js" />
-    <Content Include="App\viewmodels\register.js" />
-    <Content Include="App\viewmodels\login.js" />
-    <Content Include="App\viewmodels\shell.js" />
-    <Content Include="App\views\about.html" />
-    <Content Include="App\views\books.html" />
-    <Content Include="App\views\chapters.html" />
-    <Content Include="App\views\readingLog.html" />
-    <Content Include="App\views\register.html" />
-    <Content Include="App\views\login.html" />
-    <Content Include="App\views\shell.html" />
+    <Content Include="App_Durandal\main.js" />
+    <Content Include="App_Durandal\models\books.js" />
+    <Content Include="App_Durandal\models\book.js" />
+    <Content Include="App_Durandal\models\chapter.js" />
+    <Content Include="App_Durandal\models\history.js" />
+    <Content Include="App_Durandal\models\user.js" />
+    <Content Include="App_Durandal\services\account.js" />
+    <Content Include="App_Durandal\services\history.js" />
+    <Content Include="App_Durandal\services\mockServices.js" />
+    <Content Include="App_Durandal\viewmodels\about.js" />
+    <Content Include="App_Durandal\viewmodels\books.js" />
+    <Content Include="App_Durandal\viewmodels\chapters.js" />
+    <Content Include="App_Durandal\viewmodels\readingLog.js" />
+    <Content Include="App_Durandal\viewmodels\register.js" />
+    <Content Include="App_Durandal\viewmodels\login.js" />
+    <Content Include="App_Durandal\viewmodels\shell.js" />
+    <Content Include="App_Durandal\views\about.html" />
+    <Content Include="App_Durandal\views\books.html" />
+    <Content Include="App_Durandal\views\chapters.html" />
+    <Content Include="App_Durandal\views\readingLog.html" />
+    <Content Include="App_Durandal\views\register.html" />
+    <Content Include="App_Durandal\views\login.html" />
+    <Content Include="App_Durandal\views\shell.html" />
     <Content Include="config.js" />
     <Content Include="Content\splash.css" />
     <Content Include="Content\navbar.css" />
@@ -380,7 +381,6 @@
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\FontAwesome.otf" />
-    <Content Include="readme.md" />
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -459,8 +459,11 @@
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Error\NoJavaScript.cshtml" />
     <Content Include="Scripts\toastr.min.js.map" />
+    <Content Include="Views\Durandal\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
