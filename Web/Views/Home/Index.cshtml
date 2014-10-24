@@ -94,32 +94,39 @@
             }
         </script>
     </head>
-    <body class="container" ng-app="readEveryWord">
-        <div id="applicationHost" ng-view>
-            <div class="splash">
-                <div class="message">
-                    Read Every Word
-                </div>
-                <div><i class="fa fa-spinner fa-spin"></i></div>
-                <i class="bigLogo"></i>
-                <p>Man shall not live on bread alone, but on every word that proceeds out of the mouth of God.</p>
-                <p class="source">- Jesus</p>
+<body class="container" ng-app="readEveryWord">
+    <div id="applicationHost" ng-view>
+        <div class="splash">
+            <div class="message">
+                Read Every Word
             </div>
+            <div><i class="fa fa-spinner fa-spin"></i></div>
+            <i class="bigLogo"></i>
+            <p>Man shall not live on bread alone, but on every word that proceeds out of the mouth of God.</p>
+            <p class="source">- Jesus</p>
         </div>
-        
-        @Scripts.Render("~/Scripts/vendor")
-        <script src="~/config.js"></script>
-        @if (HttpContext.Current.IsDebuggingEnabled)
-        {
-            <script type="text/javascript" src="~/Scripts/angular.min.js"></script>
-            <script type="text/javascript" src="~/Scripts/angular-route.min.js"></script>
-            <script type="text/javascript" src="~/App/app.js"></script>
-            <script type="text/javascript" src="~/App/config/route.js"></script>
-            <script type="text/javascript" src="~/App/controllers/aboutController.js"></script>
-        }
-        else
-        {
-            <script type="text/javascript" src="~/AppBuilt/main-built.js"></script>
-        }
-    </body>
+    </div>
+
+    @Scripts.Render("~/Scripts/vendor")
+    <script src="~/config.js"></script>
+    @if (HttpContext.Current.IsDebuggingEnabled)
+    {
+        <script type="text/javascript" src="~/Scripts/angular.min.js"></script>
+        <script type="text/javascript" src="~/Scripts/angular-route.min.js"></script>
+
+        <script type="text/javascript" src="~/App/app.js"></script>
+
+        <script type="text/javascript" src="~/App/configs/route.js"></script>
+
+        <script type="text/javascript" src="~/App/controllers/aboutController.js"></script>
+        <script type="text/javascript" src="~/App/controllers/registerController.js"></script>
+
+        <script type="text/javascript" src="~/App/directives/equalTo.js"></script>
+    }
+    else
+    {
+        <script type="text/javascript" src="~/AppBuilt/main-built.js"></script>
+    }
+</body>
+
 </html>

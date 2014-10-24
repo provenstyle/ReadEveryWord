@@ -305,6 +305,11 @@
     </Content>
     <Content Include="AppBuilt\main-built.js" />
     <Content Include="App\app.js" />
+    <Content Include="App\config\route.js" />
+    <Content Include="App\controllers\aboutController.js" />
+    <Content Include="App\controllers\registerController.js" />
+    <Content Include="App\views\about.html" />
+    <Content Include="App\views\register.html" />
     <Content Include="App_Durandal\main.js" />
     <Content Include="App_Durandal\models\books.js" />
     <Content Include="App_Durandal\models\book.js" />
