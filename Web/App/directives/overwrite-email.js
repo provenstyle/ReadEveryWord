@@ -1,4 +1,7 @@
-﻿angular.module('readEveryWord')
+﻿//for some reason angular email validation is wrong in 1.3.0
+//it allows asdf@asdf
+//this fixes it
+angular.module('readEveryWord')
     .directive('overwriteEmail', function () {
         return {
             require: 'ngModel',

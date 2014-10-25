@@ -1,4 +1,5 @@
-﻿define(['durandal/system'], function (system) {
+﻿
+define(['durandal/system'], function (system) {
 
     return {
         getHistory: function () {

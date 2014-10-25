@@ -305,13 +305,21 @@
     </Content>
     <Content Include="AppBuilt\main-built.js" />
     <Content Include="App\app.js" />
+    <Content Include="App\configs\http.js" />
     <Content Include="App\configs\route.js" />
     <Content Include="App\configs\validation.js" />
     <Content Include="App\controllers\aboutController.js" />
     <Content Include="App\controllers\registerController.js" />
+    <Content Include="App\directives\unique-email.js" />
     <Content Include="App\directives\overwrite-email.js" />
     <Content Include="App\directives\equal-to.js" />
     <Content Include="App\directives\show-errors.js" />
+    <Content Include="App\models\bookFactory.js" />
+    <Content Include="App\models\booksModel.js" />
+    <Content Include="App\models\historyModel.js" />
+    <Content Include="App\models\userModel.js" />
+    <Content Include="App\services\accountService.js" />
+    <Content Include="App\services\historyService.js" />
     <Content Include="App\views\about.html" />
     <Content Include="App\views\register.html" />
     <Content Include="App_Durandal\main.js" />

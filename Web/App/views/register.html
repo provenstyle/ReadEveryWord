@@ -12,6 +12,7 @@
                    required />
             <p class="help-block" ng-if="register.newEmail.$error.required">Email address is required</p>
             <p class="help-block" ng-if="register.newEmail.$error.email">Invalid email address</p>
+            <p class="help-block" ng-if="register.newEmail.$error.uniqueEmail">"Email address already in use"</p>
         </div>
         <div class="form-group" data-show-errors>
             <label for="newPassword" class="control-label">Password</label>
