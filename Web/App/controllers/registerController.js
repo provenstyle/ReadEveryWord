@@ -1,11 +1,12 @@
 ﻿angular.module('readEveryWord')
     .controller('registerController', ['$scope', '$log', function ($scope, $log) {
-
+        
         $scope.email = '';
         $scope.password = '';
         $scope.confirmPassword = '';
         $scope.registrationError = false;
         $scope.disableCreate = false;
+        $scope.create = create;
 
         //This goes on a global routing event handler
         //self.canActivate = function () {
@@ -17,10 +18,9 @@
         //};
 
         //Still need to validate that the email is available
-        $scope.create = function () {
-            var valid = $scope.register.$valid;
-            $log.debug("Registration form valid? " + valid);
-            if (valid) {
+        function create() {
+            $scope.$broadcast('show-errors-check-validity');
+            if ($scope.register.$valid) {
                 $scope.disableCreate = true;
 
                 accountService.register(self.email, self.password, self.confirmPassword)

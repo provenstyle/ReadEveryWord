@@ -4,25 +4,31 @@
         <p>Failed to create user.</p>
     </div>
     <form id="register" name="register" role="form" novalidate>
-        <div class="form-group">
-            <label for="newEmail">Email address</label>
+        <div class="form-group" data-show-errors>
+            <label for="newEmail" class="control-label">Email address</label>
             <input type="email" class="form-control" id="newEmail" name="newEmail" placeholder="Enter email" autocomplete="off"
                    ng-model="email"
                    required />
+            <p class="help-block" ng-if="register.newEmail.$error.required">Email address is required</p>
+            <p class="help-block" ng-if="register.newEmail.$error.email">Invalid email address</p>
         </div>
-        <div class="form-group">
-            <label for="newPassword">Password</label>
+        <div class="form-group" data-show-errors>
+            <label for="newPassword" class="control-label">Password</label>
             <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Password" autocomplete="off"
                    ng-model="password"
                    required 
                    ng-minlength=7>
+            <p class="help-block" ng-if="register.newPassword.$error.required">Password is required</p>
+            <p class="help-block" ng-if="register.newPassword.$error.minlength">Must be at least 7 characters</p>
         </div>
-        <div class="form-group">
-            <label for="confirmPassword">Confirm Password</label>
+        <div class="form-group" data-show-errors>
+            <label for="confirmPassword" class="control-label">Confirm Password</label>
             <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password"
                    ng-model="confirmPassword"
                    required 
                    equal-to="newPassword">
+            <p class="help-block" ng-if="register.confirmPassword.$error.required">Password is required</p>
+            <p class="help-block" ng-if="register.confirmPassword.$error.equalTo">Passwords do not match</p>
         </div>
         <div class="row actions">
             <div class="col-xs-6">

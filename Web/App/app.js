@@ -1,1 +1,1 @@
-﻿angular.module('readEveryWord', ['ngRoute']);
+﻿angular.module('readEveryWord', ['ngRoute', 'ui.bootstrap.showErrors']);
