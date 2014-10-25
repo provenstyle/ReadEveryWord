@@ -8,6 +8,7 @@
             <label for="newEmail" class="control-label">Email address</label>
             <input type="email" class="form-control" id="newEmail" name="newEmail" placeholder="Enter email" autocomplete="off"
                    ng-model="email"
+                   overwrite-email
                    required />
             <p class="help-block" ng-if="register.newEmail.$error.required">Email address is required</p>
             <p class="help-block" ng-if="register.newEmail.$error.email">Invalid email address</p>

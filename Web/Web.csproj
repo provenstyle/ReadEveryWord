@@ -309,6 +309,7 @@
     <Content Include="App\configs\validation.js" />
     <Content Include="App\controllers\aboutController.js" />
     <Content Include="App\controllers\registerController.js" />
+    <Content Include="App\directives\overwrite-email.js" />
     <Content Include="App\directives\equal-to.js" />
     <Content Include="App\directives\show-errors.js" />
     <Content Include="App\views\about.html" />
