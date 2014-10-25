@@ -22,12 +22,13 @@
             <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password"
                    ng-model="confirmPassword"
                    required 
-                   equal-to="#newPassword">
+                   equal-to="newPassword">
         </div>
         <div class="row actions">
             <div class="col-xs-6">
                 <button type="submit" class="btn btn-default"
-                        ng-click="create()">
+                        ng-click="create()"
+                        ng-disabled="disableCreate">
                     Create
                 </button>
             </div>
@@ -38,8 +39,8 @@
     </form>
     
     Form: {{register.$valid}} <br>
-    email: {{register.newEmail.$valid}} <br>
-    password: {{register.newPassword.$valid}} <br>
-    confirm: {{register.confirmPassword.$valid}} <br>
+    email: {{ email }} valid: {{register.newEmail.$valid}} <br>
+    password: {{ password }} valid: {{register.newPassword.$valid}} <br>
+    confirm: {{ confirmPassword }} valid: {{register.confirmPassword.$valid}} <br>
 
 </div>

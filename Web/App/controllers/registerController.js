@@ -1,13 +1,11 @@
 ﻿angular.module('readEveryWord')
-    .controller('registerController', ['$scope', function ($scope) {
-
-        var self = this,
-            validator = {};
+    .controller('registerController', ['$scope', '$log', function ($scope, $log) {
 
         $scope.email = '';
         $scope.password = '';
         $scope.confirmPassword = '';
         $scope.registrationError = false;
+        $scope.disableCreate = false;
 
         //This goes on a global routing event handler
         //self.canActivate = function () {
@@ -18,40 +16,13 @@
         //    return true;
         //};
 
-        //????Where should this go?
-        //self.compositionComplete = function () {
-        //    validator = $("#register").validate({
-        //        rules: {
-        //            newEmail: {
-        //                required: true,
-        //                remote: {
-        //                    url: rew.config.basePath() + "/api/accountApi/EmailAvailable",
-        //                    type: "get",
-        //                    data: {
-        //                        email: function () {
-        //                            return self.email;
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        },
-        //        messages: {
-        //            newEmail: {
-        //                required: "This field is required.",
-        //                remote: "Email address already in use."
-        //            }
-        //        }
-        //    });
-
-        //};
-
+        //Still need to validate that the email is available
         $scope.create = function () {
-            var valid = validator.form();
-            var target = $(el.target);
-            target.prop('disabled', true);
-
-            system.log("Registration form valid? " + valid);
+            var valid = $scope.register.$valid;
+            $log.debug("Registration form valid? " + valid);
             if (valid) {
+                $scope.disableCreate = true;
+
                 accountService.register(self.email, self.password, self.confirmPassword)
                 .done(function () {
                     history.prime()
@@ -67,13 +38,8 @@
         };
 
         $scope.$watchGroup(['email', 'password', 'confirmPassword'], function () {
-            resetError();
+            $log.debug('Resetting registration error.');
+            $scope.registrationError = false;
         });
-
-        function resetError() {
-            self.registrationError = false;
-        }
-
-
 
     }]);
