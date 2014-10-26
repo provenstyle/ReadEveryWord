@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app-test.js" />
+    <Content Include="App\models\bookFactorySpec.js" />
     <Content Include="karma.conf.js" />
     <Content Include="node_modules\karma-chai-plugins\chai-adapter.js" />
     <Content Include="node_modules\karma-chai-plugins\function-bind-polyfill.js" />
@@ -2093,9 +2094,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

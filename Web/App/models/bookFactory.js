@@ -17,22 +17,24 @@
             self.shortName = shortName;
             self.chapterCount = chapterCount;
             self.chapters = [];
+            self.started = false;
+            self.completed = false;
 
             for (var i = 0; i < self.chapterCount; i++) {
                 self.chapters.push(new Chapter(i + 1));
             }
 
-            observable.defineProperty(self, 'started', function () {
-                return _.some(self.chapters, function (chapter) {
-                    return chapter.read === true;
-                });
-            });
+            //observable.defineProperty(self, 'started', function () {
+            //    return _.some(self.chapters, function (chapter) {
+            //        return chapter.read === true;
+            //    });
+            //});
 
-            observable.defineProperty(self, 'completed', function () {
-                return _.every(self.chapters, function (chapter) {
-                    return chapter.read === true;
-                });
-            });
+            //observable.defineProperty(self, 'completed', function () {
+            //    return _.every(self.chapters, function (chapter) {
+            //        return chapter.read === true;
+            //    });
+            //});
         };
 
         function Chapter(number) {
