@@ -1,4 +1,4 @@
-﻿angular.module('readEvedryWord')
+﻿angular.module('readEveryWord')
     .factory('accountService', ['$http', '$q', '$log', 'userModel', function ($http, $q, $log, userModel) {
         var service = {
             loggedIn: loggedIn,
