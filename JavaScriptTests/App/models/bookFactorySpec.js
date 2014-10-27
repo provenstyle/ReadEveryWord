@@ -36,7 +36,7 @@
             });
 
             it('books should default to not completed', function () {
-                book.started.should.equal(false);
+                book.completed.should.equal(false);
             });
         });
     });
@@ -44,11 +44,50 @@
     describe('book behavior', function() {
         describe('reading at least one chapter', function () {
 
-            it('should set started to true', function () {
+            it('should set book.started to true', function () {
                 var book = bookFactory.create('Genesis', 'Gen', '50');
                 book.chapters[0].read = true;
 
                 book.started.should.equal(true);
+            });
+        });
+
+        describe('removing the last read chapter', function () {
+
+            it('should set book.started to false', function () {
+                var book = bookFactory.create('Genesis', 'Gen', '50');
+                book.chapters[0].read = true;
+                book.started.should.equal(true);
+
+                book.chapters[0].read = false;
+                book.started.should.equal(false);
+            });
+        });
+
+        describe('reading all chapters', function () {
+
+            it('should set book.completed to true', function () {
+                var book = bookFactory.create('Genesis', 'Gen', '50');
+
+                for (var i = 0; i < 50; i++) {
+                    book.chapters[i].read = true;
+                }
+
+                book.completed.should.equal(true);
+            });
+        });
+
+        describe('after reading all chapters marking a chapter as unread', function () {
+
+            it('should set book.completed to false', function () {
+                var book = bookFactory.create('Genesis', 'Gen', '50');
+
+                for (var i = 0; i < 50; i++) {
+                    book.chapters[i].read = true;
+                }
+
+                book.chapters[0].read = false;
+                book.completed.should.equal(false);
             });
         });
     });

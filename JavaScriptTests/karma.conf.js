@@ -15,6 +15,7 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [
+            '../Web/Scripts/underscore.js',
             '../Web/Scripts/angular.js',
             '../Web/Scripts/angular-mocks.js',
             'testSetupSpec.js',

@@ -1,5 +1,9 @@
-﻿angular.module('readEveryWord')
-    .factory('bookFactory', function () {
+﻿(function() {
+    angular
+        .module('readEveryWord')
+        .factory('bookFactory', bookFactory);
+
+    function bookFactory() {
         var factory = {
             create: create
         }
@@ -10,6 +14,7 @@
             return new Book(longName, shortName, chapterCount);
         }
 
+        // ReSharper disable once InconsistentNaming
         function Book(longName, shortName, chapterCount) {
             var self = this;
 
@@ -21,25 +26,35 @@
             self.completed = false;
 
             for (var i = 0; i < self.chapterCount; i++) {
-                self.chapters.push(new Chapter(i + 1));
-            }
+                self.chapters.push(new Chapter(i + 1, self));
+            };
 
-            //observable.defineProperty(self, 'started', function () {
-            //    return _.some(self.chapters, function (chapter) {
-            //        return chapter.read === true;
-            //    });
-            //});
+            self.updateStartedAndCompleted = function () {
+                self.started = _.some(self.chapters, function (chapter) {
+                    return chapter.read === true;
+                });
 
-            //observable.defineProperty(self, 'completed', function () {
-            //    return _.every(self.chapters, function (chapter) {
-            //        return chapter.read === true;
-            //    });
-            //});
-        };
+                self.completed = _.every(self.chapters, function (chapter) {
+                    return chapter.read === true;
+                });
+            };
+        }
 
-        function Chapter(number) {
+        // ReSharper disable once InconsistentNaming
+        function Chapter(number, book) {
             this.number = number;
-            this.read = false;
-        };
 
-    });
+            var read = false;
+            Object.defineProperty(this, 'read', {
+                get: function () {
+                    return read;
+                },
+                set: function (value) {
+                    if (read === value) return;
+                    read = value;
+                    book.updateStartedAndCompleted();
+                }
+            });
+        }
+    }
+})();
