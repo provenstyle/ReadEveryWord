@@ -59,6 +59,7 @@
   <ItemGroup>
     <Content Include="app-test.js" />
     <Content Include="App\models\bookFactorySpec.js" />
+    <Content Include="App\models\booksModelSpec.js" />
     <Content Include="karma.conf.js" />
     <Content Include="node_modules\karma-chai-plugins\chai-adapter.js" />
     <Content Include="node_modules\karma-chai-plugins\function-bind-polyfill.js" />

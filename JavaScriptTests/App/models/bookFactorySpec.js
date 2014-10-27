@@ -27,6 +27,10 @@
                 book.chapters.length.should.equal(50);
             });
 
+            it('chapters should start with 1', function () {
+                book.chapters[0].number.should.equal(1);
+            });
+
             it('chapters should default to not read', function() {
                 book.chapters[0].read.should.equal(false);
             });
