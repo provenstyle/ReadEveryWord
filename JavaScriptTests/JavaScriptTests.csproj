@@ -60,6 +60,7 @@
     <Content Include="app-test.js" />
     <Content Include="App\models\bookFactorySpec.js" />
     <Content Include="App\models\booksModelSpec.js" />
+    <Content Include="App\models\userModelSpec.js" />
     <Content Include="karma.conf.js" />
     <Content Include="node_modules\karma-chai-plugins\chai-adapter.js" />
     <Content Include="node_modules\karma-chai-plugins\function-bind-polyfill.js" />
@@ -2084,11 +2085,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\_reference.js" />
-    <Content Include="spec\requirejsSpec.js" />
-    <Content Include="spec\booksSpec.js" />
-    <Content Include="spec\jasmineSpec.js" />
-    <Content Include="spec\sinonSpec.js" />
-    <Content Include="spec\vendorFilesSpec.js" />
     <Content Include="testSetupSpec.js" />
     <Content Include="Web.config" />
   </ItemGroup>

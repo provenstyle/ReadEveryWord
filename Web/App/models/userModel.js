@@ -1,5 +1,11 @@
-﻿angular.module('readEveryWord')
-    .factory('userModel', ['$log', function ($log) {
+﻿(function() {
+    angular
+        .module('readEveryWord')
+        .factory('userModel', userModel);
+
+    userModel.$inject = ['$log'];
+
+    function userModel($log) {
         var model = {
             username: "",
             isAuthenticated: false,
@@ -19,4 +25,5 @@
             model.isAuthenticated = false;
             $log.debug('Cleared user.');
         }
-    }]);
+    };
+})();
