@@ -57,10 +57,11 @@
                     $log.debug('New user created.');
                     user.authenticated(email);
                     deferred.resolve();
-                }, function () {
+                }, function (result) {
                     $log.warn('Failed to create account: ' + result.status);
                     deferred.reject();
                 });
+            return deferred.promise;
         }
 
         function logOff() {
@@ -76,5 +77,6 @@
                    $log.warn('Failed to logoff.');
                    deferred.reject();
                });
+            return deferred.promise;
         };
     }]);

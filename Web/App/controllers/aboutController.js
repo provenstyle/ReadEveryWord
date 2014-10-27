@@ -1,4 +1,9 @@
-﻿angular.module('readEveryWord')
-    .controller('aboutController', ['$scope', function ($scope) {
-
-    }]);
+﻿(function() {
+    angular
+        .module('readEveryWord')
+        .controller('aboutController', aboutController());
+        
+    function aboutController() {
+        
+    }
+})();

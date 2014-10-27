@@ -62,6 +62,7 @@
     <Content Include="App\models\booksModelSpec.js" />
     <Content Include="App\models\historyModelSpec.js" />
     <Content Include="App\models\userModelSpec.js" />
+    <Content Include="App\services\accountServiceSpec.js" />
     <Content Include="karma.conf.js" />
     <Content Include="node_modules\karma-chai-plugins\chai-adapter.js" />
     <Content Include="node_modules\karma-chai-plugins\function-bind-polyfill.js" />

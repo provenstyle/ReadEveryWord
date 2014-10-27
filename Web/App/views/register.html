@@ -29,7 +29,7 @@
                    ng-model="confirmPassword"
                    required 
                    equal-to="newPassword">
-            <p class="help-block" ng-if="register.confirmPassword.$error.required">Password is required</p>
+            <p class="help-block" ng-if="register.confirmPassword.$error.required">Confirmation is required</p>
             <p class="help-block" ng-if="register.confirmPassword.$error.equalTo">Passwords do not match</p>
         </div>
         <div class="row actions">

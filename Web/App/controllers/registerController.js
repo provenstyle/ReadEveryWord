@@ -1,6 +1,12 @@
-﻿angular.module('readEveryWord')
-    .controller('registerController', ['$scope', '$log', function ($scope, $log) {
-        
+﻿(function () {
+    angular
+        .module('readEveryWord')
+        .controller('registerController', registerController);
+
+    registerController.$inject = ['$scope', '$log', 'accountService'];
+
+    function registerController($scope, $log, accountService) {
+
         $scope.email = '';
         $scope.password = '';
         $scope.confirmPassword = '';
@@ -23,16 +29,16 @@
             if ($scope.register.$valid) {
                 $scope.disableCreate = true;
 
-                accountService.register(self.email, self.password, self.confirmPassword)
-                .done(function () {
+                accountService.register($scope.email, $scope.password, $scope.confirmPassword)
+                .then(function () {
                     history.prime()
                         .done(function () {
                             location.hash = "#books";
                         });
                 })
-                .fail(function () {
-                    self.registrationError = true;
-                    target.prop('disabled', false);
+                .catch(function () {
+                    $scope.registrationError = true;
+                    $scope.disableCreate = false;
                 });
             }
         };
@@ -41,5 +47,5 @@
             $log.debug('Resetting registration error.');
             $scope.registrationError = false;
         });
-
-    }]);
+    }
+})();
