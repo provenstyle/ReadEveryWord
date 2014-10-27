@@ -1,5 +1,12 @@
-﻿angular.module('readEveryWord')
-    .factory('historyModel', ['$log', 'historyService', 'booksModel', function ($log, historyService, booksModel) {
+﻿(function() {
+    angular
+        .module('readEveryWord')
+        .factory('historyModel', historyModel);
+
+    historyModel.$inject = ['$log', 'historyService', 'booksModel'];
+    
+    function historyModel($log, historyService, booksModel) {
+
         var model = {
             historyRecords: {},
             books: booksModel,
@@ -11,6 +18,7 @@
             addToHistoryRecords: addToHistoryRecords,
             removeHistoryRecords: removeHistoryRecords
         };
+
         return model;
 
         function prime() {
@@ -89,4 +97,6 @@
                 }
             }
         }
-    }]);
+    };
+
+})();
