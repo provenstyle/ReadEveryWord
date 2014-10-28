@@ -1,39 +1,48 @@
-﻿//describe('accountService', function () {
-//    var accountService;
-//    var userModel;
-//    beforeEach(module('readEveryWord'));
+﻿describe('accountService', function () {
+    var accountService,
+        userModel,
+        $httpBackend;
+    beforeEach(module('readEveryWord'));
 
-//    beforeEach(inject(function (_accountService_, _userModel_) {
-//        accountService = _accountService_;
-//        userModel = _userModel_;
-//    }));
+    beforeEach(inject(function (_$httpBackend_, _accountService_, _userModel_) {
+        accountService = _accountService_;
+        userModel = _userModel_;
+        $httpBackend = _$httpBackend_;
+    }));
 
-//    it('should exist', function () {
-//        should.exist(accountService);
-//    });
+    it('should exist', function () {
+        should.exist(accountService);
+    });
 
-//    describe('register', function () {
-//        var server = sinon.fakeServer.create();
-//        beforeEach(function () {
-//            server = sinon.fakeServer.create();
-//            server.autoRespond = true;
-//        });
+    describe('register', function () {
+        it('should call authenticated on the usermodel when successful', function (done) {
+            var spy = sinon.spy(userModel, 'authenticated');
+            $httpBackend
+                .when('POST', '/api/accountApi/register')
+                .respond(200, {});
 
-//        afterEach(function () {
-//            server.restore();
-//        });
+            accountService.register('email', 'password', 'confirmPassword')
+                .finally(function () {
+                    spy.should.have.been.calledWith('email');
+                    done();
+                });
 
-//        it('', function (done) {
-//            var spy = sinon.spy(userModel, 'authenticated');
-//            server.respondWith([400, {}, '']);
+            $httpBackend.flush();
+        });
 
-//            accountService.register('email', 'password', 'confirmPassword')
-//                .finally(function () {
-//                    assert(spy.calledWith('email'));
-//                    done();
-//                });
+        it('should not call authenticated on the usermodel when http request has error', function (done) {
+            var spy = sinon.spy(userModel, 'authenticated');
+            $httpBackend
+                .when('POST', '/api/accountApi/register')
+                .respond(400, {});
 
-            
-//        });
-//    });
-//});
+            accountService.register('email', 'password', 'confirmPassword')
+                .finally(function () {
+                    spy.should.not.have.been.called;
+                    done();
+                });
+
+            $httpBackend.flush();
+        });
+    });
+});

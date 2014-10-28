@@ -34,11 +34,11 @@
             $http.post(url, data)
                 .then(function (response) {
                     $log.debug('Login successfull');
-                    user.authenticated(response.username);
+                    userModel.authenticated(response.username);
                     deferred.resolve();
                 }, function () {
                     $log.warn('Failed to login. Invalid username or password.');
-                    user.clear();
+                    userModel.clear();
                     deferred.reject();
                 });
             return deferred.promise;
@@ -55,7 +55,7 @@
             $http.post(url, data)
                 .then(function () {
                     $log.debug('New user created.');
-                    user.authenticated(email);
+                    userModel.authenticated(email);
                     deferred.resolve();
                 }, function (result) {
                     $log.warn('Failed to create account: ' + result.status);
@@ -70,7 +70,7 @@
             $http.post(url)
                .then(function () {
                    $log.debug('Logged off.');
-                   user.clear();
+                   userModel.clear();
                    history.clear();
                    deferred.resolve();
                }, function () {
