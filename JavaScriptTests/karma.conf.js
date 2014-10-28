@@ -19,9 +19,11 @@ module.exports = function (config) {
             '../Web/Scripts/angular.js',
             '../Web/Scripts/angular-mocks.js',
             'testSetupSpec.js',
+            'config.js',
             'app-test.js',
             '../Web/App/**/*.js',
-            'App/**/*.js'
+            'App/**/*.js',
+            'sinon/**/*.js'
         ],
 
 

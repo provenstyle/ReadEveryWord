@@ -13,6 +13,8 @@
     "karma-chai-plugins": "^0.2.3",
     "karma-chrome-launcher": "^0.1.5",
     "karma-mocha": "^0.1.9",
-    "mocha": "^2.0.1"
+    "karma-sinon": "^1.0.3",
+    "mocha": "^2.0.1",
+    "sinon": "^1.11.1"
   }
 }

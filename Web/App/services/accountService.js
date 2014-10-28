@@ -77,6 +77,5 @@
                    $log.warn('Failed to logoff.');
                    deferred.reject();
                });
-            return deferred.promise;
         };
     }]);
