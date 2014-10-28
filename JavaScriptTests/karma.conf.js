@@ -23,7 +23,7 @@ module.exports = function (config) {
             'app-test.js',
             '../Web/App/**/*.js',
             'App/**/*.js',
-            'sinon/**/*.js'
+            'httpBackend/**/*.js'
         ],
 
 

@@ -3,9 +3,9 @@
         .module('readEveryWord')
         .controller('registerController', registerController);
 
-    registerController.$inject = ['$scope', '$log', 'accountService'];
+    registerController.$inject = ['$scope', '$log', 'accountService', 'historyModel'];
 
-    function registerController($scope, $log, accountService) {
+    function registerController($scope, $log, accountService, historyModel) {
 
         $scope.email = '';
         $scope.password = '';
@@ -31,8 +31,8 @@
 
                 accountService.register($scope.email, $scope.password, $scope.confirmPassword)
                 .then(function () {
-                    history.prime()
-                        .done(function () {
+                    historyModel.prime()
+                        .then(function () {
                             location.hash = "#books";
                         });
                 })

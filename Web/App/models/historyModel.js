@@ -27,12 +27,12 @@
 
         function updateHistory() {
             return historyService.getHistory()
-                .then(function (data) {
+                .then(function (response) {
 
-                    model.historyRecords = data;
+                    model.historyRecords = response.data;
 
-                    for (var i = 0; i < data.years.length; i++) {
-                        var year = data.years[i];
+                    for (var i = 0; i < response.data.years.length; i++) {
+                        var year = response.data.years[i];
                         for (var j = 0; j < year.months.length; j++) {
                             var month = year.months[j];
                             for (var k = 0; k < month.days.length; k++) {

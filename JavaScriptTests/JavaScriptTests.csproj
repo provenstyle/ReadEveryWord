@@ -63,6 +63,7 @@
     <Content Include="App\models\historyModelSpec.js" />
     <Content Include="App\models\userModelSpec.js" />
     <Content Include="App\services\accountServiceSpec.js" />
+    <Content Include="App\services\historyServiceSpec.js" />
     <Content Include="config.js" />
     <Content Include="karma.conf.js" />
     <Content Include="node_modules\karma-chai-plugins\chai-adapter.js" />
@@ -2179,7 +2180,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\_reference.js" />
-    <Content Include="sinon\sinonSpec.js" />
+    <Content Include="httpBackend\httpBackendSpec.js" />
     <Content Include="testSetupSpec.js" />
     <Content Include="Web.config" />
   </ItemGroup>
