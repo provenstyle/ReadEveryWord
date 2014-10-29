@@ -93,10 +93,17 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        public HttpResponseMessage EmailAvailable_Old(string email)
+        {
+            return IsEmailAvailable(email);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("api/accountApi/email/unique")]
         public HttpResponseMessage EmailAvailable(string email)
         {
-            var user = UserManager.FindByEmail(email);
-            return Request.CreateResponse(HttpStatusCode.OK, user == null);
+            return IsEmailAvailable(email);
         }
 
         [System.Web.Mvc.HttpPost]
@@ -126,6 +133,12 @@ namespace ProvenStyle.ReadEveryWord.Web.Controllers
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
             AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = isPersistent }, await user.GenerateUserIdentityAsync(UserManager));
+        }
+
+        private HttpResponseMessage IsEmailAvailable(string email)
+        {
+            var user = UserManager.FindByEmail(email);
+            return Request.CreateResponse(HttpStatusCode.OK, user == null);
         }
     }
 }

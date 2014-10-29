@@ -70,20 +70,6 @@
             $httpBackend.flush();
         });
 
-        it('400 triggers catch', function (done) {
-            $httpBackend
-                .when('GET', '/asdf')
-                .respond(400, 'data');
-            $http.get('/asdf')
-                .catch(function (response) {
-                    response.data.should.equal('data');
-                    response.status.should.equal(400);
-                    done();
-                });
-
-            $httpBackend.flush();
-        });
-
         it('300 triggers catch', function (done) {
             $httpBackend
                 .when('GET', '/asdf')
@@ -98,7 +84,34 @@
             $httpBackend.flush();
         });
 
-        
+        it('400 triggers catch', function (done) {
+            $httpBackend
+                .when('GET', '/asdf')
+                .respond(400, 'data');
+            $http.get('/asdf')
+                .catch(function (response) {
+                    response.data.should.equal('data');
+                    response.status.should.equal(400);
+                    done();
+                });
+
+            $httpBackend.flush();
+        });
+
+        it('404 triggers catch ', function (done) {
+            $httpBackend
+                .when('GET', '/asdf')
+                .respond(404);
+
+            var promise = $http.get('/asdf');
+            promise.catch(function () {
+                done();
+            });
+
+            $httpBackend.flush();
+        });
+
+
 
 
 

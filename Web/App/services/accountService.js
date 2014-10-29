@@ -4,7 +4,8 @@
             loggedIn: loggedIn,
             logIn: logIn,
             logOff: logOff,
-            register: register
+            register: register,
+            uniqueEmail: uniqueEmail
         };
 
         return service;
@@ -68,14 +69,31 @@
             var deferred = $q.defer();
             var url = rew.config.basePath() + '/api/AccountApi/Logoff';
             $http.post(url)
-               .then(function () {
+               .then(function (result) {
                    $log.debug('Logged off.');
                    userModel.clear();
                    history.clear();
-                   deferred.resolve();
-               }, function () {
+                   deferred.resolve(result);
+               }, function (result) {
                    $log.warn('Failed to logoff.');
-                   deferred.reject();
+                   deferred.reject(result);
                });
+            return deferred.promise;
         };
+
+        function uniqueEmail(value) {
+            var deferred = $q.defer();
+
+            var url = '/api/accountApi/email/unique?email=' + value;
+
+            $http.get(url)
+                .then(function (result) {
+                    deferred.resolve(result);
+                }, function (result) {
+                    $log.warn('Failed to get uniqueEmail: ' + result.status);
+                    deferred.reject(result);
+                });
+
+            return deferred.promise;
+        }
     }]);
