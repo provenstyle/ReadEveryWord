@@ -1,5 +1,11 @@
-﻿angular.module('readEveryWord')
-    .factory('accountService', ['$http', '$q', '$log', 'userModel', function ($http, $q, $log, userModel) {
+﻿(function() {
+    angular
+        .module('readEveryWord')
+        .factory('accountService', accountService);
+
+    accountService.$inject = ['$http', '$q', '$log', 'userModel'];
+
+    function accountService ($http, $q, $log, userModel) {
         var service = {
             loggedIn: loggedIn,
             logIn: logIn,
@@ -96,4 +102,5 @@
 
             return deferred.promise;
         }
-    }]);
+    }
+})();

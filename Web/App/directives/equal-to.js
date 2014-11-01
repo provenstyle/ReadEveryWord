@@ -1,5 +1,11 @@
-﻿angular.module('readEveryWord')
-    .directive('equalTo', ['$log', function ($log) {
+﻿(function () {
+    angular
+        .module('readEveryWord')
+        .directive('equalTo', equalTo);
+
+    equalTo.$inject = ['$log'];
+
+    function equalTo($log) {
         return {
             restrict: 'A',
             scope: {},
@@ -12,7 +18,7 @@
                     $log.error('Cannot find input for equal-to validation: ' + targetId);
                     return;
                 }
-                element.add(target).on('keyup', function() {
+                element.add(target).on('keyup', function () {
                     scope.$apply(function () {
                         var valid = element.val() === target.val();
                         model.$setValidity('equalTo', valid);
@@ -22,4 +28,6 @@
                 });
             }
         };
-    }]);
+    }
+})();
+

@@ -15,7 +15,7 @@
             }
 
             if (_.contains(authenticationNotRequired, next.controller)) {
-                $log.debug('authenticationNot required');
+                $log.debug('authentication not required');
                  return;
             }
 

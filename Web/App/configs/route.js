@@ -1,5 +1,11 @@
-﻿angular.module('readEveryWord')
-    .config(['$routeProvider', function ($routeProvider) {
+﻿(function() {
+    angular
+        .module('readEveryWord')
+        .config(routeConfig);
+
+    routeConfig.$init = ['$routeProvider'];
+
+    function routeConfig($routeProvider) {
         $routeProvider
             .when('/about', {
                 templateUrl: 'app/views/about.html',
@@ -16,4 +22,6 @@
             .otherwise({
                 redirectTo: '/'
             });
-    }]);
+    }
+})();
+

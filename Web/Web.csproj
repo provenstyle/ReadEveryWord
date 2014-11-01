@@ -325,7 +325,7 @@
     <Content Include="App\services\historyService.js" />
     <Content Include="App\views\about.html" />
     <Content Include="App\views\login.html" />
-    <Content Include="App\views\readingLog.js" />
+    <Content Include="App\views\readingLog.html" />
     <Content Include="App\views\register.html" />
     <Content Include="App_Durandal\main.js" />
     <Content Include="App_Durandal\models\books.js" />

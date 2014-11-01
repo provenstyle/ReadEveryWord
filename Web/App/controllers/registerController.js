@@ -14,16 +14,6 @@
         $scope.disableCreate = false;
         $scope.create = create;
 
-        //This goes on a global routing event handler
-        //self.canActivate = function () {
-        //    if (user.isAuthenticated === true) {
-        //        return { redirect: '#book' };
-        //    }
-
-        //    return true;
-        //};
-
-        //Still need to validate that the email is available
         function create() {
             $scope.$broadcast('show-errors-check-validity');
             if ($scope.register.$valid) {

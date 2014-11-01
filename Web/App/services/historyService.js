@@ -1,9 +1,16 @@
-﻿angular.module('readEveryWord')
-    .factory('historyService', ['$http', '$q', '$log', function ($http, $q, $log) {
+﻿(function() {
+    angular
+        .module('readEveryWord')
+        .factory('historyService', historyService);
+
+    historyService.$inject = ['$http', '$q', '$log'];
+
+    function historyService ($http, $q, $log) {
         var module = {
             getHistory: getHistory,
             postHistory: postHistory
         };
+
         return module;
 
         function getHistory() {
@@ -39,4 +46,6 @@
                 });
             return deferred.promise;
         }
-    }]);
+    }
+})();
+
