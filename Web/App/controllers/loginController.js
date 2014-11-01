@@ -3,9 +3,9 @@
         .module('readEveryWord')
         .controller('loginController', loginController);
 
-    loginController.$inject = ['$scope', '$log', 'accountService', 'historyModel'];
+    loginController.$inject = ['$scope', '$log', '$location', 'accountService', 'historyModel'];
 
-    function loginController($scope, $log, accountService, historyModel) {
+    function loginController($scope, $log, $location, accountService, historyModel) {
         $scope.email = '';
         $scope.password = '';
         $scope.loginError = false;
@@ -30,7 +30,7 @@
                     return historyModel.prime();
                 })
                 .then(function () {
-                    location.hash = "#books";
+                    $location.path('/books').replace();
                 })
                 .catch(function () {
                     $log.warn('Failed to login. Invalid username or password.');

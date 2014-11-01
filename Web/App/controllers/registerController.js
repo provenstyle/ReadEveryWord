@@ -3,9 +3,9 @@
         .module('readEveryWord')
         .controller('registerController', registerController);
 
-    registerController.$inject = ['$scope', '$log', 'accountService', 'historyModel'];
+    registerController.$inject = ['$scope', '$log', '$location', 'accountService', 'historyModel'];
 
-    function registerController($scope, $log, accountService, historyModel) {
+    function registerController($scope, $log, $location, accountService, historyModel) {
 
         $scope.email = '';
         $scope.password = '';
@@ -34,7 +34,7 @@
                         return historyModel.prime();
                     })
                     .then(function () {
-                        location.hash = "#books";
+                        $location.path('/books').replace();
                     })
                     .catch(function () {
                         $scope.registrationError = true;
