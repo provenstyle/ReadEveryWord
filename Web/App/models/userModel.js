@@ -25,5 +25,5 @@
             model.isAuthenticated = false;
             $log.debug('Cleared user.');
         }
-    };
+    }
 })();

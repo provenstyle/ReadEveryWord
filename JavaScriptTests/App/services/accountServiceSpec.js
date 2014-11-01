@@ -1,4 +1,6 @@
-﻿describe('accountService', function () {
+﻿/*jshint expr: true*/
+
+describe('accountService', function () {
     var accountService,
         userModel,
         $httpBackend;

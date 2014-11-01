@@ -41,7 +41,7 @@
                     $scope.disableCreate = false;
                 });
             }
-        };
+        }
 
         $scope.$watchGroup(['email', 'password', 'confirmPassword'], function () {
             $log.debug('Resetting registration error.');

@@ -1,4 +1,4 @@
-﻿describe('historyModel', function () {
+﻿describe('historyModel', function() {
     var historyModel;
     beforeEach(module('readEveryWord'));
     // ReSharper disable once InconsistentNaming
@@ -9,4 +9,4 @@
     it('should exist', function() {
         should.exist(historyModel);
     });
-})
+});

@@ -309,6 +309,7 @@
     <Content Include="App\configs\route.js" />
     <Content Include="App\configs\validation.js" />
     <Content Include="App\controllers\aboutController.js" />
+    <Content Include="App\controllers\loginController.js" />
     <Content Include="App\controllers\registerController.js" />
     <Content Include="App\directives\unique-email.js" />
     <Content Include="App\directives\overwrite-email.js" />
@@ -321,6 +322,7 @@
     <Content Include="App\services\accountService.js" />
     <Content Include="App\services\historyService.js" />
     <Content Include="App\views\about.html" />
+    <Content Include="App\views\login.html" />
     <Content Include="App\views\register.html" />
     <Content Include="App_Durandal\main.js" />
     <Content Include="App_Durandal\models\books.js" />

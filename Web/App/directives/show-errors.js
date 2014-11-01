@@ -12,7 +12,7 @@
           getTrigger = function (options) {
               var trigger;
               trigger = showErrorsConfig.trigger;
-              if (options && (options.trigger != null)) {
+              if (options && (options.trigger !== null)) {
                   trigger = options.trigger;
               }
               return trigger;
@@ -20,7 +20,7 @@
           getShowSuccess = function (options) {
               var showSuccess;
               showSuccess = showErrorsConfig.showSuccess;
-              if (options && (options.showSuccess != null)) {
+              if (options && (options.showSuccess !== null)) {
                   showSuccess = options.showSuccess;
               }
               return showSuccess;
@@ -56,10 +56,10 @@
                   return $timeout(function () {
                       el.removeClass('has-error');
                       el.removeClass('has-success');
-                      return blurred = false;
+                      blurred = false;
                   }, 0, false);
               });
-              return toggleClasses = function (invalid) {
+              toggleClasses = function (invalid) {
                   el.toggleClass('has-error', invalid);
                   if (showSuccess) {
                       return el.toggleClass('has-success', !invalid);
@@ -84,10 +84,10 @@
         _showSuccess = false;
         _trigger = 'blur';
         this.showSuccess = function (showSuccess) {
-            return _showSuccess = showSuccess;
+            _showSuccess = showSuccess;
         };
         this.trigger = function (trigger) {
-            return _trigger = trigger;
+            _trigger = trigger;
         };
         this.$get = function () {
             return {

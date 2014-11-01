@@ -38,8 +38,8 @@ module.exports = function (grunt) {
         jshint: {
             files: [
                 './Web/App/**/*.js',
-                './JavaScriptTests/spec/**/*.js',
-                './JavaScriptTests/helpers/**/*.js'
+                './JavaScriptTests/App/**/*.js',
+                './JavaScriptTests/httpBackend/**/*.js'
             ],
             options: {
 

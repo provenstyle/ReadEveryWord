@@ -6,7 +6,7 @@
     function bookFactory() {
         var factory = {
             create: create
-        }
+        };
 
         return factory;
 
@@ -27,7 +27,7 @@
 
             for (var i = 0; i < self.chapterCount; i++) {
                 self.chapters.push(new Chapter(i + 1, self));
-            };
+            }
 
             self.updateStartedAndCompleted = function () {
                 self.started = _.some(self.chapters, function (chapter) {

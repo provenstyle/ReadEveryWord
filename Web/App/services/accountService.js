@@ -79,7 +79,7 @@
                    deferred.reject(result);
                });
             return deferred.promise;
-        };
+        }
 
         function uniqueEmail(value) {
             var deferred = $q.defer();

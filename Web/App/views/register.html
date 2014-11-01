@@ -9,8 +9,8 @@
             <input type="email" class="form-control" id="newEmail" name="newEmail" placeholder="Enter email" autocomplete="off"
                    ng-model="email"
                    required
-                   overwrite-email
-                   unique-email />
+                   data-overwrite-email
+                   data-unique-email />
             <p class="help-block" ng-if="register.newEmail.$error.required">Email address is required</p>
             <p class="help-block" ng-if="register.newEmail.$error.email">Invalid email address</p>
             <p class="help-block" ng-if="register.newEmail.$error.uniqueEmail">Email address already in use</p>
@@ -46,10 +46,4 @@
             </div>
         </div>
     </form>
-    
-    Form: {{register.$valid}} <br>
-    email: {{ email }} valid: {{register.newEmail.$valid}} <br>
-    password: {{ password }} valid: {{register.newPassword.$valid}} <br>
-    confirm: {{ confirmPassword }} valid: {{register.confirmPassword.$valid}} <br>
-
 </div>
