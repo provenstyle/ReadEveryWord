@@ -30,21 +30,20 @@
                 $scope.disableCreate = true;
 
                 accountService.register($scope.email, $scope.password, $scope.confirmPassword)
-                .then(function () {
-                    historyModel.prime()
-                        .then(function () {
-                            location.hash = "#books";
-                        });
-                })
-                .catch(function () {
-                    $scope.registrationError = true;
-                    $scope.disableCreate = false;
-                });
+                    .then(function () {
+                        return historyModel.prime();
+                    })
+                    .then(function () {
+                        location.hash = "#books";
+                    })
+                    .catch(function () {
+                        $scope.registrationError = true;
+                        $scope.disableCreate = false;
+                    });
             }
         }
 
         $scope.$watchGroup(['email', 'password', 'confirmPassword'], function () {
-            $log.debug('Resetting registration error.');
             $scope.registrationError = false;
         });
     }

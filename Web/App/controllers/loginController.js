@@ -3,9 +3,9 @@
         .module('readEveryWord')
         .controller('loginController', loginController);
 
-    loginController.$inject = ['$scope', '$log', 'accountService', 'historyService'];
+    loginController.$inject = ['$scope', '$log', 'accountService', 'historyModel'];
 
-    function loginController($scope, $log, accountService, historyService) {
+    function loginController($scope, $log, accountService, historyModel) {
         $scope.email = '';
         $scope.password = '';
         $scope.loginError = false;
@@ -13,7 +13,7 @@
 
         $scope.login = function () {
             $scope.$broadcast('show-errors-check-validity');
-            if ($scope.login.$valid) {
+            if ($scope.loginForm.$valid) {
                 submitForm();
             }
         };
@@ -25,16 +25,17 @@
         function submitForm() {
             $scope.disableLogin = true;
 
-            accountService.login($scope.email, $scope.password)
+            accountService.logIn($scope.email, $scope.password)
                 .then(function() {
-                    return historyService.prime();
-                }, function() {
-                    $log.warn('Failed to login. Invalid username or password.');
-                    $scope.loginError = true;
-                    $scope.disableLogin = false;
+                    return historyModel.prime();
                 })
                 .then(function () {
                     location.hash = "#books";
+                })
+                .catch(function () {
+                    $log.warn('Failed to login. Invalid username or password.');
+                    $scope.loginError = true;
+                    $scope.disableLogin = false;
                 });
         }
     }
