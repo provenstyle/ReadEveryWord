@@ -7,7 +7,11 @@
             })
             .when('/register', {
                 templateUrl: 'app/views/register.html',
-                controller:'registerController'
+                controller: 'registerController'
+            })
+            .when('/login', {
+                templateUrl: 'app/views/login.html',
+                controller: 'loginController'
             });
 
     }]);

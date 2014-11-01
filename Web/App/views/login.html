@@ -1,1 +1,35 @@
-﻿
+﻿<div class="container login" ng-controller="loginController">
+    <h2>Login</h2>
+
+    <div class="alert alert-danger" ng-if="loginError">
+        <p>Invalid username or password.</p>
+    </div>
+
+    <!--Try this to force browser to remember https://gist.github.com/kostiklv/968927 -->
+    <form id="login" name="login" role="form" novalidate>
+        <div class="form-group">
+            <label for="email" class="control-label">Email address</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email"
+                   ng-model="email"
+                   required>
+            <p class="help-block" ng-if="login.email.$error.required">Email address is required</p>
+        </div>
+        <div class="form-group">
+            <label for="password" class="control-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                   ng-model="password"
+                   required>
+            <p class="help-block" ng-if="login.password.$error.required">Password is required</p>
+        </div>
+
+        <div class="row actions">
+            <div class="col-xs-6">
+                <button class="btn btn-default right" ng-click="login()">Login</button>
+            </div>
+            <div class="col-xs-6 link">
+                <a href="#register">Create Account</a>
+            </div>
+        </div>
+    </form>
+
+</div>
