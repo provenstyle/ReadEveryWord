@@ -6,6 +6,7 @@
     routeEvents.$inject = ['$rootScope', '$location', '$log', 'userModel'];
 
     function routeEvents($rootScope, $location, $log, userModel) {
+        console.log('*** routeEvents');
         return {
             initialize: initialize
         }

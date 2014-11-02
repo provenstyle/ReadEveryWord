@@ -3,13 +3,11 @@
         .module('readEveryWord')
         .run(run);
 
-    run.$inject = ['$q', 'routeEvents', 'userAuthentication'];
+    run.$inject = ['bootstrapper'];
 
-    function run($q, routeEvents, userAuthentication) {
-        var deferred = $q.defer(); 
-        routeEvents.initialize();
-        userAuthentication.initialize();
-        return deferred.promise;
+    function run(bootstrapper) {
+        console.log('*** run');
+        bootstrapper.bootstrap();
     }
 
 })();

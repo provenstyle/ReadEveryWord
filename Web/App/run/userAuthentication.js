@@ -6,6 +6,7 @@
     routeEvents.$inject = ['$location', 'accountService', 'historyModel'];
 
     function routeEvents($location, accountService, historyModel) {
+        console.log('*** userAuthentication');
         return {
             initialize: initialize
         }
