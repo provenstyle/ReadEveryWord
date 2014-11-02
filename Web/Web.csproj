@@ -321,7 +321,6 @@
     <Content Include="App\models\historyModel.js" />
     <Content Include="App\models\userModel.js" />
     <Content Include="App\run\bootstrapper.js" />
-    <Content Include="App\run\userAuthentication.js" />
     <Content Include="App\run\run.js" />
     <Content Include="App\services\accountService.js" />
     <Content Include="App\services\historyService.js" />
