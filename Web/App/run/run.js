@@ -3,12 +3,12 @@
         .module('readEveryWord')
         .run(run);
 
-    run.$inject = ['bootstrapper', 'routeEvents'];
+    run.$inject = ['$log', 'bootstrapper', 'routeEvents'];
 
-    function run(bootstrapper, routeEvents) {
-        //resolving the bootstrapper should be enough
+    function run($log, bootstrapper, routeEvents) {
+        $log.debug('*** run');
+        bootstrapper.initialize();
         routeEvents.initialize();
-        console.log('*** run');
     }
 
 })();

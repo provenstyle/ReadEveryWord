@@ -26,7 +26,11 @@
 
         <div class="row actions">
             <div class="col-xs-6">
-                <button class="btn btn-default right" ng-click="login()">Login</button>
+                <button class="btn btn-default right" 
+                        ng-click="login()"
+                        ng-disable="disableLogin">
+                    Login
+                </button>
             </div>
             <div class="col-xs-6 link">
                 <a href="#register">Create Account</a>

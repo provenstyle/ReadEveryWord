@@ -6,7 +6,7 @@
     routeEvents.$inject = ['$rootScope', '$location', '$log', '$q', 'userModel', 'bootstrapper'];
 
     function routeEvents($rootScope, $location, $log, $q, userModel, bootstrapper) {
-        console.log('*** routeEvents');
+        $log.debug('*** routeEvents');
         return {
             initialize: initialize
         }
@@ -22,7 +22,7 @@
                 }
 
                 if (_.contains(authenticationNotRequired, next.controller)) {
-                    $log.debug('authentication not required');
+                    $log.debug('authentication not required: ' + next.controller);
                     return;
                 }
 
@@ -30,7 +30,7 @@
                     bootstrapper.promise
                         ['finally'](function () {
                             if (!userModel.isAuthenticated) {
-                                $log.debug('routeEvents is redirecting to login');
+                                $log.debug('routeEvents is redirecting to login from: ' + next.controller);
                                 $location.path('/login').replace();
                             }
                         });
