@@ -19,6 +19,10 @@
                 templateUrl: 'app/views/login.html',
                 controller: 'loginController'
             })
+            .when('/readingLog', {
+                templateUrl: 'app/views/readingLog.html',
+                controller: 'readingLogController'
+            })
             .otherwise({
                 redirectTo: '/'
             });

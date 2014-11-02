@@ -19,12 +19,12 @@
         function loggedIn() {
             var deffered = $q.defer();
             $http.get(rew.config.basePath() + '/api/AccountApi/LoggedIn')
-                .then(function (data) {
-                    $log.debug('User is logged in: ' + xhr.status);
-                    userModel.authenticated(data.username);
+                .then(function (response) {
+                    $log.debug('User is logged in.');
+                    userModel.authenticated(response.data.username);
                     deffered.resolve();
                 }, function () {
-                    $log.info('User is not logged in: ' + xhr.status);
+                    $log.info('User is not logged in.');
                     userModel.clear();
                     deffered.reject();
                 });
