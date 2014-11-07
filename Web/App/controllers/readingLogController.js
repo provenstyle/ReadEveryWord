@@ -3,9 +3,9 @@
         .module('readEveryWord')
         .controller('readingLogController', readingLogController);
 
-    readingLogController.$inject = ['$scope'];
+    readingLogController.$inject = ['$scope', 'historyModel'];
 
-    function readingLogController($scope) {
-        
+    function readingLogController($scope, historyModel) {
+        $scope.historyRecords = historyModel.historyRecords;
     }
 })();
