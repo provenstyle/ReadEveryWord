@@ -30,7 +30,8 @@ module.exports = function (config) {
         // list of files to exclude
         exclude: [
           '../Web/App/app.js',
-          '../Web/App/configs/**/'
+          '../Web/App/configs/**/',
+          '../Web/App/run/**/'
         ],
 
 

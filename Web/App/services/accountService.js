@@ -18,7 +18,7 @@
 
         function loggedIn() {
             var deffered = $q.defer();
-            $http.get(rew.config.basePath() + '/api/AccountApi/LoggedIn')
+            $http.get(rew.config.basePath() + '/api/accountApi/LoggedIn')
                 .then(function (response) {
                     $log.debug('User is logged in.');
                     userModel.authenticated(response.data.username);
