@@ -13,6 +13,13 @@
         }
 
         $routeProvider
+            .when('/', {
+                templateUrl: 'app/views/books.html',
+                controller: 'booksController',
+                resolve: {
+                    boostrapperPromise: bootstrapperPromise
+                }
+            })
             .when('/about', {
                 templateUrl: 'app/views/about.html',
                 controller: 'aboutController',
