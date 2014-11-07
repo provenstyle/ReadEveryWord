@@ -5,11 +5,11 @@
         </div>
     </div>
 
-    <div class="row books" data-bind="foreach: history.oldTestament">
+    <div class="row books" ng-repeat="book in books.oldTestamentBooks">
         <div class="col-xs-2">
             <div class="wrapper" data-bind="css: {completed: completed, started: started}, click: $parent.toggleRead">
-                <span class="hidden-xs" data-bind="text: longName">Genesis</span>
-                <span class="visible-xs" data-bind="text: shortName">Gen</span>
+                <span class="hidden-xs">{{ book.longName }}</span>
+                <span class="visible-xs">{{ book.shortname }}</span>
             </div>
         </div>
     </div>
@@ -20,11 +20,11 @@
         </div>
     </div>
 
-    <div class="row books newTestament" data-bind="foreach: history.newTestament">
+    <div class="row books newTestament" ng-repeat="book in books.newTestamentBooks">
         <div class="col-xs-2">
             <div class="wrapper" data-bind="css: {completed: completed, started: started}, click: $parent.toggleRead">
-                <span class="hidden-xs" data-bind="text: longName">Genesis</span>
-                <span class="visible-xs" data-bind="text: shortName">Gen</span>
+                <span class="hidden-xs">{{ book.longName }}</span>
+                <span class="visible-xs">{{ book.shortName }}</span>
             </div>
         </div>
     </div>
