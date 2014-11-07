@@ -20,6 +20,13 @@
                     boostrapperPromise: bootstrapperPromise
                 }
             })
+            .when('/chapters/:bookname', {
+                templateUrl: 'app/views/chapters.html',
+                //controller: 'booksController',
+                resolve: {
+                    boostrapperPromise: bootstrapperPromise
+                }
+            })
             .when('/about', {
                 templateUrl: 'app/views/about.html',
                 controller: 'aboutController',

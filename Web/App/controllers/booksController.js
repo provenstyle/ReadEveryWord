@@ -9,8 +9,8 @@
       
         $scope.books = historyModel.books;
 
-        $scope.toggleRead = function (chapter) {
-            $location.path('/chapters/' + +encodeURIComponent(chapter.shortName));
+        $scope.goToChapters = function (book) {
+            $location.path('/chapters/' + encodeURIComponent(book.shortName));
         };
     }
 })();

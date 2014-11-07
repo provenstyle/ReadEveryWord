@@ -5,9 +5,9 @@
         </div>
     </div>
 
-    <div class="row books" ng-repeat="book in books.oldTestamentBooks">
-        <div class="col-xs-2">
-            <div class="wrapper" data-bind="css: {completed: completed, started: started}, click: $parent.toggleRead">
+    <div class="row books">
+        <div class="col-xs-2" ng-repeat="book in books.oldTestamentBooks">
+            <div class="wrapper" ng-class="{completed: book.completed, started: book.started}" ng-click="goToChapters(book)">
                 <span class="hidden-xs">{{ book.longName }}</span>
                 <span class="visible-xs">{{ book.shortname }}</span>
             </div>
@@ -20,9 +20,9 @@
         </div>
     </div>
 
-    <div class="row books newTestament" ng-repeat="book in books.newTestamentBooks">
-        <div class="col-xs-2">
-            <div class="wrapper" data-bind="css: {completed: completed, started: started}, click: $parent.toggleRead">
+    <div class="row books newTestament">
+        <div class="col-xs-2" ng-repeat="book in books.newTestamentBooks">
+            <div class="wrapper" ng-class="{completed: book.completed, started: book.started}" ng-click="goToChapters(book)">
                 <span class="hidden-xs">{{ book.longName }}</span>
                 <span class="visible-xs">{{ book.shortName }}</span>
             </div>
