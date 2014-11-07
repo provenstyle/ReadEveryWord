@@ -22,7 +22,7 @@
             })
             .when('/chapters/:bookname', {
                 templateUrl: 'app/views/chapters.html',
-                //controller: 'booksController',
+                controller: 'chaptersController',
                 resolve: {
                     boostrapperPromise: bootstrapperPromise
                 }

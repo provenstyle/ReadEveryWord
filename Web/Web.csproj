@@ -310,6 +310,7 @@
     <Content Include="App\configs\validation.js" />
     <Content Include="App\controllers\aboutController.js" />
     <Content Include="App\controllers\booksController.js" />
+    <Content Include="App\controllers\chaptersController.js" />
     <Content Include="App\controllers\loginController.js" />
     <Content Include="App\controllers\readingLogController.js" />
     <Content Include="App\controllers\registerController.js" />
