@@ -3,18 +3,17 @@
         .module('readEveryWord')
         .controller('chaptersController', chaptersController);
 
-    chaptersController.$inject = ['$scope', '$routeParams', 'historyModel'];
+    chaptersController.$inject = ['$scope', '$routeParams', 'historyModel', 'historyService'];
 
-    function chaptersController($scope, $routeParams, historyModel) {
-        $scope = {
-            book: historyModel.bookByName($routeParams.bookname),
-            toggleRead: toggleRead
-        };
+    function chaptersController($scope, $routeParams, historyModel, historyService) {
+        
 
-        function toggleRead(chapter) {
+        $scope.book = historyModel.bookByName($routeParams.bookname);
+
+        $scope.toggleRead = function (chapter) {
             var read = !chapter.read;
-            service.postHistory($scope.book.shortName, chapter.number, read)
-                .done(function () {
+            historyService.postHistory($scope.book.shortName, chapter.number, read)
+                .then(function () {
                     chapter.read = read;
 
                     var historyUpdate = {
@@ -23,14 +22,14 @@
                     };
 
                     if (read === true) {
-                        history.addToHistoryRecords(historyUpdate);
+                        historyModel.addToHistoryRecords(historyUpdate);
                     }
 
                     if (read === false) {
-                        history.removeHistoryRecords(historyUpdate);
+                        historyModel.removeHistoryRecords(historyUpdate);
                     }
                 })
-                .fail(function () {
+                .catch(function () {
                     chapter.read = !read;
                 });
             chapter.read = read;
