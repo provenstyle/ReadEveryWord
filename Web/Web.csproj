@@ -306,6 +306,7 @@
     <Content Include="AppBuilt\main-built.js" />
     <Content Include="App\app.js" />
     <Content Include="App\configs\http.js" />
+    <Content Include="App\configs\locationConfig.js" />
     <Content Include="App\configs\route.js" />
     <Content Include="App\configs\validation.js" />
     <Content Include="App\controllers\aboutController.js" />
@@ -314,7 +315,7 @@
     <Content Include="App\controllers\loginController.js" />
     <Content Include="App\controllers\readingLogController.js" />
     <Content Include="App\controllers\registerController.js" />
-    <Content Include="App\controllers\shell.js" />
+    <Content Include="App\controllers\shellController.js" />
     <Content Include="App\directives\unique-email.js" />
     <Content Include="App\directives\overwrite-email.js" />
     <Content Include="App\directives\equal-to.js" />
@@ -333,7 +334,6 @@
     <Content Include="App\views\login.html" />
     <Content Include="App\views\readingLog.html" />
     <Content Include="App\views\register.html" />
-    <Content Include="App\views\shell.html" />
     <Content Include="App_Durandal\main.js" />
     <Content Include="App_Durandal\models\books.js" />
     <Content Include="App_Durandal\models\book.js" />

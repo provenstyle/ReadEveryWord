@@ -3,9 +3,9 @@
         .module('readEveryWord')
         .factory('accountService', accountService);
 
-    accountService.$inject = ['$http', '$q', '$log', 'userModel'];
+    accountService.$inject = ['$http', '$q', '$log', 'userModel', 'historyModel'];
 
-    function accountService ($http, $q, $log, userModel) {
+    function accountService ($http, $q, $log, userModel, historyModel) {
         var service = {
             loggedIn: loggedIn,
             logIn: logIn,
@@ -78,7 +78,7 @@
                .then(function (result) {
                    $log.debug('Logged off.');
                    userModel.clear();
-                   history.clear();
+                   historyModel.clear();
                    deferred.resolve(result);
                }, function (result) {
                    $log.warn('Failed to logoff.');

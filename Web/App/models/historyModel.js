@@ -58,7 +58,7 @@
             }
 
             for (var prop in model.books.bookIndex) {
-                var book = model.bookIndex[prop];
+                var book = model.books.bookIndex[prop];
                 if (book.chapters) {
                     _.each(book.chapters, reset);
                 }

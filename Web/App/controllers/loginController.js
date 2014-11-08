@@ -30,7 +30,7 @@
                     return historyModel.prime();
                 })
                 .then(function () {
-                    $location.path('/books').replace();
+                    $location.path('/').replace();
                 })
                 .catch(function () {
                     $log.warn('Failed to login. Invalid username or password.');

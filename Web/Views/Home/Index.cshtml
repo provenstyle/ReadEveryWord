@@ -99,17 +99,52 @@
     </script>
 </head>
 <body class="container" ng-app="readEveryWord">
-    <div id="applicationHost" ng-view>
-        <div class="splash">
-            <div class="message">
-                Read Every Word
-            </div>
-            <div><i class="fa fa-spinner fa-spin"></i></div>
-            <i class="bigLogo"></i>
-            <p>Man shall not live on bread alone, but on every word that proceeds out of the mouth of God.</p>
-            <p class="source">- Jesus</p>
+    <div id="applicationHost">
+        <div ng-controller="shellController">
+            <nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapse-nav-bar">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="/#/"><span class="glyphicon glyphicon-book"></span>Read Every Word</a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="collapse-nav-bar">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="username" ng-bind="userModel.username"></li>
+                            <li class="visible-xs"><a href="#readingLog">Reading Log</a></li>
+                            <li class="visible-xs"><a href="#" ng-click="refresh()">Refresh Data</a></li>
+                            <li class="visible-xs"><a href="#about">About</a></li>
+                            <li class="visible-xs"><a href="#" ng-click="logOff()">Log Off</a></li>
+
+                            <li class="hidden-xs dropdown">
+                                <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#readingLog">Reading Log</a></li>
+                                    <li><a href="#" ng-click="refresh()">Refresh Data</a></li>
+                                    <li><a href="#about">About</a></li>
+                                    <li><a href="#" ng-click="logOff()">Log Off</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </div>
+            </nav>
+            <div class="page-host" ng-view></div>
         </div>
     </div>
+    
+    @*<div class="splash">
+        <div class="message">
+            Read Every Word
+        </div>
+        <div><i class="fa fa-spinner fa-spin"></i></div>
+        <i class="bigLogo"></i>
+        <p>Man shall not live on bread alone, but on every word that proceeds out of the mouth of God.</p>
+        <p class="source">- Jesus</p>
+    </div>*@
 
     @Scripts.Render("~/Scripts/vendor")
     <script src="~/config.js"></script>
@@ -128,6 +163,7 @@
         <script type="text/javascript" src="~/App/configs/route.js"></script>
         <script type="text/javascript" src="~/App/configs/validation.js"></script>
         <script type="text/javascript" src="~/App/configs/http.js"></script>
+        <script type="text/javascript" src="~/App/configs/locationConfig.js"></script>
 
         <script type="text/javascript" src="~/App/directives/overwrite-email.js"></script>
         <script type="text/javascript" src="~/App/directives/equal-to.js"></script>
@@ -147,6 +183,7 @@
         <script type="text/javascript" src="~/App/controllers/readingLogController.js"></script>
         <script type="text/javascript" src="~/App/controllers/booksController.js"></script>
         <script type="text/javascript" src="~/App/controllers/chaptersController.js"></script>
+        <script type="text/javascript" src="~/App/controllers/shellController.js"></script>
 
     }
     else

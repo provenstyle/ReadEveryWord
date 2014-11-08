@@ -13,7 +13,7 @@
 
         function initialize() {
             $rootScope.$on('$routeChangeStart', function (evt, next, current) {
-
+                $log.debug('route: ' + next.controller);
                 if (userModel.isAuthenticated) {
                     return;
                 }
@@ -35,6 +35,10 @@
                         $location.path('/login').replace();
                     }
                 });
+            });
+
+            $rootScope.$on('$routeUpdate', function() {
+                $log.debug('routeUpdated: ' );
             });
         }
     }
