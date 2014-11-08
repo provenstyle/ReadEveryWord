@@ -1,4 +1,8 @@
-﻿.form-group .help-block {
+﻿[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+}
+
+.form-group .help-block {
   display: none;
 }
 
