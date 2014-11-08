@@ -316,6 +316,7 @@
     <Content Include="App\controllers\readingLogController.js" />
     <Content Include="App\controllers\registerController.js" />
     <Content Include="App\controllers\shellController.js" />
+    <Content Include="App\directives\mobile-nav-fix.js" />
     <Content Include="App\directives\unique-email.js" />
     <Content Include="App\directives\overwrite-email.js" />
     <Content Include="App\directives\equal-to.js" />

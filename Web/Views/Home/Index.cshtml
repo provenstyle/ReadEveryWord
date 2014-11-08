@@ -112,7 +112,7 @@
                         <a class="navbar-brand" href="/#/"><span class="glyphicon glyphicon-book"></span>Read Every Word</a>
                     </div>
                     <div class="collapse navbar-collapse" id="collapse-nav-bar">
-                        <ul class="nav navbar-nav navbar-right">
+                        <ul class="nav navbar-nav navbar-right" data-mobile-nav-fix>
                             <li class="username" ng-bind="userModel.username"></li>
                             <li class="visible-xs"><a href="#readingLog">Reading Log</a></li>
                             <li class="visible-xs"><a href="#" ng-click="refresh()">Refresh Data</a></li>
@@ -165,6 +165,7 @@
         <script type="text/javascript" src="~/App/configs/http.js"></script>
         <script type="text/javascript" src="~/App/configs/locationConfig.js"></script>
 
+        <script type="text/javascript" src="~/App/directives/mobile-nav-fix.js"></script>
         <script type="text/javascript" src="~/App/directives/overwrite-email.js"></script>
         <script type="text/javascript" src="~/App/directives/equal-to.js"></script>
         <script type="text/javascript" src="~/App/directives/unique-email.js"></script>
