@@ -2,6 +2,10 @@
     min-height: 70px;
 }
 
+.navbar .glyphicon {
+    width: 14px;
+}
+
 .navbar-brand {
     height: 44px;
     padding: 12px 8px;
@@ -10,11 +14,16 @@
 
 .navbar-brand .glyphicon {
     margin-right: 6px;
+
 }
 
 .navbar-toggle {
     margin-top: 5px;
     margin-bottom: 5px;
+}
+
+.dropdown-toggle {
+    height: 49px;
 }
 
 .navbar-inverse {

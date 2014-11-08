@@ -102,7 +102,7 @@
     <div id="applicationHost">
         <div ng-controller="shellController">
             <nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
-                <div class="container">
+                <div class="container" ng-cloak ng-show="bootstrapped">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapse-nav-bar">
                             <span class="icon-bar"></span>

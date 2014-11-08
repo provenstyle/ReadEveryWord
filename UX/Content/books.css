@@ -3,7 +3,7 @@
 }
 
 .navbar {
-    min-height: 44px;
+    min-height: 71px;
 }
 
 .navbar-brand {
@@ -19,6 +19,10 @@
 .navbar-toggle {
     margin-top: 5px;
     margin-bottom: 5px;
+}
+
+.dropdown-toggle {
+    height: 49px;
 }
 
 .navbar-inverse {
