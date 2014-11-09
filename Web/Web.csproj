@@ -359,6 +359,7 @@
     <Content Include="App_Durandal\views\login.html" />
     <Content Include="App_Durandal\views\shell.html" />
     <Content Include="config.js" />
+    <Content Include="Content\animations.css" />
     <Content Include="Content\splash.css" />
     <Content Include="Content\navbar.css" />
     <Content Include="Content\readEveryWord.css" />

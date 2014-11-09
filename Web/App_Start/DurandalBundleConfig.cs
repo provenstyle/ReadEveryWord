@@ -38,6 +38,7 @@ namespace ProvenStyle.ReadEveryWord.Web
                 .Include("~/Content/starterkit.css")
                 .Include("~/Content/toastr.css")
 
+                .Include("~/Content/animations.css")
                 .Include("~/Content/navbar.css")
                 .Include("~/Content/splash.css")
                 .Include("~/Content/readEveryWord.css");
