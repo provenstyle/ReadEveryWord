@@ -2,6 +2,10 @@
     display: none !important;
 }
 
+a {
+    cursor: pointer;
+}
+
 .form-group .help-block {
   display: none;
 }
