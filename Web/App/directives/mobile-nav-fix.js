@@ -18,10 +18,10 @@
                 });
 
                 function closeMobileNav() {
-                    var smallMenu = $('.navbar-header .navbar-toggle');
+                    var smallMenu = $('.navbar-collapse');
 
-                    if (smallMenu.hasClass('collapsed') !== true) {
-                        smallMenu.trigger("click");
+                    if (smallMenu.hasClass('in') === true) {
+                        smallMenu.removeClass('in');
                     }
                 }
             }
