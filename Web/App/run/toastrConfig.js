@@ -10,7 +10,7 @@
 
         function initialize() {
             toastr.options = {
-                timeOut: 1000
+                timeOut: 900,
             };
         }
     }

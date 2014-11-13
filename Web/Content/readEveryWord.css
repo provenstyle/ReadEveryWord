@@ -2,6 +2,10 @@
     display: none !important;
 }
 
+.toast-top-right{
+    right: 20%;
+}
+
 a {
     cursor: pointer;
 }
