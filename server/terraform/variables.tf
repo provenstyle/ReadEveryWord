@@ -31,3 +31,14 @@ variable "random_length" {
   description = "Amount of random characters to append to resource names"
   default     = 18
 }
+variable "storage_account_replication_type" {
+  description = "Defines the type of replication to use for this storage account"
+  type        = string
+  default     = "LRS" 
+  # default     = "GRS" 
+}
+variable "app_scale_limit" {
+  type        = string
+  description = "Number of workers this function app can scale out to"
+  default     = 1
+}

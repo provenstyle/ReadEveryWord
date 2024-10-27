@@ -1,25 +1,62 @@
+
+# Usually we will want the prefix to be empty
+# But when we have multiple resources of the same type it can be confusing
 variable "resource_names" {
-  type = map(string)
-  default = {
-    resource_group = "azurerm_resource_group"
-    table_storage  = "azurerm_storage_account"
-  }
+  type = list(object({
+    name   = string
+    type   = string
+    prefix = string
+  }))
+  default = [
+    {
+      name   = "resource_group"
+      type   = "azurerm_resource_group"
+      prefix = ""
+    },
+    {
+      name   = "table_storage"
+      type   = "azurerm_storage_account"
+      prefix = "ts"
+    },
+    {
+      name   = "function_app_storage"
+      type   = "azurerm_storage_account"
+      prefix = "fa"
+    },
+    {
+      name   = "application_insights"
+      type   = "azurerm_application_insights"
+      prefix = ""
+    },
+    {
+      name   = "app_service_plan"
+      type   = "azurerm_app_service_plan"
+      prefix = ""
+    },
+    {
+      name   = "function_app"
+      type   = "azurerm_function_app"
+      prefix = ""
+    }
+  ]
 }
 
+# a lot of foreach hand ringing so we don't have to specify each name
 resource "azurecaf_name" "names" {
-  for_each      = var.resource_names
-  name          = each.value == "azurerm_resource_group" ? var.service : ""
-  resource_type = each.value
-  prefixes      = []
+  for_each      = { for idx, resource in var.resource_names : idx => resource }
+  name          = each.value.type == "azurerm_resource_group" ? var.service : ""
+  resource_type = each.value.type
+  prefixes      = each.value.prefix != "" ? [each.value.prefix] : []
   suffixes      = []
   random_length = var.random_length
   clean_input   = true
   use_slug      = true
 }
 
+# putting the generated names into an easy to use format
 locals {
-    names = zipmap(
-      keys(resource.azurecaf_name.names),
-      values(resource.azurecaf_name.names)[*].result
-    )
+  names = zipmap(
+    [for idx, resource in var.resource_names : resource.name],
+    [for idx, resource in var.resource_names : azurecaf_name.names[idx].result]
+  )
 }
