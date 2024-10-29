@@ -1,3 +1,7 @@
 .local
 .terraform
 .terraform.lock.hcl
+
+node_modules
+local.settings.json
+dist

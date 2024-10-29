@@ -24,7 +24,7 @@ resource "azurerm_service_plan" "func" {
   tags                = local.tags
 }
 
-resource "azurerm_windows_function_app" "this" {
+resource "azurerm_linux_function_app" "this" {
   name                       = local.names.function_app
   resource_group_name        = resource.azurerm_resource_group.this.name
   location                   = var.location
@@ -49,12 +49,13 @@ resource "azurerm_windows_function_app" "this" {
       app_settings["WEBSITE_RUN_FROM_PACKAGE"]
     ]
   }
+  https_only = true
   site_config {
     use_32_bit_worker = false
     app_scale_limit   = var.app_scale_limit
 
     application_stack {
-      node_version = "~20"
+      node_version = "20"
     }
   }
 
