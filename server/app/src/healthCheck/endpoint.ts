@@ -4,7 +4,7 @@ app.http('health_check', {
   methods: ['GET'],
   authLevel: 'function',
   handler: handle,
-  route: 'health-check'
+  route: 'healthCheck'
 })
 
 export async function handle (request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
