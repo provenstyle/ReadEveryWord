@@ -32,7 +32,7 @@ export const validate = async (request: CreateUser)
                 validator.errors?.map(e => {
                     return new InvalidSchema({
                         message: e.message,
-                        property: e.instancePath || e.params.missingProperty
+                        property: e.instancePath
                     })
                 }) ?? []
             )
