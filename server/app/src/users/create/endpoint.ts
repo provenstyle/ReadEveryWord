@@ -35,8 +35,10 @@ const handleSuccess = (data: CreateUserSucceeded) => {
 
 const handleFailures = (err: CreateUserFailed) => {
   switch (err.code) {
-    case 'validation-failed': return json(400, err)
+    case 'invalid-server-configuration': return json(500, err)
     case 'persistence-error': return json(500, err)
+    case 'validation-failed': return json(400, err)
+    case 'duplicate-auth-id': return json(400, err)
     default: return assertNever(err)
   }
 }
