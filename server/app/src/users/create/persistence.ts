@@ -74,31 +74,6 @@ export class Persistence {
       return err(new PersistenceError())
     }
   }
-
-  async getByAuthId (
-    authId: string
-  ): Promise<Result<UserData, GetFailed>> {
-    try {
-      const allResult = await this.getAllRows(authId)
-      if (isErr(allResult)) {
-        return allResult
-      }
-      const all = allResult.data
-
-      if (!all.length) {
-        return err(new UserNotFound())
-      }
-
-    const existing = all.find(x => x.authId === authId)
-
-    return (existing)
-      ? ok(existing)
-      : err(new UserNotFound())
-    } catch (e) {
-      console.error('Unexpected error getting user by authId', e)
-      return err(new PersistenceError())
-    }
-  }
 }
 
 export const map = (row: UserRow): UserData => {
@@ -128,15 +103,6 @@ export class DuplicateAuthId {
   message = 'User with authId already exists'
 }
 
-export class UserNotFound {
-  code = 'user-not-found' as const
-  message = 'User not found'
-}
-
 export type CreateFailed =
   | PersistenceError
   | DuplicateAuthId
-
-export type GetFailed =
-  | PersistenceError
-  | UserNotFound
