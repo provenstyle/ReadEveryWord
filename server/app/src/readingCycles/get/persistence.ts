@@ -1,8 +1,7 @@
 import { Result, err, ok, isErr } from '../../infrastructure/Result'
 import { TableClient } from '@azure/data-tables'
 import { Config } from '../../config'
-import { CreateReadingCycle } from './handler'
-import { v4 as uuid } from 'uuid'
+import { GetReadingCycle } from './handler'
 import { ReadingCycle, ReadingCycleRow, map } from '../domain'
 
 export class Persistence {
@@ -23,24 +22,18 @@ export class Persistence {
     return this._tableClient
   }
 
-  async createReadingCycle(request: CreateReadingCycle): Promise<Result<ReadingCycle, CreateFailed>> {
+  async getReadingCycle(request: GetReadingCycle): Promise<Result<ReadingCycle[], CreateFailed>> {
     try {
-      const rowKey = uuid()
-
-      await this.getTableClient().createEntity({
-        partitionKey: request.authId,
-        rowKey,
-        dateStarted: request.dateStarted,
-        dateCompleted: request.dateCompleted
+      const allRows: ReadingCycleRow[] = []
+      const allRowsResult = this.getTableClient().listEntities<ReadingCycleRow>({
+        queryOptions: {
+          filter: `PartitionKey eq '${request.authId}'`
+        }
       })
-
-      return ok({
-        id: rowKey,
-        lastModified: '',
-        authId: request.authId,
-        dateStarted: request.dateStarted,
-        dateCompleted: request.dateCompleted
-      })
+      for await (const row of allRowsResult) {
+        allRows.push(row)
+      }
+      return ok(allRows.map(u => map(u)))
     } catch (e) {
       console.error('Unexpected error creating readingCycle', e)
       return err(new PersistenceError())
