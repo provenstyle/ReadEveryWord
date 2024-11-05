@@ -1,8 +1,9 @@
 import { Result, err, ok, isErr } from '../../infrastructure/Result'
 import { TableClient } from '@azure/data-tables'
 import { Config } from '../../config'
-import { CreateUser, UserData } from './handler'
+import { CreateUser } from './handler'
 import { v4 as uuid } from 'uuid'
+import { User } from '../domain'
 
 export class Persistence {
   private _tableClient: TableClient | undefined
@@ -22,7 +23,7 @@ export class Persistence {
     return this._tableClient
   }
 
-  async createUser(request: CreateUser): Promise<Result<UserData, CreateFailed>> {
+  async createUser(request: CreateUser): Promise<Result<User, CreateFailed>> {
     try {
       const rowsResult = await this.getAllRows(request.authId)
       if (isErr(rowsResult)) {
@@ -57,7 +58,7 @@ export class Persistence {
 
   async getAllRows (
     authId: string
-  ): Promise<Result<UserData[], PersistenceError>> {
+  ): Promise<Result<User[], PersistenceError>> {
     try {
       const allRows: UserRow[] = []
       const allRowsResult = this.getTableClient().listEntities<UserRow>({
@@ -76,7 +77,7 @@ export class Persistence {
   }
 }
 
-export const map = (row: UserRow): UserData => {
+export const map = (row: UserRow): User=> {
   console.log(row)
   return {
     id: row.rowKey,

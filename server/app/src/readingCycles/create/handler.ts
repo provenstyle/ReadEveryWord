@@ -3,9 +3,9 @@ import { ValidationFailed, InvalidSchema } from '../../infrastructure/Validation
 import { validate } from './validation'
 import { Persistence, CreateFailed } from './persistence'
 import { fromEnv, type InvalidConfiguration } from '../../config'
-import { User } from '../domain'
+import { ReadingCycle } from '../domain'
 
-export async function handleCreateUser(request: CreateUser): Promise<CreateUserResult> {
+export async function handleCreateReadingCycle(request: CreateReadingCycle): Promise<CreateReadingCycleResult> {
   const configResponse = fromEnv()
   if(isErr(configResponse)) {
     return configResponse
@@ -18,28 +18,29 @@ export async function handleCreateUser(request: CreateUser): Promise<CreateUserR
   }
 
   const persistence = new Persistence(config)
-  const createUserResponse = await persistence.createUser(request)
-  if (isErr(createUserResponse)) {
-    return createUserResponse
+  const createReadingCycleResponse = await persistence.createReadingCycle(request)
+  if (isErr(createReadingCycleResponse)) {
+    return createReadingCycleResponse
   }
-  const user = createUserResponse.data
+  const readingCycle = createReadingCycleResponse.data
 
-  return ok(user)
+  return ok(readingCycle)
 }
 
-export interface CreateUser {
+export interface CreateReadingCycle {
   authId: string
-  email: string
+  dateStarted: string
+  dateCompleted?: string
 }
 
-export type CreateUserSucceeded =
-  | User
+export type CreateReadingCycleSucceeded =
+  | ReadingCycle
 
-export type CreateUserFailed =
+export type CreateReadingCycleFailed =
   | InvalidConfiguration
   | ValidationFailed<InvalidSchema>
   | CreateFailed
 
-export type CreateUserResult = Result<CreateUserSucceeded, CreateUserFailed>
+export type CreateReadingCycleResult = Result<CreateReadingCycleSucceeded, CreateReadingCycleFailed>
 
 
