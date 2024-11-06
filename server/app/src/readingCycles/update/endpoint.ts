@@ -1,9 +1,9 @@
 import { app, type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
 import { isOk, assertNever } from '../../infrastructure/Result'
-import { handleCreateReadingCycle, type CreateReadingCycle, type CreateReadingCycleSucceeded, type CreateReadingCycleFailed } from './handler'
+import { handleUpdateReadingCycle, type UpdateReadingCycle, type UpdateReadingCycleSucceeded, type UpdateReadingCycleFailed } from './handler'
 
-app.http('create_readingCycle', {
-  methods: ['POST'],
+app.http('update_readingCycle', {
+  methods: ['PATCH'],
   authLevel: 'function',
   handler: handleEndpoint,
   route: 'readingCycle'
@@ -13,9 +13,9 @@ export async function handleEndpoint (request: HttpRequest, context: InvocationC
   try {
     console.log(`${request.method} request for url "${request.url}"`)
 
-    const body = await request.json() as CreateReadingCycle
+    const body = await request.json() as UpdateReadingCycle
 
-    const result = await handleCreateReadingCycle(body)
+    const result = await handleUpdateReadingCycle(body)
 
     return isOk(result)
       ? handleSuccess(result.data)
@@ -29,15 +29,16 @@ export async function handleEndpoint (request: HttpRequest, context: InvocationC
   }
 }
 
-const handleSuccess = (data: CreateReadingCycleSucceeded) => {
+const handleSuccess = (data: UpdateReadingCycleSucceeded) => {
   return json(200, data)
 }
 
-const handleFailures = (err: CreateReadingCycleFailed) => {
+const handleFailures = (err: UpdateReadingCycleFailed) => {
   switch (err.code) {
     case 'invalid-server-configuration': return json(500, err)
     case 'persistence-error': return json(500, err)
     case 'validation-failed': return json(400, err)
+    case 'row-not-found-error': return json(404, err)
     default: return assertNever(err)
   }
 }

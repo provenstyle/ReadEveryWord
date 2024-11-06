@@ -11,7 +11,7 @@ app.http('create_user', {
 
 export async function handleEndpoint (request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
   try {
-    console.log(`Http request for url "${request.url}"`)
+    console.log(`${request.method} request for url "${request.url}"`)
 
     const body = await request.json() as CreateUser
 

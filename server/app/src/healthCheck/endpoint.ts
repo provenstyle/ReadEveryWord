@@ -9,7 +9,7 @@ app.http('health_check', {
 
 export async function handleEndpoint (request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
   try {
-    console.log(`Http request for url "${request.url}"`)
+    console.log(`${request.method} request for url "${request.url}"`)
 
     return {
         status: 200,

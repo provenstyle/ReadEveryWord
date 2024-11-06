@@ -11,7 +11,7 @@ app.http('get_readingCycle', {
 
 export async function handleEndpoint (request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
   try {
-    console.log(`Http request for url "${request.url}"`)
+    console.log(`${request.method} request for url "${request.url}"`)
 
     const getRequest: GetReadingCycle = {
       authId: request.params.authId ?? ''
