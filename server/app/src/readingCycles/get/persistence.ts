@@ -22,7 +22,7 @@ export class Persistence {
     return this._tableClient
   }
 
-  async getReadingCycle(request: GetReadingCycle): Promise<Result<ReadingCycle[], CreateFailed>> {
+  async getReadingCycle(request: GetReadingCycle): Promise<Result<ReadingCycle[], GetFailed>> {
     try {
       const allRows: ReadingCycleRow[] = []
       const allRowsResult = this.getTableClient().listEntities<ReadingCycleRow>({
@@ -46,5 +46,5 @@ export class PersistenceError {
   message = 'Unexpected error in persistence'
 }
 
-export type CreateFailed =
+export type GetFailed =
   | PersistenceError

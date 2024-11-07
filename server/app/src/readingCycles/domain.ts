@@ -14,7 +14,7 @@ export interface ReadingCycleRow {
   dateCompleted?: string
 }
 
-export const map = (row: ReadingCycleRow): ReadingCycle=> {
+export const map = (row: ReadingCycleRow): ReadingCycle => {
   return {
     id: row.rowKey,
     lastModified: row.timestamp,

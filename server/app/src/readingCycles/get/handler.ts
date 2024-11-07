@@ -1,7 +1,7 @@
 import { Result, isErr, ok } from '../../infrastructure/Result'
 import { ValidationFailed, InvalidSchema } from '../../infrastructure/Validation'
 import { validate } from './validation'
-import { Persistence, CreateFailed } from './persistence'
+import { Persistence, GetFailed } from './persistence'
 import { fromEnv, type InvalidConfiguration } from '../../config'
 import { ReadingCycle } from '../domain'
 
@@ -37,7 +37,7 @@ export type GetReadingCycleSucceeded =
 export type GetReadingCycleFailed =
   | InvalidConfiguration
   | ValidationFailed<InvalidSchema>
-  | CreateFailed
+  | GetFailed
 
 export type GetReadingCycleResult = Result<GetReadingCycleSucceeded, GetReadingCycleFailed>
 
