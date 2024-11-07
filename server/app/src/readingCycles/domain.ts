@@ -15,7 +15,6 @@ export interface ReadingCycleRow {
 }
 
 export const map = (row: ReadingCycleRow): ReadingCycle=> {
-  console.log(row)
   return {
     id: row.rowKey,
     lastModified: row.timestamp,

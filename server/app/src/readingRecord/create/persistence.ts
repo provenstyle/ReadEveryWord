@@ -1,9 +1,9 @@
 import { Result, err, ok } from '../../infrastructure/Result'
 import { TableClient } from '@azure/data-tables'
 import { Config } from '../../config'
-import { CreateReadingCycle } from './handler'
+import { CreateReadingRecord } from './handler'
 import { v4 as uuid } from 'uuid'
-import { ReadingCycle } from '../domain'
+import { ReadingRecord } from '../domain'
 
 export class Persistence {
   private _tableClient: TableClient | undefined
@@ -17,32 +17,34 @@ export class Persistence {
     if (!this._tableClient) {
       this._tableClient = TableClient.fromConnectionString(
         this.config.tableStorageConnectionString,
-        'readingCycle'
+        'readingRecord'
       )
     }
     return this._tableClient
   }
 
-  async createReadingCycle(request: CreateReadingCycle): Promise<Result<ReadingCycle, CreateFailed>> {
+  async createReadingRecord(request: CreateReadingRecord): Promise<Result<ReadingRecord, CreateFailed>> {
     try {
       const rowKey = uuid()
 
       await this.getTableClient().createEntity({
-        partitionKey: request.authId,
+        partitionKey: request.readingCycleId,
         rowKey,
-        dateStarted: request.dateStarted,
-        dateCompleted: request.dateCompleted
+        dateRead: request.dateRead,
+        bookId: request.bookId,
+        chapterId: request.chapterId
       })
 
       return ok({
+        readingCycleId: request.readingCycleId,
         id: rowKey,
         lastModified: '',
-        authId: request.authId,
-        dateStarted: request.dateStarted,
-        dateCompleted: request.dateCompleted
+        dateRead: request.dateRead,
+        bookId: request.bookId,
+        chapterId: request.chapterId
       })
     } catch (e) {
-      console.error('Unexpected error creating readingCycle', e)
+      console.error('Unexpected error creating readingRecord', e)
       return err(new PersistenceError())
     }
   }

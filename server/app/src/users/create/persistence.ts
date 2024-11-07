@@ -78,7 +78,6 @@ export class Persistence {
 }
 
 export const map = (row: UserRow): User=> {
-  console.log(row)
   return {
     id: row.rowKey,
     lastModified: row.timestamp,
