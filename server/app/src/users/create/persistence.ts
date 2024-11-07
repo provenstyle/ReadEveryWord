@@ -3,7 +3,7 @@ import { TableClient } from '@azure/data-tables'
 import { Config } from '../../config'
 import { CreateUser } from './handler'
 import { v4 as uuid } from 'uuid'
-import { User } from '../domain'
+import { User, UserRow, map } from '../domain'
 
 export class Persistence {
   private _tableClient: TableClient | undefined
@@ -75,22 +75,6 @@ export class Persistence {
       return err(new PersistenceError())
     }
   }
-}
-
-export const map = (row: UserRow): User=> {
-  return {
-    id: row.rowKey,
-    lastModified: row.timestamp,
-    authId: row.partitionKey,
-    email: row.email
-  }
-}
-
-export interface UserRow {
-  partitionKey: string,
-  rowKey: string,
-  timestamp: string,
-  email: string
 }
 
 export class PersistenceError {

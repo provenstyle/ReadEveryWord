@@ -2,10 +2,11 @@ import * as Factory from 'factory.ts'
 import { expectOk, expectErrorMessage } from '../../infrastructure/ValidationExpectations'
 import { validate } from './validation'
 import { UpdateReadingCycle } from './handler'
+import { v4 as uuid } from 'uuid'
 
 describe('UpdateReadingCycle validation', () => {
   const requestFactory = Factory.Sync.makeFactory<UpdateReadingCycle>({
-    id: '340efe67-fb95-4e70-8b47-8c0ea93f2b68',
+    id: uuid(),
     authId: 'authId',
     dateCompleted: '2024-11-04T23:30:00Z'
   });

@@ -16,7 +16,7 @@ export interface ReadingRecordRow {
   chapterId: number
 }
 
-export const map = (row: ReadingRecordRow): ReadingRecord=> {
+export const map = (row: ReadingRecordRow): ReadingRecord => {
   return {
     readingCycleId: row.partitionKey,
     id: row.rowKey,

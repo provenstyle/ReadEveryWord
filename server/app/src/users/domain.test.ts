@@ -1,4 +1,4 @@
-import { map } from "./persistence"
+import { map } from "./domain"
 
 describe('mapping UserRow to UserData', () => {
   it('valid request is valid', async () => {

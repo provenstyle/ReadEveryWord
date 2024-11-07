@@ -1,23 +1,23 @@
 import { app, type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
-import { isOk, assertNever } from '../../../infrastructure/Result'
-import { handleGetSummary, type GetSummary, type GetSummarySucceeded, type GetSummaryFailed } from './handler'
+import { isOk, assertNever } from '../../infrastructure/Result'
+import { handleGetUser, type GetUser, type GetUserSucceeded, type GetUserFailed } from './handler'
 
-app.http('get_bff_summary', {
+app.http('get_user', {
   methods: ['GET'],
   authLevel: 'function',
   handler: handleEndpoint,
-  route: 'bff/summary/{authId}'
+  route: 'user/{authId}'
 })
 
 export async function handleEndpoint (request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
   try {
     console.log(`${request.method} request for url "${request.url}"`)
 
-    const getRequest: GetSummary = {
+    const getRequest: GetUser = {
       authId: request.params.authId ?? ''
     }
 
-    const result = await handleGetSummary(getRequest)
+    const result = await handleGetUser(getRequest)
 
     return isOk(result)
       ? handleSuccess(result.data)
@@ -31,11 +31,11 @@ export async function handleEndpoint (request: HttpRequest, context: InvocationC
   }
 }
 
-const handleSuccess = (data: GetSummarySucceeded) => {
+const handleSuccess = (data: GetUserSucceeded) => {
   return json(200, data)
 }
 
-const handleFailures = (err: GetSummaryFailed) => {
+const handleFailures = (err: GetUserFailed) => {
   switch (err.code) {
     case 'invalid-server-configuration': return json(500, err)
     case 'persistence-error': return json(500, err)

@@ -2,7 +2,8 @@ import { Result, isErr, ok } from '../../../infrastructure/Result'
 import { ValidationFailed, InvalidSchema } from '../../../infrastructure/Validation'
 import { validate } from './validation'
 import { fromEnv, type InvalidConfiguration } from '../../../config'
-import { ReadingCycle, ReadingRecord, Summary} from '../domain'
+import { ReadingCycle, Summary} from '../domain'
+import { handleGetUser, type GetUserFailed } from '../../../users/get/handler'
 import { handleGetReadingCycle, type GetReadingCycleFailed } from '../../../readingCycles/get/handler'
 import { handleCreateReadingCycle, type CreateReadingCycleFailed } from '../../../readingCycles/create/handler'
 import { handleGetReadingRecord, type GetReadingRecordFailed } from '../../../readingRecord/get/handler'
@@ -18,6 +19,15 @@ export async function handleGetSummary(request: GetSummary): Promise<GetSummaryR
   if(isErr(validationResponse)) {
     return validationResponse
   }
+
+  // User
+  const getUserResult = await handleGetUser({
+    authId: request.authId
+  })
+  if(isErr(getUserResult)) {
+    return getUserResult
+  }
+  const user = getUserResult.data
 
   // ReadingCycle
   const readingCycleResult = await getCurrentReadingCycle(request)
@@ -37,7 +47,7 @@ export async function handleGetSummary(request: GetSummary): Promise<GetSummaryR
 
   const summary: Summary = {
     user: {
-      email: ''
+      email: user.email
     },
     readingCycle: {
       id: readingCycle.id,
@@ -62,6 +72,7 @@ export type GetSummarySucceeded =
 export type GetSummaryFailed =
   | InvalidConfiguration
   | ValidationFailed<InvalidSchema>
+  | GetUserFailed
   | GetReadingCycleFailed
   | CreateReadingCycleFailed
   | GetReadingRecordFailed
