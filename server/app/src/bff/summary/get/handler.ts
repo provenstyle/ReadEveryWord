@@ -36,6 +36,8 @@ export async function handleGetSummary(request: GetSummary): Promise<GetSummaryR
   }
   const readingCycle = readingCycleResult.data
 
+  console.log(readingCycle)
+
   //ReadingRecords
   const readingRecordResult = await handleGetReadingRecord({
     readingCycleId: readingCycle.id
@@ -90,14 +92,16 @@ async function getCurrentReadingCycle(request: GetSummary): Promise<Result<Readi
 
   let currentReadingCycle: ReadingCycle | undefined
 
+  // pick the first readingCycle that has not been completed
   if (readingCycles.length > 0) {
     currentReadingCycle = readingCycles.find(x => (!x.dateCompleted))
   }
 
+  //create a new ReadingCycle since none was found
   if (!currentReadingCycle) {
     const createReadingCycleResult = await handleCreateReadingCycle({
       authId: request.authId,
-      dateStarted: ''
+      dateStarted: new Date().toISOString()
     })
     if (isErr(createReadingCycleResult)) {
       return createReadingCycleResult
