@@ -1,6 +1,7 @@
 import { AxiosInstance, AxiosError } from 'axios'
 import { Result, ok, err } from '../Result'
 import { ValidationFailed, NotFound, ServerError } from './httpResponses'
+import { logAxiosError } from './log'
 
 export class UserClient {
   axios: AxiosInstance
@@ -9,14 +10,25 @@ export class UserClient {
     this.axios = axios
   }
 
-  async create(request: CreateUser): Promise<Result<User, GetFailed>> {
-    const result = await this.axios.post(`user`, request)
-    return ok(result.data)
+  async create(request: CreateUser): Promise<Result<User, CreateFailed>> {
+    const uri = 'user'
+    try {
+      const result = await this.axios.post(uri, request)
+      switch(result.status) {
+        case 200: return ok(result.data)
+        case 400: return err(result.data as ValidationFailed)
+        default: return err(new ServerError())
+      }
+    } catch(e) {
+      logAxiosError(e, uri)
+      return err(e as AxiosError)
+    }
   }
 
   async get(authId: string): Promise<Result<User, GetFailed>> {
+    const uri = `user/${authId}`
     try {
-      const result = await this.axios.get(`user/${authId}`)
+      const result = await this.axios.get(uri)
       switch(result.status) {
         case 200: return ok(result.data)
         case 400: return err(result.data as ValidationFailed)
@@ -24,7 +36,7 @@ export class UserClient {
         default: return err(new ServerError())
       }
     } catch (e) {
-      //Do some logging here
+      logAxiosError(e, uri)
       return err(e as AxiosError)
     }
   }
@@ -47,3 +59,9 @@ export interface CreateUser {
   authId: string
   email: string
 }
+
+export type CreateFailed =
+  | AxiosError
+  | ValidationFailed
+  | NotFound
+  | ServerError
