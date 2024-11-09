@@ -1,6 +1,6 @@
 import { Result, isErr } from "../infrastructure/Result"
 import { fromEnv } from "../infrastructure/config"
-import { UserClient } from "../infrastructure/client"
+import { Client } from "../infrastructure/client/client"
 import { v4 as uuid } from 'uuid'
 
 describe('Users', () => {
@@ -8,7 +8,7 @@ describe('Users', () => {
     const config = expectOk(configResult)
     console.log(config)
 
-    const userClient = new UserClient(config.service)
+    const userClient = new Client(config.service).user
 
     it('can get', async () => {
         const getResult = await userClient.get('1')
