@@ -6,4 +6,4 @@ node_modules
 local.settings.json
 dist
 coverage
-.env
+.env*

@@ -3,10 +3,13 @@ import { ServiceConfig } from '../config'
 import * as http from 'http'
 import * as https from 'https'
 import { UserClient } from './userClient'
+import { ReadingCycleClient } from './readingCycleClient'
+import { ReadingRecordClient } from './readingRecordClient'
 
 export class Client {
-  axios: AxiosInstance
   user: UserClient
+  readingCycle: ReadingCycleClient
+  readingRecord: ReadingRecordClient
 
   constructor (serviceConfig: ServiceConfig) {
     const httpAgent = new http.Agent({ keepAlive: true })
@@ -16,7 +19,7 @@ export class Client {
     const baseURL =  new URL('api', `${protocol}://${serviceConfig.baseUrl}`).href
     console.log('UsersClient baseUrl', baseURL)
 
-    this.axios = axiosStatic.create({
+    const axios = axiosStatic.create({
       httpAgent: httpAgent,
       httpsAgent: httpsAgent,
       baseURL,
@@ -26,6 +29,8 @@ export class Client {
       validateStatus: (_) => true
     })
 
-    this.user = new UserClient(this.axios)
+    this.user = new UserClient(axios)
+    this.readingRecord = new ReadingRecordClient(axios)
+    this.readingCycle = new ReadingCycleClient(axios)
   }
 }

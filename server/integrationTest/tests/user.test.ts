@@ -1,36 +1,26 @@
-import { Result, isErr } from "../infrastructure/Result"
-import { fromEnv } from "../infrastructure/config"
-import { Client } from "../infrastructure/client/client"
+import { expectOk } from '../infrastructure/ResultExpectations'
+import { Client } from '../infrastructure/client/client'
 import { v4 as uuid } from 'uuid'
+import { withConfig } from './scenarios'
 
 describe('Users', () => {
-    const configResult = fromEnv()
-    const config = expectOk(configResult)
-    console.log(config)
+    const config = withConfig()
 
     const userClient = new Client(config.service).user
 
-    it('can get', async () => {
-        const getResult = await userClient.get('1')
-        const user = expectOk(getResult)
-        console.log(user)
-    })
-
-    it('can create', async () => {
+    it('can create a user then get it', async () => {
+        // create
         const guid = uuid()
         const createResult = await userClient.create({
           authId: guid,
           email: `${guid}@email.com`
         })
-        const user = expectOk(createResult)
-        console.log(user)
+        const createdUser = expectOk(createResult)
+
+        // get
+        const getResult = await userClient.get(createdUser.authId)
+        const user = expectOk(getResult)
+        expect(user.authId).toEqual(guid)
+        expect(user.email).toEqual(`${guid}@email.com`)
     })
 })
-
-export function expectOk<T, E> (response: Result<T, E>): T {
-    if (isErr(response)) {
-      console.log(response.err)
-      throw new Error('Expected successful response')
-    }
-    return response.data
-  }
