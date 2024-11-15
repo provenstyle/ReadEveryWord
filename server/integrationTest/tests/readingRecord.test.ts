@@ -1,6 +1,12 @@
 import { Client } from '../infrastructure/client/client'
 import { withConfig, withUser, withReadingCycle } from './scenarios'
 import { expectOk } from '../infrastructure/ResultExpectations'
+import { Bible } from '../domain/bible'
+import { Chapter } from '../domain/chapter'
+import { Book } from '../domain/book'
+import { chunk } from 'lodash'
+import { CreateReadingRecord } from '../infrastructure/client/readingRecordClient'
+
 
 describe('readingRecord', () => {
     const config= withConfig()
@@ -33,4 +39,41 @@ describe('readingRecord', () => {
         expect(readingRecord.readingCycleId).toBe(readingCycle.id)
         expect(readingRecord.dateRead).toBeDefined()
     })
+
+    it('can create a record for every chapter in the bible', async () => {
+        const user = await withUser()
+        const readingCycle = await withReadingCycle(user)
+        const bible = new Bible()
+        const date = new Date().toISOString()
+
+        const requests: CreateReadingRecord[] = []
+
+        for(const book of bible.books){
+          for(const chapter of book.chapters) {
+            requests.push({
+              readingCycleId: readingCycle.id,
+              bookId: book.id,
+              chapterId: chapter.id,
+              dateRead: date
+            })
+          }
+        }
+
+        console.log(`Request count: ${requests.length}`)
+
+        const batches = chunk<CreateReadingRecord>(requests, 50)
+        for(const batch of batches) {
+          const promises = []
+          for(const request of batch) {
+            promises.push(readingRecordClient.create(request))
+          }
+          await Promise.all(promises)
+        }
+
+        const getReadingRecordResult = await readingRecordClient.get({readingCycleId: readingCycle.id})
+        const readingRecords = expectOk(getReadingRecordResult)
+        expect(readingRecords.length).toEqual(1189)
+
+    }, 0 * 1000)
 })
+
