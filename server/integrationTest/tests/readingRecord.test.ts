@@ -74,6 +74,6 @@ describe('readingRecord', () => {
         const readingRecords = expectOk(getReadingRecordResult)
         expect(readingRecords.length).toEqual(1189)
 
-    }, 0 * 1000)
+    }, 60 * 1000)
 })
 

@@ -1,4 +1,4 @@
-import { Result, isErr } from "./Result"
+import { Result, isErr} from '@read-every-word/library'
 
 export function expectOk<T, E> (response: Result<T, E>): T {
     if (isErr(response)) {

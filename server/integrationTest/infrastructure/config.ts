@@ -1,4 +1,4 @@
-import { Result, err, ok } from "./Result"
+import { Result, ok, err} from '@read-every-word/library'
 
 export interface ServiceConfig {
   baseUrl: string

@@ -1,12 +1,32 @@
-import { Ok, Err, ok, err, Result, isOk, isErr, assertNever } from './Result'
+import {
+  Err,
+  Ok,
+  Result,
+  assertNever,
+  err,
+  isErr,
+  isOk,
+  ok
+} from './Result'
+
+import  {
+  InvalidSchema,
+  InvalidSchemaProps,
+  ValidationFailed
+} from './Validation'
 
 export {
-  Ok,
   Err,
-  ok,
-  err,
+  Ok,
   Result,
-  isOk,
+  assertNever,
+  err,
   isErr,
-  assertNever
+  isOk,
+  ok,
+
+  InvalidSchema,
+  InvalidSchemaProps,
+  ValidationFailed
+
 }

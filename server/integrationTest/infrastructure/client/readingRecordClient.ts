@@ -1,5 +1,5 @@
 import { AxiosInstance, AxiosError } from 'axios'
-import { Result, ok, err } from '../Result'
+import { Result, ok, err} from '@read-every-word/library'
 import { ValidationFailed, NotFound, ServerError } from './httpResponses'
 import { logAxiosError } from './log'
 

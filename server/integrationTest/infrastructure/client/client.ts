@@ -1,4 +1,4 @@
-import { default as axiosStatic, AxiosInstance } from 'axios'
+import { default as axiosStatic } from 'axios'
 import { ServiceConfig } from '../config'
 import * as http from 'http'
 import * as https from 'https'
