@@ -1,11 +1,11 @@
 import { Client } from '../infrastructure/client/client'
 import { withConfig, withUser, withReadingCycle } from './scenarios'
-import { expectOk } from '../infrastructure/ResultExpectations'
 import { Bible } from '../domain/bible'
 import { Chapter } from '../domain/chapter'
 import { Book } from '../domain/book'
 import { chunk } from 'lodash'
 import { CreateReadingRecord } from '../infrastructure/client/readingRecordClient'
+import { expectOk } from '@read-every-word/library'
 
 
 describe('readingRecord', () => {

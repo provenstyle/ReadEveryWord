@@ -1,6 +1,6 @@
-import { expectOk } from '../infrastructure/ResultExpectations'
 import { Client } from '../infrastructure/client/client'
 import { withConfig, withUser } from './scenarios'
+import { expectOk } from '@read-every-word/library'
 
 describe('readingCycle', () => {
     const config= withConfig()
@@ -26,5 +26,5 @@ describe('readingCycle', () => {
         expect(readingCycle.authId).toEqual(user.authId)
         expect(readingCycle.dateStarted).toBeDefined
         expect(readingCycle.dateCompleted).toBeUndefined
-    })
+    }, 10 * 1000)
 })

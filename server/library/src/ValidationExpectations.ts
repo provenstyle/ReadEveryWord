@@ -1,14 +1,15 @@
 import { Result, isErr, isOk } from './Result'
 import { ValidationFailed, InvalidSchema } from './Validation'
 
-export function expectOk<T, E>(validationResponse: Result<T, E>) {
-  if (isErr(validationResponse)) {
-    console.log(validationResponse.err)
+export function expectOk<T, E> (response: Result<T, E>): T {
+  if (isErr(response)) {
+    console.log(response.err)
+    throw new Error('Expected successful response')
   }
-  expect(isOk(validationResponse)).toEqual(true)
+  return response.data
 }
 
-export function expectErrorMessage(response: Result<unknown, ValidationFailed<InvalidSchema>>, message: string) {
+export function expectErrorMessage(response: Result<unknown, ValidationFailed>, message: string) {
   if (isOk(response)) {
     throw new Error('Expected Err but is Ok')
   }

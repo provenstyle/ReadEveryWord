@@ -1,9 +1,9 @@
-export class ValidationFailed<T> {
+export class ValidationFailed {
   code = 'validation-failed' as const
   message = 'Request failed validation'
-  failures: T[] = []
+  failures: InvalidSchema[] = []
 
-  constructor (failures: T[]) {
+  constructor (failures: InvalidSchema[]) {
     this.failures = failures
   }
 }

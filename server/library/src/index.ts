@@ -15,6 +15,11 @@ import  {
   ValidationFailed
 } from './Validation'
 
+import {
+  expectErrorMessage,
+  expectOk
+} from './ValidationExpectations'
+
 export {
   Err,
   Ok,
@@ -27,6 +32,8 @@ export {
 
   InvalidSchema,
   InvalidSchemaProps,
-  ValidationFailed
+  ValidationFailed,
 
+  expectErrorMessage,
+  expectOk
 }

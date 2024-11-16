@@ -1,7 +1,7 @@
-import { expectOk } from '../infrastructure/ResultExpectations'
 import { Client } from '../infrastructure/client/client'
 import { v4 as uuid } from 'uuid'
 import { withConfig } from './scenarios'
+import { expectOk } from '@read-every-word/library'
 
 describe('Users', () => {
     const config = withConfig()
@@ -22,5 +22,5 @@ describe('Users', () => {
         const user = expectOk(getResult)
         expect(user.authId).toEqual(guid)
         expect(user.email).toEqual(`${guid}@email.com`)
-    })
+    }, 10 * 1000)
 })

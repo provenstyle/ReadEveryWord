@@ -1,9 +1,9 @@
 import { fromEnv, type Config } from '../infrastructure/config'
-import { expectOk } from '../infrastructure/ResultExpectations'
 import { Client } from '../infrastructure/client/client'
 import { User } from '../infrastructure/client/userClient'
 import { ReadingCycle } from '../infrastructure/client/readingCycleClient'
 import { v4 as uuid } from 'uuid'
+import { expectOk } from '@read-every-word/library'
 
 export function withConfig(): Config {
   const configResult = fromEnv()
