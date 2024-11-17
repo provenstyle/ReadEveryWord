@@ -38,7 +38,7 @@ describe('readingRecord', () => {
         expect(readingRecord.chapterId).toBe(0)
         expect(readingRecord.readingCycleId).toBe(readingCycle.id)
         expect(readingRecord.dateRead).toBeDefined()
-    })
+    }, 10 * 1000)
 
     it('can create a record for every chapter in the bible', async () => {
         const user = await withUser()

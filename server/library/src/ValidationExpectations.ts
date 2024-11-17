@@ -1,5 +1,5 @@
-import { Result, isErr, isOk } from './Result'
-import { ValidationFailed, InvalidSchema } from './Validation'
+import { Result, isErr, isOk } from './result'
+import { ValidationFailed, InvalidSchema } from './validation'
 
 export function expectOk<T, E> (response: Result<T, E>): T {
   if (isErr(response)) {

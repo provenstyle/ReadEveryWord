@@ -1,7 +1,10 @@
 import { AxiosInstance, AxiosError } from 'axios'
-import { NotFound, ServerError } from './httpResponses'
-import { logAxiosError } from './log'
-import { Result, ok, err, ValidationFailed} from '@read-every-word/library'
+import {
+  Result, ok, err,
+  ValidationFailed,
+  logAxiosError,
+  NotFound, ServerError
+} from '@read-every-word/library'
 
 export class ReadingCycleClient {
   axios: AxiosInstance

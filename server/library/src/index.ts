@@ -7,18 +7,27 @@ import {
   isErr,
   isOk,
   ok
-} from './Result'
+} from './result'
 
 import  {
   InvalidSchema,
   InvalidSchemaProps,
   ValidationFailed
-} from './Validation'
+} from './validation'
 
 import {
   expectErrorMessage,
   expectOk
-} from './ValidationExpectations'
+} from './validationExpectations'
+
+import {
+  NotFound,
+  ServerError
+} from './httpResponses'
+
+import {
+  logAxiosError
+} from './log'
 
 export {
   Err,
@@ -35,5 +44,10 @@ export {
   ValidationFailed,
 
   expectErrorMessage,
-  expectOk
+  expectOk,
+
+  NotFound,
+  ServerError,
+
+  logAxiosError
 }
