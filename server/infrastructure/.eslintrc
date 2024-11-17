@@ -1,0 +1,46 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "tsconfigRootDir": ".",
+    "project": ["./tsconfig.json"]
+  },
+  "extends": [
+    "standard",
+    "standard-with-typescript",
+    "plugin:jsdoc/recommended",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "plugins": [
+    "jsdoc",
+    "@typescript-eslint"
+  ],
+  "env": {
+    "node": true,
+    "es2020": true
+  },
+  "rules": {
+    "camelcase": "off",
+    "padded-blocks": "off",
+    "no-multiple-empty-lines": "off",
+    "jsdoc/require-property-description": "off",
+    "jsdoc/require-param-description": "off",
+    "jsdoc/require-returns-description": "off",
+    "func-call-spacing": "off",
+    "jsdoc/require-jsdoc": "off",
+    "@typescript-eslint/prefer-nullish-coalescing": "off",
+    "@typescript-eslint/naming-convention": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/strict-boolean-expressions": "off",
+    "@typescript-eslint/func-call-spacing": "error",
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/no-empty-interface": "off"
+  },
+  "settings": {
+    "jsdoc": {
+      "mode": "typescript"
+    }
+  }
+}

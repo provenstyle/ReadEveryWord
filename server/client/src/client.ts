@@ -1,5 +1,5 @@
 import { default as axiosStatic } from 'axios'
-import { ServiceConfig } from '../config'
+import { ServiceConfig } from './config'
 import * as http from 'http'
 import * as https from 'https'
 import { UserClient } from './userClient'

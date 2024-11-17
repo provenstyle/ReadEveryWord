@@ -4,7 +4,7 @@ import {
   ValidationFailed,
   NotFound, ServerError,
   logAxiosError
-} from '@read-every-word/library'
+} from '../index'
 
 export class UserClient {
   axios: AxiosInstance

@@ -1,7 +1,6 @@
-import { Client } from '../infrastructure/client/client'
 import { v4 as uuid } from 'uuid'
 import { withConfig } from './scenarios'
-import { expectOk } from '@read-every-word/library'
+import { Client, expectOk } from '@read-every-word/infrastructure'
 
 describe('Users', () => {
     const config = withConfig()

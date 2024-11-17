@@ -1,6 +1,6 @@
-import { Client } from '../infrastructure/client/client'
+import { expectOk } from '@read-every-word/infrastructure'
+import { Client } from '@read-every-word/client'
 import { withConfig, withUser } from './scenarios'
-import { expectOk } from '@read-every-word/library'
 
 describe('readingCycle', () => {
     const config= withConfig()

@@ -29,6 +29,17 @@ import {
   logAxiosError
 } from './log'
 
+import {
+  Client
+} from './client/client'
+
+import {
+  fromEnv,
+  InvalidConfiguration,
+  ServiceConfig,
+  Config
+} from './client/config'
+
 export {
   Err,
   Ok,
@@ -49,5 +60,11 @@ export {
   NotFound,
   ServerError,
 
-  logAxiosError
+  logAxiosError,
+
+  Client,
+  fromEnv,
+  InvalidConfiguration,
+  ServiceConfig,
+  Config
 }
