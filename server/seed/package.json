@@ -1,0 +1,19 @@
+{
+  "scripts": {
+    "index": "ts-node ./src/index.ts",
+    "verify": "jest"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "@read-every-word/client": "file:../client",
+    "@read-every-word/infrastructure": "file:../infrastructure"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^18.19.0",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.3"
+  }
+}

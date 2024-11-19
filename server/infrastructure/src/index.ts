@@ -29,16 +29,8 @@ import {
   logAxiosError
 } from './log'
 
-import {
-  Client
-} from './client/client'
-
-import {
-  fromEnv,
-  InvalidConfiguration,
-  ServiceConfig,
-  Config
-} from './client/config'
+import { handle } from './handler'
+import { timer } from './timer'
 
 export {
   Err,
@@ -62,9 +54,6 @@ export {
 
   logAxiosError,
 
-  Client,
-  fromEnv,
-  InvalidConfiguration,
-  ServiceConfig,
-  Config
+  handle,
+  timer
 }

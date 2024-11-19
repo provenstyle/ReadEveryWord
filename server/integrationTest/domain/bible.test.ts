@@ -1,6 +1,6 @@
 import { Bible } from "./bible";
 
-describe('foo', () => {
+describe('Bible', () => {
   const bible = new Bible()
 
   it('has 66 books', () => {

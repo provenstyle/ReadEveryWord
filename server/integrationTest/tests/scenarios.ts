@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid'
-import { fromEnv, Config, expectOk } from '@read-every-word/infrastructure'
-import { Client, User, ReadingCycle } from '@read-every-word/client'
+import { expectOk } from '@read-every-word/infrastructure'
+import { Client, Config, fromEnv, User, ReadingCycle } from '@read-every-word/client'
 
 export function withConfig(): Config {
   const configResult = fromEnv()
