@@ -1,7 +1,5 @@
 import { withConfig, withUser, withReadingCycle } from './scenarios'
-import { Bible } from '../domain/bible'
-import { Chapter } from '../domain/chapter'
-import { Book } from '../domain/book'
+import { Bible } from '@read-every-word/domain'
 import { chunk } from 'lodash'
 import { expectOk } from '@read-every-word/infrastructure'
 import { Client, CreateReadingRecord } from '@read-every-word/client'
