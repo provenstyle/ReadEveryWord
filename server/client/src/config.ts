@@ -1,4 +1,6 @@
 import { Result, ok, err} from '@read-every-word/infrastructure'
+import * as dotenv from 'dotenv'
+dotenv.config()
 
 export interface ServiceConfig {
   baseUrl: string

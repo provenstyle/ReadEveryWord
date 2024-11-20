@@ -1,9 +1,3 @@
-import { Chapter } from './chapter'
-import { Book } from './book'
-import { Bible } from './bible'
-
-export {
-  Chapter,
-  Book,
-  Bible
-}
+export * from './chapter'
+export * from './book'
+export * from './bible'
