@@ -11,23 +11,23 @@ import {
 import { v4 as uuid } from 'uuid'
 import { chunk } from 'lodash'
 
-export async function withUser(client: Client ): Promise<Result<User, CreateFailed>> {
-  const guid = uuid()
-  return await asyncTimer(async () => {
+export function withUser(client: Client ): Promise<Result<User, CreateFailed>> {
+  return asyncTimer(() => {
+    const guid = uuid()
     return client.user.create({
       authId: guid,
       email: `${guid}@email.com`
     })
-  }, 'Created user', true)
+  }, 'Created user', false)
 }
 
-export async function withReadingCycle(client: Client, user: User): Promise<Result<ReadingCycle, CreateFailed>> {
-  return await asyncTimer(async () => {
+export function withReadingCycle(client: Client, user: User): Promise<Result<ReadingCycle, CreateFailed>> {
+  return asyncTimer(() => {
     return client.readingCycle.create({
         authId: user.authId,
         dateStarted: new Date().toISOString()
       })
-  }, 'Create readingCycle', true)
+  }, 'Create readingCycle', false)
 }
 
 export async function withReadingRecords(client: Client, readingCycle: ReadingCycle): Promise<Result<undefined, CreateFailed>> {
@@ -46,15 +46,19 @@ export async function withReadingRecords(client: Client, readingCycle: ReadingCy
     }
   }
 
-  const batches = chunk<CreateReadingRecord>(requests, 100)
+  const batches = chunk<CreateReadingRecord>(requests, 10)
   for(const batch of batches) {
+    console.log('')
+    console.log('starting a batch')
     const promises = []
     for(const request of batch) {
-      promises.push(asyncTimer(async () => {
-        await client.readingRecord.create(request)
-      }, 'Create readingRecord', true))
+      promises.push(asyncTimer(() => {
+        return client.readingRecord.create(request)
+      }, 'Create readingRecord', false))
     }
+    console.log('waiting on a batch')
     await Promise.all(promises)
+    console.log('finished a batch')
   }
 
   return ok(undefined)
@@ -65,18 +69,21 @@ export async function seedUser(client: Client) {
     console.log('')
     const userResult = await withUser(client)
     if (isErr(userResult)) {
+      console.log('*** Error creating user ***')
       return userResult
     }
     const user = userResult.data
 
     const readingCycleResult = await withReadingCycle(client, user)
     if (isErr(readingCycleResult)) {
+      console.log('*** Error creating readingCycle ***')
       return readingCycleResult
     }
     const readingCycle = readingCycleResult.data
 
     const readingRecordResult = await withReadingRecords(client, readingCycle)
     if (isErr(readingRecordResult)) {
+      console.error('*** Error creating readingRecord ***')
       return readingRecordResult
     }
 
@@ -92,7 +99,8 @@ handle(async () => {
   const config = configResult.data.service
   const client = new Client(config)
 
-  for(let i = 0; i < 100; i++) {
+  for(let i = 0; i < 1; i++) {
     await seedUser(client)
   }
+
 })
