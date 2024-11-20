@@ -1,12 +1,15 @@
 {
   "scripts": {
-    "index": "ts-node ./src/index.ts",
+    "seed": "ts-node ./src/seed.ts",
     "verify": "jest"
   },
   "dependencies": {
-    "dotenv": "^16.4.5",
     "@read-every-word/client": "file:../client",
-    "@read-every-word/infrastructure": "file:../infrastructure"
+    "@read-every-word/domain": "file:../domain",
+    "@read-every-word/infrastructure": "file:../infrastructure",
+    "dotenv": "^16.4.5",
+    "lodash": "^4.17.21",
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
