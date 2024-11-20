@@ -1,37 +1,24 @@
-import { Result, err, ok, isErr } from '../../infrastructure/Result'
+import { Result, err, ok, cacheTableClient } from '@read-every-word/infrastructure'
 import { TableClient, RestError } from '@azure/data-tables'
 import { Config } from '../../config'
 import { UpdateReadingCycle } from './handler'
 import { ReadingCycle, ReadingCycleRow, map } from '../domain'
 
 export class Persistence {
-  private _tableClient: TableClient | undefined
-  private readonly config: Config
+  private readonly tableClient: TableClient
 
   constructor (config: Config) {
-      this.config = config
-  }
-
-  getTableClient () {
-    if (!this._tableClient) {
-      this._tableClient = TableClient.fromConnectionString(
-        this.config.tableStorageConnectionString,
-        'readingCycle'
-      )
-    }
-    return this._tableClient
+    this.tableClient = cacheTableClient(config.tableStorageConnectionString, 'readingCycle')
   }
 
   async updateReadingCycle(request: UpdateReadingCycle): Promise<Result<ReadingCycle, CreateFailed>> {
     try {
-      const client = await this.getTableClient()
-
-      const readingCycleRow = await client
+      const readingCycleRow = await this.tableClient
         .getEntity<ReadingCycleRow>(request.authId, request.id)
 
       readingCycleRow.dateCompleted = request.dateCompleted
 
-      await client.updateEntity<ReadingCycleRow>(readingCycleRow)
+      await this.tableClient.updateEntity<ReadingCycleRow>(readingCycleRow)
 
       return ok(map(readingCycleRow))
 

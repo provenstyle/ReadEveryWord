@@ -1,30 +1,31 @@
 import { Result, err, ok, cacheTableClient } from '@read-every-word/infrastructure'
 import { TableClient } from '@azure/data-tables'
 import { Config } from '../../config'
-import { GetReadingRecord } from './handler'
-import { ReadingRecord, ReadingRecordRow, map } from '../domain'
+import { CountReadingRecord } from './handler'
+import { ReadingRecordRow } from '../domain'
 
 export class Persistence {
   private tableClient: TableClient
 
   constructor (config: Config) {
-    this.tableClient = cacheTableClient(config.tableStorageConnectionString, 'readingRecord')
+      this.tableClient = cacheTableClient(config.tableStorageConnectionString, 'readingRecord')
   }
 
-  async getReadingRecord(request: GetReadingRecord): Promise<Result<ReadingRecord[], CreateFailed>> {
+  async countReadingRecords(request: CountReadingRecord): Promise<Result<number, CreateFailed>> {
     try {
-      const allRows: ReadingRecordRow[] = []
+      let count = 0
       const allRowsResult = this.tableClient.listEntities<ReadingRecordRow>({
         queryOptions: {
-          filter: `PartitionKey eq '${request.readingCycleId}'`
+          filter: `PartitionKey eq '${request.readingCycleId}'`,
+          select: ['PartitionKey']
         }
       })
       for await (const row of allRowsResult) {
-        allRows.push(row)
+        count++
       }
-      return ok(allRows.map(u => map(u)))
+      return ok(count)
     } catch (e) {
-      console.error('Unexpected error creating readingRecord', e)
+      console.error('Unexpected error counting readingRecords', e)
       return err(new PersistenceError())
     }
   }

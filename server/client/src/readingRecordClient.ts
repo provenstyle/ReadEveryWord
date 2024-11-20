@@ -47,6 +47,22 @@ export class ReadingRecordClient {
       return err(e as AxiosError)
     }
   }
+
+  async count(request: CountReadingRecord): Promise<Result<number, GetFailed>> {
+    const uri = `readingRecord/${request.readingCycleId}/count`
+    try {
+      const result = await this.axios.get(uri)
+      switch(result.status) {
+        case 200: return ok(result.data)
+        case 400: return err(result.data as ValidationFailed)
+        case 404: return err(new NotFound())
+        default: return err(new ServerError())
+      }
+    } catch (e) {
+      logAxiosError(e, uri)
+      return err(e as AxiosError)
+    }
+  }
 }
 
 export interface ReadingRecord {
@@ -66,5 +82,9 @@ export interface CreateReadingRecord {
 }
 
 export interface GetReadingRecord {
+  readingCycleId: string
+}
+
+export interface CountReadingRecord {
   readingCycleId: string
 }

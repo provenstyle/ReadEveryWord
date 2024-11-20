@@ -13,11 +13,12 @@
     "testCoverage": "jest --coverage --coverageReporters=cobertura --collectCoverageFrom='./**/*.{ts,jxs}'"
   },
   "dependencies": {
-    "@azure/data-tables": "^13.2.2",
+    "@azure/data-tables": "^13.3.0",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "dotenv": "^16.4.5",
-    "uuid": "^11.0.1"
+    "uuid": "^11.0.1",
+    "@read-every-word/infrastructure": "file:../infrastructure"
   },
   "devDependencies": {
     "@azure/functions": "^4.5.1",

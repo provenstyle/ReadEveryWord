@@ -1,4 +1,4 @@
-import { Result, err, ok, isErr } from '../../infrastructure/Result'
+import { Result, err, ok, isErr, cacheTableClient } from '@read-every-word/infrastructure'
 import { TableClient } from '@azure/data-tables'
 import { Config } from '../../config'
 import { CreateUser } from './handler'
@@ -6,21 +6,10 @@ import { v4 as uuid } from 'uuid'
 import { User, UserRow, map } from '../domain'
 
 export class Persistence {
-  private _tableClient: TableClient | undefined
-  private readonly config: Config
+  private tableClient: TableClient
 
   constructor (config: Config) {
-      this.config = config
-  }
-
-  getTableClient () {
-    if (!this._tableClient) {
-      this._tableClient = TableClient.fromConnectionString(
-        this.config.tableStorageConnectionString,
-        'user'
-      )
-    }
-    return this._tableClient
+     this.tableClient = cacheTableClient(config.tableStorageConnectionString, 'user')
   }
 
   async createUser(request: CreateUser): Promise<Result<User, CreateFailed>> {
@@ -38,7 +27,7 @@ export class Persistence {
 
       const rowKey = uuid()
 
-      await this.getTableClient().createEntity({
+      await this.tableClient.createEntity({
         partitionKey: request.authId,
         rowKey,
         email: request.email
@@ -61,7 +50,7 @@ export class Persistence {
   ): Promise<Result<User[], PersistenceError>> {
     try {
       const allRows: UserRow[] = []
-      const allRowsResult = this.getTableClient().listEntities<UserRow>({
+      const allRowsResult = this.tableClient.listEntities<UserRow>({
         queryOptions: {
           filter: `PartitionKey eq '${authId}'`
         }
