@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import HelloReadEveryWord from '@/features/helloWorld/HelloReadEveryWord.vue'
+import Bible from '@/features/bible/Bible.vue';
 </script>
 
 <template>
-  <HelloReadEveryWord />
+  <Bible />
 </template>

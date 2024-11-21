@@ -1,4 +1,9 @@
-import type { Preview } from "@storybook/vue3";
+import { setup, Preview } from "@storybook/vue3";
+import vuetify from "../src/plugins/vuetify"
+
+setup((app) => {
+  app.use(vuetify)
+})
 
 const preview: Preview = {
   parameters: {
