@@ -6,6 +6,7 @@ import Layouts from 'vite-plugin-vue-layouts'
 import Vue from '@vitejs/plugin-vue'
 import VueRouter from 'unplugin-vue-router/vite'
 import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 // Utilities
 import { defineConfig } from 'vite'
@@ -52,6 +53,14 @@ export default defineConfig({
         }],
       },
     }),
+    viteStaticCopy({
+      targets: [
+        {
+          src: 'staticwebapp.config.json',
+          dest: ''
+        }
+      ]
+    })
   ],
   define: { 'process.env': {} },
   resolve: {
