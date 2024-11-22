@@ -73,4 +73,12 @@ export class Bible {
       new Book(65, "Revelation",      "Rev", 22)
     ]
   }
+
+  get oldTestament (): Book[] {
+    return this.books.slice(0, 39)
+  }
+
+  get newTestament (): Book[] {
+    return this.books.slice(39, 66)
+  }
 }
