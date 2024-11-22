@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 import Bible from './Bible.vue'
 
 const meta = {
-  title: 'Bible/Bible',
+  title: 'Feature/Bible/Bible',
   component: Bible,
 } satisfies Meta<typeof Bible>
 

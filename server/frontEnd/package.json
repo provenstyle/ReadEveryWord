@@ -16,6 +16,7 @@
   "dependencies": {
     "@azure/static-web-apps-cli": "^2.0.1",
     "@mdi/font": "7.4.47",
+    "@read-every-word/domain": "file:../domain",
     "core-js": "^3.37.1",
     "roboto-fontface": "*",
     "vue": "^3.4.31",
