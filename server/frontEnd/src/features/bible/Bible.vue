@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import Book from './Book.vue'
-
+import BookCard from './BookCard.vue'
 import { Bible } from '@read-every-word/domain'
+import { inject } from 'vue'
 
-const bible = new Bible()
-console.log(bible)
+const bible = inject<Bible>('bible')
 
 </script>
 
@@ -25,7 +24,8 @@ console.log(bible)
           md="2"
           xl="1"
         >
-          <Book
+          <BookCard
+            :id="book.id"
             :name="book.longName"
             :short-name="book.shortName"
           />
@@ -45,7 +45,8 @@ console.log(bible)
           md="2"
           xl="1"
         >
-          <Book
+          <BookCard
+            :id="book.id"
             :name="book.longName"
             :short-name="book.shortName"
           />

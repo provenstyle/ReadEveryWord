@@ -1,11 +1,14 @@
+<script lang="ts" setup>
+import BibleProvider from './features/bible/BibleProvider.vue'
+</script>
+
 <template>
   <v-app>
     <v-main>
-      <router-view />
+      <bible-provider>
+        <router-view />
+      </bible-provider>
     </v-main>
   </v-app>
 </template>
 
-<script lang="ts" setup>
-  //
-</script>

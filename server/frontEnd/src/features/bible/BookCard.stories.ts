@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 
-import Book from './Book.vue'
+import BookCard from './BookCard.vue'
 
 const meta = {
-  title: 'Feature/Bible/Book',
-  component: Book,
-} satisfies Meta<typeof Book>
+  title: 'Feature/Bible/BookCard',
+  component: BookCard,
+} satisfies Meta<typeof BookCard>
 
 export default meta
 type Story = StoryObj<typeof meta>;
