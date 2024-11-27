@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import BookCardWithButtons from './BookCardWithButtons.vue'
 import { Bible, Book } from '@read-every-word/domain'
-import { inject } from 'vue'
+import { inject, ref } from 'vue'
 import { chunk } from 'lodash'
 
 const bible = inject<Bible>('bible')
 
+const leftDrawer = ref(false)
 </script>
 
 <template>
@@ -15,14 +16,53 @@ const bible = inject<Bible>('bible')
       density="compact"
       class="sticky-toolbar"
     >
-      <v-app-bar-nav-icon />
+      <v-app-bar-nav-icon
+        @click="leftDrawer = !leftDrawer"
+      />
 
       <v-spacer />
 
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
     </v-toolbar>
+
+    <v-navigation-drawer
+      v-model="leftDrawer"
+      location="left"
+    >
+      <v-list
+        nav
+        density="comfortable"
+      >
+        <v-list-item
+          prepend-icon="mdi-book-open-page-variant-outline"
+          title="Reading Cycles"
+          append-icon="mdi-plus"
+        />
+        <v-list-item
+          link
+          title="First Time Through"
+        />
+        <v-list-item
+          link
+          title="With Heather"
+        />
+        <v-list-item
+          link
+          title="With Atlas"
+        />
+      </v-list>
+      <template v-slot:append>
+        <v-list
+          nav
+          density="comfortable"
+        >
+          <v-list-item
+            link
+            prepend-icon="mdi-logout"
+            title="Sign Out"
+          />
+        </v-list>
+      </template>
+    </v-navigation-drawer>
 
     <div class="px-2 mt-4">
       <h2 class="">Old Testament</h2>

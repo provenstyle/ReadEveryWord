@@ -34,10 +34,6 @@ const book = bible.books[props.id]
         {{ book.longName }}
 
         <v-spacer />
-
-        <v-btn icon>
-          <v-icon>mdi-dots-vertical</v-icon>
-        </v-btn>
       </v-toolbar>
     </div>
 
