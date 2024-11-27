@@ -1,4 +1,11 @@
+<script lang="ts" setup>
+import DefaultHeader from '@/features/header/DefaultHeader.vue';
+
+</script>
+
 <template>
+  <DefaultHeader />
+
   <v-container class="fill-height">
     <v-responsive
       class="align-center fill-height mx-auto"
@@ -11,6 +18,3 @@
   </v-container>
 </template>
 
-<script setup lang="ts">
-  //
-</script>
