@@ -7,6 +7,7 @@ import { chunk } from 'lodash'
 const bible = inject<Bible>('bible')
 
 const leftDrawer = ref(false)
+const open = ref(['ReadingCycles'])
 </script>
 
 <template>
@@ -19,9 +20,7 @@ const leftDrawer = ref(false)
       <v-app-bar-nav-icon
         @click="leftDrawer = !leftDrawer"
       />
-
       <v-spacer />
-
     </v-toolbar>
 
     <v-navigation-drawer
@@ -29,26 +28,36 @@ const leftDrawer = ref(false)
       location="left"
     >
       <v-list
+        v-model:opened="open"
         nav
-        density="comfortable"
+        density="compact"
       >
-        <v-list-item
-          prepend-icon="mdi-book-open-page-variant-outline"
-          title="Reading Cycles"
-          append-icon="mdi-plus"
-        />
-        <v-list-item
-          link
-          title="First Time Through"
-        />
-        <v-list-item
-          link
-          title="With Heather"
-        />
-        <v-list-item
-          link
-          title="With Atlas"
-        />
+        <v-list-group value="ReadingCycles">
+          <template #activator="{ props }">
+            <v-list-item
+              v-bind="props"
+              prepend-icon="mdi-book-open-page-variant-outline"
+              title="Reading Cycles"
+            />
+          </template>
+          <v-list-item
+            link
+            title="First Time Through"
+          />
+          <v-list-item
+            link
+            title="With Heather"
+          />
+          <v-list-item
+            link
+            title="With Atlas"
+          />
+          <v-list-item
+            link
+            title="Manage"
+            prepend-icon="mdi-pencil"
+          />
+        </v-list-group>
       </v-list>
       <template v-slot:append>
         <v-list
