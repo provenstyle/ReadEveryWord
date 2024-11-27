@@ -1,9 +1,10 @@
 import { Book } from "./book"
+import { ReadingRecord } from
 
 export class Bible {
   books: Book[]
 
-  constructor() {
+  constructor(readingRecords?: ReadingRecord[]) {
     this.books = [
       new Book(0,  "Genesis",         "Gen", 50),
       new Book(1,  "Exodus",          "Exo", 40),
@@ -72,6 +73,13 @@ export class Bible {
       new Book(64, "Jude",            "Jud", 1),
       new Book(65, "Revelation",      "Rev", 22)
     ]
+
+    if (readingRecords ) {
+      for (const record of readingRecords) {
+        const chapter = this.books[record.bookId].chapters[record.chapterId]
+        chapter.read = true
+      }
+    }
   }
 
   get oldTestament (): Book[] {

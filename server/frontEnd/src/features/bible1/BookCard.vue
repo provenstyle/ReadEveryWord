@@ -5,7 +5,7 @@ import { inject, computed } from 'vue'
 
 const props = defineProps<{
   id: number,
-  name: string,
+  longName: string,
   shortName: string
 }>()
 
@@ -14,7 +14,7 @@ const book = bible.books[props.id]
 const router = useRouter()
 
 const goToBook = () => {
-  router.push(`book/${props.id}`)
+  router.push(`1/book/${props.id}`)
 }
 
 const color = computed(() => {
@@ -31,14 +31,13 @@ const color = computed(() => {
 </script>
 
 <template>
-  <v-card
+  <div
+    :class="['pt-2', 'pb-2', 'text-center', color]"
+    style="font-weight: 300;"
     @click="goToBook"
-    :class="color"
   >
-    <v-card-title class="text-body-2">
-      {{ name }}
-    </v-card-title>
-  </v-card>
+    {{ book.shortName }}
+  </div>
 </template>
 
 <style>
