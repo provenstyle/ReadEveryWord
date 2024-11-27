@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { Bible } from '@read-every-word/domain'
+import { Bible, Chapter } from '@read-every-word/domain'
 import { inject } from 'vue'
 import { useRouter } from 'vue-router'
 import ChapterCard from './ChapterCard.vue'
+import { chunk } from 'lodash'
 
 const router = useRouter()
 
@@ -16,38 +17,51 @@ const book = bible.books[props.id]
 </script>
 
 <template>
-  <v-container>
-    <v-row>
-      <v-col>
-        <v-btn
-          icon="mdi-arrow-left"
-          @click="router.back()"
-        />
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
-        <h2>{{ book.longName }}</h2>
-      </v-col>
-    </v-row>
-    <v-row dense>
-      <v-col
-        v-for="(chapter, index) in book.chapters"
-        :key="index"
-        cols="6"
-        sm="3"
-        md="2"
-        lg="1"
+  <div class="max-width">
+    <div class="sticky-toolbar">
+      <v-toolbar
+        border
+        density="compact"
       >
-        <ChapterCard
-          :book-id="book.id"
-          :chapter-id="chapter.id"
-          :number="chapter.number"
-        />
-      </v-col>
-    </v-row>
-  </v-container>
+        <v-btn icon>
+          <v-icon
+            @click.prevent="router.back()"
+          >
+            mdi-arrow-left
+          </v-icon>
+        </v-btn>
+
+        {{ book.longName }}
+
+        <v-spacer />
+      </v-toolbar>
+    </div>
+
+    <div class="px-2 mt-4">
+      <div
+        v-for="(rowOfChapters, index1) in chunk<Chapter>(book.chapters, 9)"
+        :key="index1"
+        class="d-flex"
+      >
+        <div
+          v-for="(chapter, index2) in rowOfChapters"
+          :key="index2"
+          class="chapter"
+        >
+          <ChapterCard
+            :book-id="book.id"
+            :chapter-id="chapter.id"
+            :number="chapter.number"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
-<style>
+<style scoped>
+.chapter {
+  flex: 0 0 calc((100% / 9) - 4px);
+  margin: 2px 2px;
+}
 </style>

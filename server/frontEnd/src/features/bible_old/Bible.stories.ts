@@ -4,7 +4,7 @@ import { Bible } from '@read-every-word/domain'
 import BibleVue from './Bible.vue'
 
 const meta = {
-  title: 'Feature/Bible1/Bible',
+  title: 'Feature/Bible/Bible',
   component: BibleVue,
 } satisfies Meta<typeof BibleVue>
 

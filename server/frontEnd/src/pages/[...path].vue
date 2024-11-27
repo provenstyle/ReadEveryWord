@@ -3,6 +3,6 @@ import NotFound from '@/features/notFound/NotFound.vue'
 </script>
 
 <template>
-  <NotFound/>
+  <NotFound />
 </template>
 

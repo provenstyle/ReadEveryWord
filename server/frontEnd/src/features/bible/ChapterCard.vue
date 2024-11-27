@@ -8,11 +8,7 @@ const props = defineProps<{
 }>()
 
 const bible = inject<Bible>('bible')
-console.log('*********************')
-console.log(bible)
-console.log(props)
 
-const book = bible.books[props.bookId]
 const chapter = bible.books[props.bookId].chapters[props.chapterId]
 
 const clicked = () => {
@@ -20,30 +16,51 @@ const clicked = () => {
 }
 
 const color = computed(() => {
-  console.log(book.percentComplete)
-  if (!chapter.read) return ''
-
-  switch(true) {
-    case book.percentComplete === 1:
-      return 'bg-light-blue-darken-4'
-    case book.percentComplete > 0:
-      return 'bg-light-blue-lighten-2'
-    default:
-      return ''
+  if (chapter.read) {
+    return 'bg-green-darken-1'
   }
+  return ''
+})
+
+const complete = computed(() => {
+  if (chapter.read) {
+      return 'complete'
+  }
+  return ''
 })
 </script>
 
 <template>
-  <v-card
-    :class="color"
-    @click="clicked"
+  <v-btn
+    :class="['w-100', color, complete]"
+    variant="text"
+    @click.prevent="clicked"
   >
-    <v-card-title class="text-body-2 text-center">
+    <span class="">
       {{ chapter.number }}
-    </v-card-title>
-  </v-card>
+    </span>
+    <v-icon
+      v-if="chapter.read"
+      class="check"
+      size="x-small"
+    >
+      mdi-check
+    </v-icon>
+  </v-btn>
 </template>
 
-<style>
+<style scoped>
+.v-btn {
+  padding: 0 !important;
+  text-transform: none;
+  font-weight: 300;
+  min-width: unset;
+}
+::v-deep.v-btn.complete .v-btn__content {
+  margin-top: 8px
+}
+.check {
+  position: absolute;
+  top: 2px;
+}
 </style>

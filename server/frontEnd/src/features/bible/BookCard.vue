@@ -5,7 +5,7 @@ import { inject, computed } from 'vue'
 
 const props = defineProps<{
   id: number,
-  name: string,
+  longName: string,
   shortName: string
 }>()
 
@@ -14,32 +14,69 @@ const book = bible.books[props.id]
 const router = useRouter()
 
 const goToBook = () => {
-  router.push(`book/${props.id}`)
+  router.push(`read/book/${props.id}`)
 }
 
-const color = computed(() => {
-  switch(true) {
-    case book.percentComplete === 1:
-      return 'bg-light-blue-darken-4'
-    case book.percentComplete > 0:
-      return 'bg-light-blue-lighten-2'
-    default:
-      return ''
+const complete = computed(() => {
+  if (book.percentComplete === 1) {
+      return 'complete'
   }
+  return ''
+})
+
+const color = computed(() => {
+  if (book.percentComplete === 1) {
+      return 'bg-green-darken-1'
+  }
+  return ''
+})
+
+const buttonVariant = computed(() => {
+  if (book.percentComplete === 1) {
+     return 'text'
+  }
+  if (book.percentComplete > 0) {
+    return 'outlined'
+  }
+  return 'text'
 })
 
 </script>
 
 <template>
-  <v-card
-    @click="goToBook"
-    :class="color"
+  <v-btn
+    :class="['w-100', color, complete]"
+    :variant="buttonVariant"
+    @click.prevent="goToBook"
   >
-    <v-card-title class="text-body-2">
-      {{ name }}
-    </v-card-title>
-  </v-card>
+    <span class="d-md-none">
+      {{ book.shortName }}
+    </span>
+    <span class="d-none d-md-flex ">
+      {{ book.longName }}
+    </span>
+    <v-icon
+      v-if="book.percentComplete === 1"
+      class="check"
+      size="x-small"
+    >
+      mdi-check
+    </v-icon>
+  </v-btn>
 </template>
 
-<style>
+<style scoped>
+.v-btn {
+  padding: 0 !important;
+  text-transform: none;
+  font-weight: 300;
+  min-width: unset;
+}
+::v-deep.v-btn.complete .v-btn__content {
+  margin-top: 8px
+}
+.check {
+  position: absolute;
+  top: 2px;
+}
 </style>
