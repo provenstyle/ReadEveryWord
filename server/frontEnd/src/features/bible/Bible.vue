@@ -3,11 +3,14 @@ import BookCard from './BookCard.vue'
 import { Bible, Book } from '@read-every-word/domain'
 import { inject, ref } from 'vue'
 import { chunk } from 'lodash'
+import { type NavigationProvider } from '@/features/navigation/NavigationProvider.vue'
 
 const bible = inject<Bible>('bible')
+if (!bible) throw new Error('BibleProvider is required')
 
-const leftDrawer = ref(false)
-const open = ref(['ReadingCycles'])
+const navigation = inject<NavigationProvider>('navigation')
+if (!navigation) throw new Error('NavigationProvider is required')
+
 </script>
 
 <template>
@@ -18,84 +21,10 @@ const open = ref(['ReadingCycles'])
       class="sticky-toolbar"
     >
       <v-app-bar-nav-icon
-        @click.prevent="leftDrawer = !leftDrawer"
+        @click.prevent="navigation.toggleLeftDrawer()"
       />
       <v-spacer />
     </v-toolbar>
-
-    <v-navigation-drawer
-      v-model="leftDrawer"
-      location="left"
-    >
-      <v-list
-        v-model:opened="open"
-        nav
-        density="comfortable"
-      >
-        <v-list-item
-          nav
-          link
-          prepend-icon="mdi-book-open-page-variant-outline"
-          title="Read"
-        />
-        <v-list-item
-          nav
-          link
-          prepend-icon="mdi-hands-pray"
-          title="Pray"
-        />
-        <v-list-item
-          nav
-          link
-          prepend-icon="mdi-head-heart-outline"
-          title="Memorize"
-        />
-        <v-list-item
-          nav
-          link
-          prepend-icon="mdi-notebook-outline"
-          title="Journal"
-        />
-        <v-list-group value="ReadingCycles">
-          <template #activator="{ props }">
-            <v-list-item
-              v-bind="props"
-              prepend-icon="mdi-book-open-page-variant-outline"
-              title="Reading Cycles"
-            />
-          </template>
-          <v-list-item
-            link
-            title="First Time Through"
-          />
-          <v-list-item
-            link
-            title="With Heather"
-          />
-          <v-list-item
-            link
-            title="With Atlas"
-          />
-          <v-list-item
-            link
-            title="Manage"
-            prepend-icon="mdi-pencil"
-          />
-        </v-list-group>
-      </v-list>
-      <template v-slot:append>
-        <v-list
-          nav
-          density="comfortable"
-        >
-          <v-list-item
-            link
-            prepend-icon="mdi-logout"
-            title="Sign Out"
-          />
-        </v-list>
-      </template>
-    </v-navigation-drawer>
 
     <div class="px-2 mt-4">
       <h2 class="">Old Testament</h2>
