@@ -47,7 +47,7 @@ const buttonVariant = computed(() => {
   <v-btn
     :class="['w-100', color, complete]"
     :variant="buttonVariant"
-    @click="goToBook"
+    @click.prevent="goToBook"
   >
     <span class="d-md-none">
       {{ book.shortName }}

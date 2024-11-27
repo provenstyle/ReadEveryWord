@@ -34,7 +34,7 @@ const complete = computed(() => {
   <v-btn
     :class="['w-100', color, complete]"
     variant="text"
-    @click="clicked"
+    @click.prevent="clicked"
   >
     <span class="">
       {{ chapter.number }}

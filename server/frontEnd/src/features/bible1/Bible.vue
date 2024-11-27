@@ -18,7 +18,7 @@ const open = ref(['ReadingCycles'])
       class="sticky-toolbar"
     >
       <v-app-bar-nav-icon
-        @click="leftDrawer = !leftDrawer"
+        @click.prevent="leftDrawer = !leftDrawer"
       />
       <v-spacer />
     </v-toolbar>

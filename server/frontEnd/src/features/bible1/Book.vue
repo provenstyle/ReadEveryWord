@@ -25,7 +25,7 @@ const book = bible.books[props.id]
       >
         <v-btn icon>
           <v-icon
-            @click="router.back()"
+            @click.prevent="router.back()"
           >
             mdi-arrow-left
           </v-icon>

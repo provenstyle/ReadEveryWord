@@ -34,7 +34,7 @@ const color = computed(() => {
   <div
     :class="['pt-2', 'pb-2', 'text-center', color]"
     style="font-weight: 300;"
-    @click="goToBook"
+    @click.prevent="goToBook"
   >
     {{ book.shortName }}
   </div>
