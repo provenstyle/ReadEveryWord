@@ -9,10 +9,11 @@ const bible = inject<Bible>('bible')
 </script>
 
 <template>
-  <div style="max-width: 1200px;">
+  <div class="max-width">
     <v-toolbar
       border
       density="compact"
+      class="sticky-toolbar"
     >
       <v-app-bar-nav-icon />
 
