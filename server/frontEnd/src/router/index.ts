@@ -8,6 +8,18 @@
 import { createRouter, createWebHistory } from 'vue-router/auto'
 import { setupLayouts } from 'virtual:generated-layouts'
 import { routes } from 'vue-router/auto-routes'
+import { authGuard } from '@auth0/auth0-vue'
+
+const authenticatedRoutes = [
+  '/read',
+  '/pray',
+  '/memorize',
+  '/journal',
+]
+const foo = routes.filter(r => authenticatedRoutes.includes(r.path))
+for (const route of foo){
+  route.beforeEnter = authGuard
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

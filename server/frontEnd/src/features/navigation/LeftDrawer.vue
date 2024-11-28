@@ -1,10 +1,20 @@
 <script setup lang="ts">
 import {  inject } from 'vue'
 import { type NavigationProvider } from './NavigationProvider.vue'
+import { useAuth0 } from '@auth0/auth0-vue'
+
+const auth = useAuth0()
 
 const navigation = inject<NavigationProvider>('navigation')
 if (!navigation) throw new Error('NavigationProvider is required')
 
+const logout = async () => {
+  await auth.logout({
+    logoutParams: {
+      returnTo: window.location.origin
+    }
+  })
+}
 </script>
 
 <template>
@@ -55,6 +65,7 @@ if (!navigation) throw new Error('NavigationProvider is required')
           link
           prepend-icon="mdi-logout"
           title="Sign Out"
+          @click.prevent="logout"
         />
       </v-list>
     </template>
