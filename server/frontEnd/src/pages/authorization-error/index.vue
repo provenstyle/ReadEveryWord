@@ -22,7 +22,7 @@ const signIn = async () => {
 </script>
 
 <template>
-  <v-sheet class="text-center mt-8">
+  <div class="text-center mt-8">
     <h1>Authorization Error</h1>
     <p class="mb-4">
       {{ auth.error }}
@@ -42,5 +42,5 @@ const signIn = async () => {
     >
       Log Out
     </v-btn>
-  </v-sheet>
+  </div>
 </template>

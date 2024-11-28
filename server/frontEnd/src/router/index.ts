@@ -10,15 +10,28 @@ import { setupLayouts } from 'virtual:generated-layouts'
 import { routes } from 'vue-router/auto-routes'
 import { authGuard } from '@auth0/auth0-vue'
 
+// Handle Authenticated Routes
 const authenticatedRoutes = [
   '/read',
   '/pray',
   '/memorize',
   '/journal',
 ]
-const foo = routes.filter(r => authenticatedRoutes.includes(r.path))
-for (const route of foo){
+const routesToAddAuthGuard = routes.filter(r => authenticatedRoutes.includes(r.path))
+for (const route of routesToAddAuthGuard){
   route.beforeEnter = authGuard
+}
+
+// Handle Routes without a layout
+const routesWithoutLayout = [
+  '/authorization-error'
+]
+const routesToRemoveLayout = routes.filter(r => routesWithoutLayout.includes(r.path))
+for (const route of routesToRemoveLayout){
+  route.meta = {
+    ...route.meta,
+    layout: false
+  }
 }
 
 const router = createRouter({
