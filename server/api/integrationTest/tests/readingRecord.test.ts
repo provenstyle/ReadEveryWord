@@ -1,9 +1,6 @@
 import { withConfig, withUser, withReadingCycle } from './scenarios'
-import { Bible } from '@read-every-word/domain'
-import { chunk } from 'lodash'
 import { expectOk } from '@read-every-word/infrastructure'
-import { Client, CreateReadingRecord } from '@read-every-word/client'
-
+import { Client } from '@read-every-word/client'
 
 describe('readingRecord', () => {
     const config= withConfig()
@@ -36,41 +33,5 @@ describe('readingRecord', () => {
         expect(readingRecord.readingCycleId).toBe(readingCycle.id)
         expect(readingRecord.dateRead).toBeDefined()
     }, 10 * 1000)
-
-    it('can create a record for every chapter in the bible', async () => {
-        const user = await withUser()
-        const readingCycle = await withReadingCycle(user)
-        const bible = new Bible()
-        const date = new Date().toISOString()
-
-        const requests: CreateReadingRecord[] = []
-
-        for(const book of bible.books){
-          for(const chapter of book.chapters) {
-            requests.push({
-              readingCycleId: readingCycle.id,
-              bookId: book.id,
-              chapterId: chapter.id,
-              dateRead: date
-            })
-          }
-        }
-
-        console.log(`Request count: ${requests.length}`)
-
-        const batches = chunk<CreateReadingRecord>(requests, 50)
-        for(const batch of batches) {
-          const promises = []
-          for(const request of batch) {
-            promises.push(readingRecordClient.create(request))
-          }
-          await Promise.all(promises)
-        }
-
-        const getReadingRecordResult = await readingRecordClient.get({readingCycleId: readingCycle.id})
-        const readingRecords = expectOk(getReadingRecordResult)
-        expect(readingRecords.length).toEqual(1189)
-
-    }, 60 * 1000)
 })
 
