@@ -1,5 +1,5 @@
 import { Book } from "./book"
-import { ReadingRecord } from
+import { ReadingRecord } from "./readingRecord"
 
 export class Bible {
   books: Book[]

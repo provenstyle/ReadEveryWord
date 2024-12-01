@@ -18,7 +18,7 @@
     "ajv-formats": "^3.0.1",
     "dotenv": "^16.4.5",
     "uuid": "^11.0.1",
-    "@read-every-word/infrastructure": "file:../infrastructure"
+    "@read-every-word/infrastructure": "file:../../infrastructure"
   },
   "devDependencies": {
     "@azure/functions": "^4.5.1",

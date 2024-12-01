@@ -5,8 +5,8 @@
   },
   "dependencies": {
     "@read-every-word/client": "file:../client",
-    "@read-every-word/domain": "file:../domain",
-    "@read-every-word/infrastructure": "file:../infrastructure",
+    "@read-every-word/domain": "file:../../domain",
+    "@read-every-word/infrastructure": "file:../../infrastructure",
     "dotenv": "^16.4.5",
     "lodash": "^4.17.21",
     "uuid": "^11.0.3"
