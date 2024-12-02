@@ -3,16 +3,16 @@ resource "azurerm_storage_account" "func" {
   resource_group_name      = resource.azurerm_resource_group.this.name
   location                 = var.location
   account_tier             = "Standard"
-  account_replication_type = var.storage_account_replication_type 
-  tags                     = local.tags 
+  account_replication_type = var.storage_account_replication_type
+  tags                     = local.tags
 }
 
 resource "azurerm_application_insights" "func" {
-  name                = local.names.application_insights 
+  name                = local.names.application_insights
   resource_group_name = resource.azurerm_resource_group.this.name
   location            = var.location
   application_type    = "web"
-  tags                = local.tags 
+  tags                = local.tags
 }
 
 resource "azurerm_service_plan" "func" {
@@ -20,7 +20,7 @@ resource "azurerm_service_plan" "func" {
   resource_group_name = resource.azurerm_resource_group.this.name
   location            = var.location
   os_type             = "Linux"
-  sku_name            = "Y1" 
+  sku_name            = "Y1"
   tags                = local.tags
 }
 
@@ -62,5 +62,9 @@ resource "azurerm_linux_function_app" "this" {
   tags = local.tags
 }
 
+data "azurerm_function_app_host_keys" "api" {
+  name                = local.names.function_app
+  resource_group_name = resource.azurerm_resource_group.this.name
+}
 
 
