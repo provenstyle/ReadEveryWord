@@ -10,6 +10,7 @@ const props = defineProps<{
 }>()
 
 const bible = inject<Bible>('bible')
+if (!bible) throw new Error('BibleProvider is required')
 const book = bible.books[props.id]
 const router = useRouter()
 

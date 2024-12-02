@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import BookCard from './BookCard.vue'
 import { Bible, Book } from '@read-every-word/domain'
-import { inject, ref } from 'vue'
+import { inject } from 'vue'
 import { chunk } from 'lodash'
 import { type NavigationProvider } from '@/features/navigation/NavigationProvider.vue'
 
@@ -50,7 +50,7 @@ if (!navigation) throw new Error('NavigationProvider is required')
       <h2 class="mt-4">New Testament</h2>
 
       <div
-        v-for="(rowOfBooks, index1) in chunk<Bible>(bible.newTestament, 9)"
+        v-for="(rowOfBooks, index1) in chunk<Book>(bible.newTestament, 9)"
         :key="index1"
         class="d-flex"
       >

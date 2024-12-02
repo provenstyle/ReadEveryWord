@@ -8,7 +8,7 @@ const props = defineProps<{
 }>()
 
 const bible = inject<Bible>('bible')
-
+if (!bible) throw new Error('BibleProvider is required')
 const chapter = bible.books[props.bookId].chapters[props.chapterId]
 
 const clicked = () => {

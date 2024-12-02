@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {  ref, inject } from 'vue'
-import { type NavigationProvider } from './NavigationProvider.vue'
+import { type NavigationProvider } from '../navigation/NavigationProvider.vue'
 
 const navigation = inject<NavigationProvider>('navigation')
 if (!navigation) throw new Error('NavigationProvider is required')

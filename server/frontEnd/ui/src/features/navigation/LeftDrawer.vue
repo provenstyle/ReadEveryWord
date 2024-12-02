@@ -23,7 +23,6 @@ const logout = async () => {
     location="left"
   >
     <v-list
-      v-model:opened="open"
       nav
       density="comfortable"
     >
