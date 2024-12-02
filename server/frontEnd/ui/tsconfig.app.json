@@ -12,7 +12,10 @@
 
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@read-every-word/domain": [
+        "node_modules/@read-every-word/domain/dist/types/index.d.ts"
+      ]
     }
   }
 }
