@@ -3,7 +3,6 @@
   "configurations": {
     "ui": {
       "appLocation": ".",
-      "apiLocation": "../bff/app",
       "outputLocation": "dist",
       "appBuildCommand": "npm run build",
       "apiBuildCommand": "npm run build",
