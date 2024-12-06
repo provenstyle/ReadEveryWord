@@ -38,8 +38,8 @@ resource "azurerm_linux_function_app" "this" {
     FUNCTIONS_WORKER_RUNTIME              = "node",
     APPINSIGHTS_INSTRUMENTATIONKEY        = azurerm_application_insights.func.instrumentation_key
     APPLICATIONINSIGHTS_CONNECTION_STRING = azurerm_application_insights.func.connection_string
-    API_ENDPOINT                          = data.terraform_remote_state.api.outputs.function_app_endpoint
-    API_KEY                               = data.terraform_remote_state.api.outputs.function_app_key
+    BASE_URL                              = try(data.terraform_remote_state.api.outputs.function_app_endpoint, "api resources must be created first")
+    SUBSCRIPTION_KEY                      = try(data.terraform_remote_state.api.outputs.function_app_key, "api resources must be create first")
   }
   identity {
     type = "SystemAssigned"
@@ -62,6 +62,3 @@ resource "azurerm_linux_function_app" "this" {
 
   tags = local.tags
 }
-
-
-

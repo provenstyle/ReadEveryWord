@@ -5,7 +5,6 @@ resource "azurerm_static_web_app" "app" {
   sku_tier            = "Standard"
   sku_size            = "Standard"
   app_settings = {
-    FUNCTION_APP_URL = azurerm_linux_function_app.this.default_hostname
   }
   tags                = local.tags
 }
