@@ -1,4 +1,4 @@
-import { Result, isErr, isOk } from './Result'
+import { Result, isErr, isOk } from '@read-every-word/infrastructure'
 import { ValidationFailed, InvalidSchema } from './Validation'
 
 export function expectOk(validationResponse) {

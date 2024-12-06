@@ -1,8 +1,8 @@
-import { Result, isErr, ok } from '../../infrastructure/Result'
+import { Result, isErr, ok, InvalidConfiguration } from '@read-every-word/infrastructure'
 import { ValidationFailed, InvalidSchema } from '../../infrastructure/Validation'
 import { validate } from './validation'
 import { Persistence, CreateFailed } from './persistence'
-import { fromEnv, type InvalidConfiguration } from '../../config'
+import { fromEnv } from '../../config'
 
 export async function handleCountReadingRecord(request: CountReadingRecord): Promise<CountReadingRecordResult> {
   const configResponse = fromEnv()

@@ -1,5 +1,5 @@
+export * from './errorResults'
 export * from './handler'
-export * from './httpResponses'
 export * from './log'
 export * from './result'
 export * from './tableClient'

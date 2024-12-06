@@ -2,7 +2,7 @@
   "navigationFallback": {
     "rewrite": "/index.html",
     "exclude": [
-      "/app/*",
+      "/api/*",
       "/images/*.{png,jpg,gif,ico}",
       "/*.{css,scss,js}"
     ]

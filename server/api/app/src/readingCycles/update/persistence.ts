@@ -1,4 +1,4 @@
-import { Result, err, ok, cacheTableClient } from '@read-every-word/infrastructure'
+import { Result, err, ok, cacheTableClient, PersistenceError } from '@read-every-word/infrastructure'
 import { TableClient, RestError } from '@azure/data-tables'
 import { Config } from '../../config'
 import { UpdateReadingCycle } from './handler'
@@ -30,11 +30,6 @@ export class Persistence {
       return err(new PersistenceError())
     }
   }
-}
-
-export class PersistenceError {
-  code = 'persistence-error' as const
-  message = 'Unexpected error in persistence'
 }
 
 export class ReadingCycleNotFoundError {

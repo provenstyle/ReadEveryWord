@@ -1,6 +1,6 @@
 import { Ajv } from 'ajv'
 import addFormats from 'ajv-formats'
-import { Result, ok, err } from '../../infrastructure/Result'
+import { Result, ok, err } from '@read-every-word/infrastructure'
 import { ValidationFailed, InvalidSchema } from '../../infrastructure/Validation'
 import { CreateReadingCycle } from './handler'
 

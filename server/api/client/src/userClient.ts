@@ -1,14 +1,14 @@
-import { AxiosInstance, AxiosError } from 'axios'
+import { AxiosInstance } from 'axios'
 import {
   Result, ok, err,
   ValidationFailed,
   NotFound, ServerError,
-  logAxiosError
-} from '@read-every-word/infrastructure'
-import {
+  logAxiosError,
+  UnexpectedResponseCode,
+  UnexpectedHttpException,
   CreateFailed,
-  GetFailed,
-} from './httpResults'
+  GetFailed
+} from '@read-every-word/infrastructure'
 
 export class UserClient {
   axios: AxiosInstance
@@ -24,11 +24,13 @@ export class UserClient {
       switch(result.status) {
         case 200: return ok(result.data)
         case 400: return err(result.data as ValidationFailed)
-        default: return err(new ServerError())
+        case 500: return err(new ServerError())
+        default: return err(new UnexpectedResponseCode())
       }
     } catch(e) {
       logAxiosError(e, uri)
-      return err(e as AxiosError)
+      return err(new UnexpectedHttpException())
+
     }
   }
 
@@ -40,11 +42,13 @@ export class UserClient {
         case 200: return ok(result.data)
         case 400: return err(result.data as ValidationFailed)
         case 404: return err(new NotFound())
-        default: return err(new ServerError())
+        case 500: return err(new ServerError())
+        default: return err(new UnexpectedResponseCode())
       }
     } catch (e) {
       logAxiosError(e, uri)
-      return err(e as AxiosError)
+      return err(new UnexpectedHttpException())
+
     }
   }
 }

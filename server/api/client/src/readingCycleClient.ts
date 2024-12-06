@@ -1,15 +1,15 @@
-import { AxiosInstance, AxiosError } from 'axios'
+import { AxiosInstance } from 'axios'
 import {
   Result, ok, err,
   ValidationFailed,
   logAxiosError,
-  NotFound, ServerError
-} from '@read-every-word/infrastructure'
-import {
+  NotFound, ServerError,
+  UnexpectedResponseCode,
+  UnexpectedHttpException,
   CreateFailed,
   GetFailed,
   UpdateFailed
-} from './httpResults'
+} from '@read-every-word/infrastructure'
 
 export class ReadingCycleClient {
   axios: AxiosInstance
@@ -25,11 +25,12 @@ export class ReadingCycleClient {
       switch(result.status) {
         case 200: return ok(result.data)
         case 400: return err(result.data as ValidationFailed)
-        default: return err(new ServerError())
+        case 500: return err(new ServerError())
+        default: return err(new UnexpectedResponseCode())
       }
     } catch(e) {
       logAxiosError(e, uri)
-      return err(e as AxiosError)
+      return err(new UnexpectedHttpException())
     }
   }
 
@@ -41,11 +42,12 @@ export class ReadingCycleClient {
         case 200: return ok(result.data)
         case 400: return err(result.data as ValidationFailed)
         case 404: return err(new NotFound())
-        default: return err(new ServerError())
+        case 500: return err(new ServerError())
+        default: return err(new UnexpectedResponseCode())
       }
     } catch (e) {
       logAxiosError(e, uri)
-      return err(e as AxiosError)
+      return err(new UnexpectedHttpException())
     }
   }
 
@@ -57,11 +59,12 @@ export class ReadingCycleClient {
         case 200: return ok(result.data)
         case 400: return err(result.data as ValidationFailed)
         case 404: return err(new NotFound())
-        default: return err(new ServerError())
+        case 500: return err(new ServerError())
+        default: return err(new UnexpectedResponseCode())
       }
     } catch (e) {
       logAxiosError(e, uri)
-      return err(e as AxiosError)
+      return err(new UnexpectedHttpException())
     }
   }
 }
@@ -83,7 +86,6 @@ export interface CreateReadingCycle {
 export interface GetReadingCycle {
   authId: string
 }
-
 
 export interface UpdateReadingCycle {
   authId: string

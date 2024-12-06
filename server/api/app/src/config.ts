@@ -1,4 +1,4 @@
-import { err, ok, type Result } from './infrastructure/Result'
+import { err, ok, type Result, InvalidConfiguration } from '@read-every-word/infrastructure'
 
 export interface Config {
     tableStorageConnectionString: string
@@ -23,9 +23,4 @@ export function fromEnv (): Result<Config, InvalidConfiguration> {
   return ok({
     tableStorageConnectionString: vars.TABLE_STORAGE_CONNECTION_STRING
   })
-}
-
-export class InvalidConfiguration {
-    code = 'invalid-server-configuration' as const
-    message = 'Unexpected server error'
 }

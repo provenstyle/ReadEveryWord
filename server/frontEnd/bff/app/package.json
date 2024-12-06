@@ -19,7 +19,8 @@
     "dotenv": "^16.4.5",
     "uuid": "^11.0.1",
     "@read-every-word/infrastructure": "file:../../../infrastructure",
-    "@read-every-word/domain": "file:../../../domain"
+    "@read-every-word/domain": "file:../../../domain",
+    "@read-every-word/client": "file:../../../api/client"
   },
   "devDependencies": {
     "@azure/functions": "^4.5.1",

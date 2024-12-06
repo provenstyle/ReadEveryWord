@@ -1,9 +1,8 @@
 import { Ajv } from 'ajv'
 import addFormats from 'ajv-formats'
-import { Result, ok, err } from '../../infrastructure/Result'
+import { Result, ok, err } from '@read-every-word/infrastructure'
 import { ValidationFailed, InvalidSchema } from '../../infrastructure/Validation'
 import { GetUser } from './handler'
-import { format } from 'path'
 
 const ajv = new Ajv()
 addFormats(ajv)

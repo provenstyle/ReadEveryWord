@@ -1,5 +1,5 @@
 import { app, type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
-import { isOk, assertNever } from '../../../infrastructure/Result'
+import { isOk, assertNever } from '@read-every-word/infrastructure'
 import { handleGetSummary, type GetSummary, type GetSummarySucceeded, type GetSummaryFailed } from './handler'
 
 app.http('get_bff_summary', {

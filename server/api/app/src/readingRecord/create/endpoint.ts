@@ -1,5 +1,5 @@
 import { app, type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
-import { isOk, assertNever } from '../../infrastructure/Result'
+import { isOk, assertNever } from '@read-every-word/infrastructure'
 import { handleCreateReadingRecord, type CreateReadingRecord, type CreateReadingRecordSucceeded, type CreateReadingRecordFailed } from './handler'
 
 app.http('create_readingRecord', {

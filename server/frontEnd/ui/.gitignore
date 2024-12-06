@@ -22,3 +22,4 @@ pnpm-debug.log*
 *.sw?
 
 *storybook.log
+swa-cli.config.json

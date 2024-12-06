@@ -1,8 +1,8 @@
-import { Result, isErr, ok } from '../../infrastructure/Result'
+import { Result, isErr, ok, InvalidConfiguration } from '@read-every-word/infrastructure'
 import { ValidationFailed, InvalidSchema } from '../../infrastructure/Validation'
 import { validate } from './validation'
 import { Persistence, GetFailed } from './persistence'
-import { fromEnv, type InvalidConfiguration } from '../../config'
+import { fromEnv } from '../../config'
 import { User } from '../domain'
 
 export async function handleGetUser(request: GetUser): Promise<GetUserResult> {
