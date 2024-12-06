@@ -63,7 +63,7 @@ resource "azurerm_linux_function_app" "this" {
 }
 
 data "azurerm_function_app_host_keys" "api" {
-  name                = local.names.function_app
+  name                = azurerm_linux_function_app.this.name
   resource_group_name = resource.azurerm_resource_group.this.name
 }
 
