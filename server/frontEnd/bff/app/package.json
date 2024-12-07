@@ -14,13 +14,15 @@
   },
   "dependencies": {
     "@azure/data-tables": "^13.3.0",
+    "@read-every-word/client": "file:../../../api/client",
+    "@read-every-word/domain": "file:../../../domain",
+    "@read-every-word/infrastructure": "file:../../../infrastructure",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "dotenv": "^16.4.5",
-    "uuid": "^11.0.1",
-    "@read-every-word/infrastructure": "file:../../../infrastructure",
-    "@read-every-word/domain": "file:../../../domain",
-    "@read-every-word/client": "file:../../../api/client"
+    "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.1.0",
+    "uuid": "^11.0.1"
   },
   "devDependencies": {
     "@azure/functions": "^4.5.1",
