@@ -1,7 +1,7 @@
 import { err, ok, type Result } from '@read-every-word/infrastructure'
 
 
-export interface Auth0Config {
+export interface OpenIdConfig {
   jwksUri: string
   audience: string
   issuer: string
@@ -9,7 +9,7 @@ export interface Auth0Config {
 
 export interface Config {
   tableStorageConnectionString: string
-  auth0: Auth0Config
+  openId: OpenIdConfig
 }
 
 export function fromEnv (): Result<Config, InvalidConfiguration> {
@@ -33,7 +33,7 @@ export function fromEnv (): Result<Config, InvalidConfiguration> {
 
   return ok({
     tableStorageConnectionString: vars.TABLE_STORAGE_CONNECTION_STRING,
-    auth0: {
+    openId: {
       jwksUri: vars.JWKS_URI,
       audience: vars.AUDIENCE,
       issuer: vars.ISSUER
