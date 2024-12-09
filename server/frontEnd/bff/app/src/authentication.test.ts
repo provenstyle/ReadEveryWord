@@ -1,4 +1,4 @@
-import jwt, { JwtPayload } from "jsonwebtoken"
+import jwt from "jsonwebtoken"
 import { Authentication } from './authentication'
 import {type OpenIdConfig} from './config'
 import { isErr } from "@read-every-word/infrastructure"
@@ -10,18 +10,18 @@ describe('authentication', () => {
     issuer: "https://dev-lr8vwbeyc7gmi0w2.us.auth0.com/"
   }
 
-  // it('can authenticate a valid token', async () => {
-  //   // const token = "If I add a valid token here it will pass"
-  //   const token = "Add a valid token"
+  it.skip('can authenticate a valid token', async () => {
+    // const token = "If I add a valid token here it will pass"
+    const token = "Add a valid token"
 
-  //   const authn = new Authentication(config)
-  //   const authnResult = await authn.validateToken(token)
-  //   if (isErr(authnResult)) {
-  //     throw new Error('unexpected failure')
-  //   }
-  //   const claims = authnResult.data
-  //   expect(claims.iss).toEqual(config.issuer)
-  // })
+    const authn = new Authentication(config)
+    const authnResult = await authn.validateToken(token)
+    if (isErr(authnResult)) {
+      throw new Error('unexpected failure')
+    }
+    const claims = authnResult.data
+    expect(claims.iss).toEqual(config.issuer)
+  })
 
   it('fails on an invalid token', async () => {
     const token = withRandomToken()
