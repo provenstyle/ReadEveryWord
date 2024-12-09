@@ -1,6 +1,5 @@
 import { err, ok, type Result } from '@read-every-word/infrastructure'
 
-
 export interface OpenIdConfig {
   jwksUri: string
   audience: string

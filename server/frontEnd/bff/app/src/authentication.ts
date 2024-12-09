@@ -1,12 +1,15 @@
+import {type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
 import jwt, { VerifyOptions, Jwt, JwtPayload } from "jsonwebtoken"
 import jwksClient from "jwks-rsa"
 import NodeCache from "node-cache"
-import { type OpenIdConfig } from "./config";
+import { fromEnv, type OpenIdConfig } from "./config";
+import { isErr, Result, err, ok } from '@read-every-word/infrastructure'
 
 // https://github.com/auth0/node-jsonwebtoken
 // https://github.com/auth0/node-jwks-rsa
 
-const keyCache: NodeCache = new NodeCache({ stdTTL: 600, checkperiod: 0 }) // Cache keys for 10 minutes
+const keyCache: NodeCache = new NodeCache({ stdTTL: 600, checkperiod: 0 })
+let config: OpenIdConfig
 
 export class Authentication {
   constructor(private config: OpenIdConfig) {
@@ -34,20 +37,51 @@ export class Authentication {
     }
   }
 
-  validateToken = (token: string): Promise<string | Jwt | JwtPayload | undefined> => {
+  validateToken = (token: string): Promise<Result<string | Jwt | JwtPayload | undefined, FailedAuthentication>> => {
     return new Promise((resolve, reject) => {
       const options: VerifyOptions = {
         audience: this.config.audience,
         issuer: this.config.issuer,
         algorithms: ["RS256"]
       }
-      jwt.verify(token, this.getKey, options, (err, decoded) => {
-        if (err) {
-          reject(err)
+      jwt.verify(token, this.getKey, options, (error, decoded) => {
+        if (error) {
+          reject(err({}))
         } else {
-          resolve(decoded)
+          resolve(ok(decoded))
         }
       })
     })
   }
+}
+
+export interface FailedAuthentication {
+}
+
+type EndPointHandler = (request: HttpRequest, context: InvocationContext) => Promise<HttpResponseInit>
+
+export const authenticate = (handler: EndPointHandler): EndPointHandler => {
+  return async function (request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+    if (!config) {
+      const configResult = fromEnv()
+      if (isErr(configResult)) {
+        console.error('Missing environment variable configuration.')
+        return ({ status: 500 })
+      }
+      config = configResult.data.openId
+    }
+    const authn = new Authentication(config)
+    
+    const token = ''
+    const validationResult = await authn.validateToken(token)
+    if (isErr(validationResult)) {
+      return ({ status: 401 })
+    }
+    const scopes = validationResult.data
+
+    // Call the original handler
+    const response = await handler(request, context);
+
+    return response;
+  };
 }

@@ -1,7 +1,6 @@
 import jwt, { JwtPayload } from "jsonwebtoken"
 import { Authentication } from './authentication'
 import {type OpenIdConfig} from './config'
-import { error } from "console"
 
 describe('authentication', () => {
   const config: OpenIdConfig = {

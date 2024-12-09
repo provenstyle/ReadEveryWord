@@ -1,30 +1,14 @@
 import { app, type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
 import { handleGetHealthCheck, GetHealthCheckSucceeded, GetHealthCheckFailed } from './handler'
 import { assertNever, isOk} from '@read-every-word/infrastructure'
+import { authenticate } from '../authentication'
 
 app.http('health_check', {
   methods: ['GET'],
   authLevel: 'anonymous',
-  handler: wrapHandler(handleEndpoint),
+  handler: authenticate(handleEndpoint),
   route: 'healthCheck'
 })
-
-type EndPointHandler = (request: HttpRequest, context: InvocationContext) => Promise<HttpResponseInit>
-
-function wrapHandler(handler: EndPointHandler): EndPointHandler {
-  return async function (request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
-    // Code to execute before the handler
-    console.log('Before handler execution');
-
-    // Call the original handler
-    const response = await handler(request, context);
-
-    // Code to execute after the handler
-    console.log('After handler execution');
-
-    return response;
-  };
-}
 
 export async function handleEndpoint (request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
   try {
