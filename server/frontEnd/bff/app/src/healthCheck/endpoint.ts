@@ -1,7 +1,7 @@
 import { app, type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
 import { handleGetHealthCheck, GetHealthCheckSucceeded, GetHealthCheckFailed } from './handler'
 import { assertNever, isOk} from '@read-every-word/infrastructure'
-import { authenticate } from '../authentication'
+import { authenticate, type JwtPayload } from '../authentication'
 
 app.http('health_check', {
   methods: ['GET'],
@@ -10,7 +10,7 @@ app.http('health_check', {
   route: 'healthCheck'
 })
 
-export async function handleEndpoint (request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+export async function handleEndpoint (request: HttpRequest, context: InvocationContext, jwt: JwtPayload): Promise<HttpResponseInit> {
   try {
     console.log(`${request.method} request for url "${request.url}"`)
     const result = await handleGetHealthCheck()

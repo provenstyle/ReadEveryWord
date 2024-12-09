@@ -34,11 +34,23 @@ variable "random_length" {
 variable "storage_account_replication_type" {
   description = "Defines the type of replication to use for this storage account"
   type        = string
-  default     = "LRS" 
-  # default     = "GRS" 
+  default     = "LRS"
+  # default     = "GRS"
 }
 variable "app_scale_limit" {
   type        = string
   description = "Number of workers this function app can scale out to"
   default     = 1
+}
+variable "open_id_jwks_uri" {
+  type        = string
+  description = "openId jwks uri"
+}
+variable "open_id_audience" {
+  type        = string
+  description = "openId api audience"
+}
+variable "open_id_issuer" {
+  type        = string
+  description = "openId server address"
 }

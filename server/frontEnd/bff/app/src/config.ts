@@ -15,10 +15,9 @@ export function fromEnv (): Result<Config, InvalidConfiguration> {
   const vars: Record<string, string> = {}
 
   const requiredEnvVariables = [
-    'TABLE_STORAGE_CONNECTION_STRING',
-    'JWKS_URI',
-    'AUDIENCE',
-    'ISSUER'
+    'OPEN_ID_JWKS_URI',
+    'OPEN_ID_AUDIENCE',
+    'OPEN_ID_ISSUER'
   ]
 
   for (const name of requiredEnvVariables) {
@@ -33,9 +32,9 @@ export function fromEnv (): Result<Config, InvalidConfiguration> {
   return ok({
     tableStorageConnectionString: vars.TABLE_STORAGE_CONNECTION_STRING,
     openId: {
-      jwksUri: vars.JWKS_URI,
-      audience: vars.AUDIENCE,
-      issuer: vars.ISSUER
+      jwksUri: vars.OPEN_ID_JWKS_URI,
+      audience: vars.OPEN_ID_AUDIENCE,
+      issuer: vars.OPEN_ID_ISSUER
     }
   })
 }

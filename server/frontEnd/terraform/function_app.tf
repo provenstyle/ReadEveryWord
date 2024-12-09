@@ -40,6 +40,9 @@ resource "azurerm_linux_function_app" "this" {
     APPLICATIONINSIGHTS_CONNECTION_STRING = azurerm_application_insights.func.connection_string
     BASE_URL                              = try(data.terraform_remote_state.api.outputs.function_app_endpoint, "api resources must be created first")
     SUBSCRIPTION_KEY                      = try(data.terraform_remote_state.api.outputs.function_app_key, "api resources must be create first")
+    OPEN_ID_JWKS_URI                      = var.open_id_jwks_uri
+    OPEN_ID_AUDIENCE                      = var.open_id_audience
+    OPEN_ID_ISSUER                        = var.open_id_issuer
   }
   identity {
     type = "SystemAssigned"

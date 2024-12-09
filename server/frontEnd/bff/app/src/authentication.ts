@@ -1,9 +1,11 @@
 import {type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
-import jwt, { VerifyOptions, Jwt, JwtPayload } from "jsonwebtoken"
+import jwt, { VerifyOptions, Jwt, type JwtPayload } from "jsonwebtoken"
 import jwksClient from "jwks-rsa"
 import NodeCache from "node-cache"
 import { fromEnv, type OpenIdConfig } from "./config";
-import { isErr, Result, err, ok } from '@read-every-word/infrastructure'
+import { isErr, Result, err, ok, assertNever } from '@read-every-word/infrastructure'
+
+export type { JwtPayload }
 
 // https://github.com/auth0/node-jsonwebtoken
 // https://github.com/auth0/node-jwks-rsa
@@ -37,30 +39,31 @@ export class Authentication {
     }
   }
 
-  validateToken = (token: string): Promise<Result<string | Jwt | JwtPayload | undefined, FailedAuthentication>> => {
+  validateToken = (token: string): Promise<Result<ValidateTokenSucceeded, ValidateTokenFailed>> => {
     return new Promise((resolve, reject) => {
-      const options: VerifyOptions = {
-        audience: this.config.audience,
-        issuer: this.config.issuer,
-        algorithms: ["RS256"]
-      }
-      jwt.verify(token, this.getKey, options, (error, decoded) => {
-        if (error) {
-          reject(err({}))
-        } else {
-          resolve(ok(decoded))
+      try {
+        const options: VerifyOptions = {
+          audience: this.config.audience,
+          issuer: this.config.issuer,
+          algorithms: ["RS256"]
         }
-      })
+        jwt.verify(token, this.getKey, options, (error, decoded) => {
+          if (error) {
+            console.log(error)
+            resolve(err(new NotAuthenticated()))
+          } else {
+            resolve(ok(decoded as JwtPayload))
+          }
+        })
+      } catch (e) {
+        console.log('Unexpected authentication exception', e)
+        reject(err(new UnexpectedAuthenticationException()))
+      }
     })
   }
 }
 
-export interface FailedAuthentication {
-}
-
-type EndPointHandler = (request: HttpRequest, context: InvocationContext) => Promise<HttpResponseInit>
-
-export const authenticate = (handler: EndPointHandler): EndPointHandler => {
+export const authenticate = (handler: AuthenticatedHandler): EndPointHandler => {
   return async function (request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     if (!config) {
       const configResult = fromEnv()
@@ -70,18 +73,45 @@ export const authenticate = (handler: EndPointHandler): EndPointHandler => {
       }
       config = configResult.data.openId
     }
+
+    const authHeader = request.headers.get('Authorization') ?? ''
+    const token = authHeader.replace('Bearer ', '').trim()
+
     const authn = new Authentication(config)
-    
-    const token = ''
     const validationResult = await authn.validateToken(token)
     if (isErr(validationResult)) {
-      return ({ status: 401 })
+      const err = validationResult.err
+      switch (err.code) {
+        case 'unexpected-authentication-exception': return ({ status: 500 })
+        case 'not-authenticated': return ({ status: 401 })
+        default: return assertNever(err)
+      }
     }
-    const scopes = validationResult.data
+    const jwt = validationResult.data
 
     // Call the original handler
-    const response = await handler(request, context);
+    const response = await handler(request, context, jwt);
 
     return response;
   };
 }
+
+type ValidateTokenSucceeded =
+  | JwtPayload
+
+type ValidateTokenFailed =
+  | NotAuthenticated
+  | UnexpectedAuthenticationException
+
+export class NotAuthenticated {
+  code = 'not-authenticated' as const
+  message = 'Not authenticated'
+}
+
+export class UnexpectedAuthenticationException {
+  code = 'unexpected-authentication-exception' as const
+  message = 'Unexpected authentication exception'
+}
+
+type EndPointHandler = (request: HttpRequest, context: InvocationContext) => Promise<HttpResponseInit>
+type AuthenticatedHandler = (request: HttpRequest, context: InvocationContext, token: JwtPayload) => Promise<HttpResponseInit>

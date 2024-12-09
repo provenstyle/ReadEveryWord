@@ -1,6 +1,7 @@
 import jwt, { JwtPayload } from "jsonwebtoken"
 import { Authentication } from './authentication'
 import {type OpenIdConfig} from './config'
+import { isErr } from "@read-every-word/infrastructure"
 
 describe('authentication', () => {
   const config: OpenIdConfig = {
@@ -10,16 +11,16 @@ describe('authentication', () => {
   }
 
   // it('can authenticate a valid token', async () => {
-  //   const token = "If I add a valid token here it will pass"
+  //   // const token = "If I add a valid token here it will pass"
+  //   const token = "Add a valid token"
 
   //   const authn = new Authentication(config)
-  //   await authn.validateToken(token)
-  //     .then((reponse: JwtPayload) => {
-  //       expect(reponse?.iss).toEqual(config.issuer)
-  //     })
-  //     .catch(() => {
-  //       throw new error('unexpected failure')
-  //     })
+  //   const authnResult = await authn.validateToken(token)
+  //   if (isErr(authnResult)) {
+  //     throw new Error('unexpected failure')
+  //   }
+  //   const claims = authnResult.data
+  //   expect(claims.iss).toEqual(config.issuer)
   // })
 
   it('fails on an invalid token', async () => {
@@ -30,7 +31,6 @@ describe('authentication', () => {
     })
   })
 })
-
 
 const withRandomToken = (): string => {
   const payload = {
