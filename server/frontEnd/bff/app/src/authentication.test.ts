@@ -11,8 +11,7 @@ describe('authentication', () => {
   }
 
   it.skip('can authenticate a valid token', async () => {
-    // const token = "If I add a valid token here it will pass"
-    const token = "Add a valid token"
+    const token = "If I add a valid token here it will pass"
 
     const authn = new Authentication(config)
     const authnResult = await authn.validateToken(token)
