@@ -10,7 +10,8 @@ export type { JwtPayload }
 // https://github.com/auth0/node-jsonwebtoken
 // https://github.com/auth0/node-jwks-rsa
 
-const keyCache: NodeCache = new NodeCache({ stdTTL: 600, checkperiod: 0 })
+// 60 * 60 * 12 is 12 hours
+const keyCache: NodeCache = new NodeCache({ stdTTL: 60 * 60 * 12, checkperiod: 0 })
 let config: OpenIdConfig
 
 export class Authentication {
