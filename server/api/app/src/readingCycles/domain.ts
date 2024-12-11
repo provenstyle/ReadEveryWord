@@ -4,6 +4,7 @@ export interface ReadingCycle {
   lastModified: string
   dateStarted: string
   dateCompleted?: string
+  default: boolean
 }
 
 export interface ReadingCycleRow {
@@ -12,6 +13,7 @@ export interface ReadingCycleRow {
   timestamp: string,
   dateStarted: string
   dateCompleted?: string
+  default: boolean
 }
 
 export const map = (row: ReadingCycleRow): ReadingCycle => {
@@ -20,6 +22,7 @@ export const map = (row: ReadingCycleRow): ReadingCycle => {
     lastModified: row.timestamp,
     authId: row.partitionKey,
     dateStarted: row.dateStarted,
-    dateCompleted: row.dateCompleted
+    dateCompleted: row.dateCompleted,
+    default: row.default
   }
 }

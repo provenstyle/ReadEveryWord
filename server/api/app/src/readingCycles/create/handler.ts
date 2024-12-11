@@ -31,6 +31,7 @@ export interface CreateReadingCycle {
   authId: string
   dateStarted: string
   dateCompleted?: string
+  default?: boolean
 }
 
 export type CreateReadingCycleSucceeded =

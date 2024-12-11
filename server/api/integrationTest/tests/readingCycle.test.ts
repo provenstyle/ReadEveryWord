@@ -27,4 +27,11 @@ describe('readingCycle', () => {
         expect(readingCycle.dateStarted).toBeDefined
         expect(readingCycle.dateCompleted).toBeUndefined
     }, 10 * 1000)
+
+    // Can update dateComplete
+
+    // Can update default to true
+
+    // Cannot update default to false
+    // Must set another Cycle as default
 })

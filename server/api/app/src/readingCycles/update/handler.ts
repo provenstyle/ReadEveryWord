@@ -30,7 +30,8 @@ export async function handleUpdateReadingCycle(request: UpdateReadingCycle): Pro
 export interface UpdateReadingCycle {
   authId: string
   id: string
-  dateCompleted: string
+  dateCompleted?: string
+  default?: boolean
 }
 
 export type UpdateReadingCycleSucceeded =

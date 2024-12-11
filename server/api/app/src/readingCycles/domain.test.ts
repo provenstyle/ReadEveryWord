@@ -7,7 +7,9 @@ describe('mapping ReadingCycleRow to ReadingCycleData', () => {
       rowKey: 'rowKey',
       timestamp: 'timestamp',
       dateStarted: 'dateStarted',
-      dateCompleted: 'dateCompleted'
+      dateCompleted: 'dateCompleted',
+      default: true
+
     })
 
     expect(data.id).toEqual('rowKey')
@@ -15,5 +17,6 @@ describe('mapping ReadingCycleRow to ReadingCycleData', () => {
     expect(data.lastModified).toEqual('timestamp')
     expect(data.dateStarted).toEqual('dateStarted')
     expect(data.dateCompleted).toEqual('dateCompleted')
+    expect(data.default).toEqual(true)
   })
 })

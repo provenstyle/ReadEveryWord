@@ -14,11 +14,12 @@
   },
   "dependencies": {
     "@azure/data-tables": "^13.3.0",
+    "@read-every-word/infrastructure": "file:../../infrastructure",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "dotenv": "^16.4.5",
-    "uuid": "^11.0.1",
-    "@read-every-word/infrastructure": "file:../../infrastructure"
+    "lodash": "^4.17.21",
+    "uuid": "^11.0.1"
   },
   "devDependencies": {
     "@azure/functions": "^4.5.1",
