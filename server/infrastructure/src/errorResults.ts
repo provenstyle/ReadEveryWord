@@ -38,6 +38,7 @@ export type CreateFailed =
   | ValidationFailed
   | NotFound
   | ServerError
+  | PersistenceError
 
 export type GetFailed =
   | UnexpectedHttpException
@@ -45,6 +46,7 @@ export type GetFailed =
   | ValidationFailed
   | NotFound
   | ServerError
+  | PersistenceError
 
 export type UpdateFailed =
   | UnexpectedHttpException
@@ -52,6 +54,7 @@ export type UpdateFailed =
   | ValidationFailed
   | NotFound
   | ServerError
+  | PersistenceError
 
 export type DeleteFailed =
   | UnexpectedHttpException
@@ -59,3 +62,4 @@ export type DeleteFailed =
   | ValidationFailed
   | NotFound
   | ServerError
+  | PersistenceError

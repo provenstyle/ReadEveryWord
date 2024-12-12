@@ -1,6 +1,7 @@
 import { app, type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
 import { isOk, assertNever } from '@read-every-word/infrastructure'
-import { handleUpdateReadingCycle, type UpdateReadingCycle, type UpdateReadingCycleSucceeded, type UpdateReadingCycleFailed } from './handler'
+import { handleUpdateReadingCycle, type UpdateReadingCycleSucceeded, type UpdateReadingCycleFailed } from './handler'
+import { type UpdateReadingCycle } from '../domain'
 
 app.http('update_readingCycle', {
   methods: ['PATCH'],

@@ -1,9 +1,8 @@
-import { Result, isErr, ok, InvalidConfiguration } from '@read-every-word/infrastructure'
-import { ValidationFailed, InvalidSchema } from '../../infrastructure/Validation'
+import { Result, isErr, ok, InvalidConfiguration, ValidationFailed, GetFailed } from '@read-every-word/infrastructure'
 import { validate } from './validation'
-import { Persistence, GetFailed } from './persistence'
+import { Persistence } from '../persistence'
 import { fromEnv } from '../../config'
-import { ReadingCycle } from '../domain'
+import { ReadingCycle, GetReadingCycle } from '../domain'
 
 export async function handleGetReadingCycle(request: GetReadingCycle): Promise<GetReadingCycleResult> {
   const configResponse = fromEnv()
@@ -18,7 +17,7 @@ export async function handleGetReadingCycle(request: GetReadingCycle): Promise<G
   }
 
   const persistence = new Persistence(config)
-  const getReadingCycleResponse = await persistence.getReadingCycle(request)
+  const getReadingCycleResponse = await persistence.getAllReadingCycles(request)
   if (isErr(getReadingCycleResponse)) {
     return getReadingCycleResponse
   }
@@ -27,16 +26,12 @@ export async function handleGetReadingCycle(request: GetReadingCycle): Promise<G
   return ok(readingCycle)
 }
 
-export interface GetReadingCycle {
-  authId: string
-}
-
 export type GetReadingCycleSucceeded =
   | ReadingCycle[]
 
 export type GetReadingCycleFailed =
   | InvalidConfiguration
-  | ValidationFailed<InvalidSchema>
+  | ValidationFailed
   | GetFailed
 
 export type GetReadingCycleResult = Result<GetReadingCycleSucceeded, GetReadingCycleFailed>

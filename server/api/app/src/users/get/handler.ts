@@ -1,5 +1,4 @@
-import { Result, isErr, ok, InvalidConfiguration } from '@read-every-word/infrastructure'
-import { ValidationFailed, InvalidSchema } from '../../infrastructure/Validation'
+import { Result, isErr, ok, InvalidConfiguration, ValidationFailed } from '@read-every-word/infrastructure'
 import { validate } from './validation'
 import { Persistence, GetFailed } from './persistence'
 import { fromEnv } from '../../config'
@@ -36,7 +35,7 @@ export type GetUserSucceeded =
 
 export type GetUserFailed =
   | InvalidConfiguration
-  | ValidationFailed<InvalidSchema>
+  | ValidationFailed
   | GetFailed
 
 export type GetUserResult = Result<GetUserSucceeded, GetUserFailed>

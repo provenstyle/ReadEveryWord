@@ -1,14 +1,13 @@
 import { Ajv } from 'ajv'
 import addFormats from 'ajv-formats'
-import { Result, ok, err } from '@read-every-word/infrastructure'
-import { ValidationFailed, InvalidSchema } from '../../../infrastructure/Validation'
-import { GetSummary } from './handler'
+import { Result, ok, err, ValidationFailed, InvalidSchema } from '@read-every-word/infrastructure'
+import { GetReadingCycle } from '../domain'
 
 const ajv = new Ajv()
 addFormats(ajv)
 
-export const validate = async (request: GetSummary)
-    : Promise<Result<unknown, ValidationFailed<InvalidSchema>>> => {
+export const validate = async (request: GetReadingCycle)
+    : Promise<Result<unknown, ValidationFailed>> => {
 
     const schema = {
         type: 'object',

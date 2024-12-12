@@ -1,13 +1,13 @@
 import * as Factory from 'factory.ts'
-import { expectOk, expectErrorMessage } from '../../infrastructure/ValidationExpectations'
+import { expectOk, expectErrorMessage } from '@read-every-word/infrastructure'
 import { validate } from './validation'
-import { CreateReadingCycle } from './handler'
+import { CreateReadingCycle } from '../domain'
 
 describe('CreateReadingCycle validation', () => {
   const requestFactory = Factory.Sync.makeFactory<CreateReadingCycle>({
     authId: 'authId',
     dateStarted: '2024-11-04T23:01:00Z',
-    dateCompleted: '2024-11-04T23:30:00Z'
+    name: 'name'
   });
 
   it('valid request is valid', async () => {
@@ -27,5 +27,12 @@ describe('CreateReadingCycle validation', () => {
       dateStarted: undefined
     }))
     expectErrorMessage(response, "must have required property 'dateStarted'")
+  })
+
+  it('name is required', async () => {
+    const response = await validate(requestFactory.build({
+      name: undefined
+    }))
+    expectErrorMessage(response, "must have required property 'name'")
   })
 })

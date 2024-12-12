@@ -1,12 +1,11 @@
 import * as Factory from 'factory.ts'
-import { expectOk, expectErrorMessage } from '../../../infrastructure/ValidationExpectations'
+import { expectOk, expectErrorMessage } from '@read-every-word/infrastructure'
 import { validate } from './validation'
-import { GetSummary } from './handler'
-import { v4 as uuid } from 'uuid'
+import { GetReadingCycle } from '../domain'
 
-describe('GetSummary validation', () => {
-  const requestFactory = Factory.Sync.makeFactory<GetSummary>({
-    authId: uuid(),
+describe('GetReadingCycle validation', () => {
+  const requestFactory = Factory.Sync.makeFactory<GetReadingCycle>({
+    authId: 'authId',
   });
 
   it('valid request is valid', async () => {

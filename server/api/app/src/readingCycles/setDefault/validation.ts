@@ -1,27 +1,25 @@
 import { Ajv } from 'ajv'
 import addFormats from 'ajv-formats'
 import { Result, ok, err, ValidationFailed, InvalidSchema } from '@read-every-word/infrastructure'
-import { CreateReadingCycle } from '../domain'
+import { SetDefaultReadingCycle } from '../domain'
 
 const ajv = new Ajv()
 addFormats(ajv)
 
-export const validate = async (request: CreateReadingCycle)
+export const validate = async (request: SetDefaultReadingCycle)
   : Promise<Result<unknown, ValidationFailed>> => {
 
   const schema = {
     type: 'object',
     properties: {
       authId: {type: 'string'},
-      name: {type: 'string'},
-      dateStarted: {type: 'string', format: 'date-time'},
+      id: {type: 'string', format: 'uuid'},
     },
     required: [
       'authId',
-      'name',
-      'dateStarted'
+      'id'
     ],
-    additionalProperties: false
+    additionalProperties: false,
   }
 
   const validator = ajv.compile(schema)

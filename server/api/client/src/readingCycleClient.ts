@@ -51,6 +51,23 @@ export class ReadingCycleClient {
     }
   }
 
+  async setDefault(request: SetDefaultReadingCycle): Promise<Result<ReadingCycle, UpdateFailed>> {
+    const uri = `readingCycle/default`
+    try {
+      const result = await this.axios.patch(uri, request)
+      switch(result.status) {
+        case 200: return ok(result.data)
+        case 400: return err(result.data as ValidationFailed)
+        case 404: return err(new NotFound())
+        case 500: return err(new ServerError())
+        default: return err(new UnexpectedResponseCode())
+      }
+    } catch (e) {
+      logAxiosError(e, uri)
+      return err(new UnexpectedHttpException())
+    }
+  }
+
   async update(request: UpdateReadingCycle): Promise<Result<ReadingCycle, UpdateFailed>> {
     const uri = `readingCycle`
     try {
@@ -73,22 +90,30 @@ export interface ReadingCycle {
   authId: string
   id: string
   lastModified: string
+  name: string
   dateStarted: string
   dateCompleted?: string
+  default: boolean
 }
 
 export interface CreateReadingCycle {
   authId: string
+  name: string
   dateStarted: string
-  dateCompleted?: string
 }
 
 export interface GetReadingCycle {
   authId: string
 }
 
+export interface SetDefaultReadingCycle {
+  authId: string
+  id: string
+}
+
 export interface UpdateReadingCycle {
   authId: string
   id: string
-  dateCompleted: string
+  name?: string
+  dateCompleted?: string
 }

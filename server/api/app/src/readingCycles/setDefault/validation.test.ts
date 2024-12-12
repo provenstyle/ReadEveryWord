@@ -1,16 +1,25 @@
 import * as Factory from 'factory.ts'
 import { expectOk, expectErrorMessage } from '@read-every-word/infrastructure'
 import { validate } from './validation'
-import { GetUser } from './handler'
+import { v4 as uuid } from 'uuid'
+import { SetDefaultReadingCycle } from '../domain'
 
-describe('GetUser validation', () => {
-  const requestFactory = Factory.Sync.makeFactory<GetUser>({
-    authId: 'authId',
+describe('SetDefaultReadingCycle validation', () => {
+  const requestFactory = Factory.Sync.makeFactory<SetDefaultReadingCycle>({
+    id: uuid(),
+    authId: 'authId'
   });
 
   it('valid request is valid', async () => {
     const response = await validate(requestFactory.build())
     expectOk(response)
+  })
+
+  it('id is required', async () => {
+    const response = await validate(requestFactory.build({
+      id: undefined
+    }))
+    expectErrorMessage(response, "must have required property 'id'")
   })
 
   it('authId is required', async () => {

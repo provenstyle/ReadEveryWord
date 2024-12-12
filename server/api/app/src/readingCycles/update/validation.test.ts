@@ -1,14 +1,15 @@
 import * as Factory from 'factory.ts'
-import { expectOk, expectErrorMessage } from '../../infrastructure/ValidationExpectations'
+import { expectOk, expectErrorMessage } from '@read-every-word/infrastructure'
 import { validate } from './validation'
-import { UpdateReadingCycle } from './handler'
+import { UpdateReadingCycle } from '../domain'
 import { v4 as uuid } from 'uuid'
 
 describe('UpdateReadingCycle validation', () => {
   const requestFactory = Factory.Sync.makeFactory<UpdateReadingCycle>({
     id: uuid(),
     authId: 'authId',
-    dateCompleted: '2024-11-04T23:30:00Z'
+    name: 'name',
+    dateCompleted: '2024-11-04T23:30:00Z',
   });
 
   it('valid request is valid', async () => {
@@ -30,10 +31,25 @@ describe('UpdateReadingCycle validation', () => {
     expectErrorMessage(response, "must have required property 'authId'")
   })
 
-  it('dateCompleted is required', async () => {
+  it('name is optional', async () => {
+    const response = await validate(requestFactory.build({
+      name: undefined
+    }))
+    expectOk(response)
+  })
+
+  it('dateCompleted is optional', async () => {
     const response = await validate(requestFactory.build({
       dateCompleted: undefined
     }))
-    expectErrorMessage(response, "must have required property 'dateCompleted'")
+    expectOk(response)
+  })
+
+  it('for now you can supply nothing to change and it is ok, may want to change this', async () => {
+    const response = await validate(requestFactory.build({
+      name: undefined,
+      dateCompleted: undefined
+    }))
+    expectOk(response)
   })
 })

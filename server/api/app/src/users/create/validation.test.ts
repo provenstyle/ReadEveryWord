@@ -1,5 +1,5 @@
 import * as Factory from 'factory.ts'
-import { expectOk, expectErrorMessage } from '../../infrastructure/ValidationExpectations'
+import { expectOk, expectErrorMessage } from '@read-every-word/infrastructure'
 import { validate } from './validation'
 import { CreateUser } from './handler'
 

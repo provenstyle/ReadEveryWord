@@ -1,23 +1,22 @@
 import { app, type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
 import { isOk, assertNever } from '@read-every-word/infrastructure'
-import { handleGetSummary, type GetSummary, type GetSummarySucceeded, type GetSummaryFailed } from './handler'
+import { handleSetDefaultReadingCycle, type SetDefaultReadingCycleSucceeded, type SetDefaultReadingCycleFailed } from './handler'
+import { type SetDefaultReadingCycle } from '../domain'
 
-app.http('get_bff_summary', {
-  methods: ['GET'],
+app.http('set_default_readingCycle', {
+  methods: ['POST'],
   authLevel: 'function',
   handler: handleEndpoint,
-  route: 'bff/summary/{authId}'
+  route: 'readingCycle/default'
 })
 
 export async function handleEndpoint (request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
   try {
     console.log(`${request.method} request for url "${request.url}"`)
 
-    const getRequest: GetSummary = {
-      authId: request.params.authId ?? ''
-    }
+    const body = await request.json() as SetDefaultReadingCycle
 
-    const result = await handleGetSummary(getRequest)
+    const result = await handleSetDefaultReadingCycle(body)
 
     return isOk(result)
       ? handleSuccess(result.data)
@@ -31,16 +30,19 @@ export async function handleEndpoint (request: HttpRequest, context: InvocationC
   }
 }
 
-const handleSuccess = (data: GetSummarySucceeded) => {
+const handleSuccess = (data: SetDefaultReadingCycleSucceeded) => {
   return json(200, data)
 }
 
-const handleFailures = (err: GetSummaryFailed) => {
+const handleFailures = (err: SetDefaultReadingCycleFailed) => {
   switch (err.code) {
     case 'invalid-server-configuration': return json(500, err)
+    case 'server-error': return json(500, err)
     case 'persistence-error': return json(500, err)
+    case 'unexpected-http-exception': return json(500, err)
+    case 'unexpected-response-code': return json(500, err)
     case 'validation-failed': return json(400, err)
-    case 'user-not-found': return json(404, err)
+    case 'not-found': return json(404, err)
     default: return assertNever(err)
   }
 }

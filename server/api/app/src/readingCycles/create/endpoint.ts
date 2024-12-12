@@ -1,6 +1,7 @@
 import { app, type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
 import { isOk, assertNever } from '@read-every-word/infrastructure'
-import { handleCreateReadingCycle, type CreateReadingCycle, type CreateReadingCycleSucceeded, type CreateReadingCycleFailed } from './handler'
+import { handleCreateReadingCycle, type CreateReadingCycleSucceeded, type CreateReadingCycleFailed } from './handler'
+import { type CreateReadingCycle } from '../domain'
 
 app.http('create_readingCycle', {
   methods: ['POST'],
@@ -37,6 +38,10 @@ const handleFailures = (err: CreateReadingCycleFailed) => {
   switch (err.code) {
     case 'invalid-server-configuration': return json(500, err)
     case 'persistence-error': return json(500, err)
+    case 'server-error': return json(500, err)
+    case 'unexpected-http-exception': return json(500, err)
+    case 'unexpected-response-code': return json(500, err)
+    case 'not-found': return json(404, err)
     case 'validation-failed': return json(400, err)
     default: return assertNever(err)
   }
