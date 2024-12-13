@@ -54,7 +54,7 @@ export class ReadingCycleClient {
   async setDefault(request: SetDefaultReadingCycle): Promise<Result<ReadingCycle, UpdateFailed>> {
     const uri = `readingCycle/default`
     try {
-      const result = await this.axios.patch(uri, request)
+      const result = await this.axios.post(uri, request)
       switch(result.status) {
         case 200: return ok(result.data)
         case 400: return err(result.data as ValidationFailed)

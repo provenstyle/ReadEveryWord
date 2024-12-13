@@ -1,6 +1,6 @@
-import { Result, isErr, ok, InvalidConfiguration, ValidationFailed, InvalidSchema } from '@read-every-word/infrastructure'
+import { Result, isErr, ok, InvalidConfiguration, ValidationFailed, UpdateFailed } from '@read-every-word/infrastructure'
 import { validate } from './validation'
-import { Persistence, CreateFailed } from './persistence'
+import { Persistence } from '../persistence'
 import { fromEnv } from '../../config'
 import { ReadingCycle, UpdateReadingCycle } from '../domain'
 
@@ -32,7 +32,7 @@ export type UpdateReadingCycleSucceeded =
 export type UpdateReadingCycleFailed =
   | InvalidConfiguration
   | ValidationFailed
-  | CreateFailed
+  | UpdateFailed
 
 export type UpdateReadingCycleResult = Result<UpdateReadingCycleSucceeded, UpdateReadingCycleFailed>
 

@@ -63,7 +63,7 @@ export class Persistence {
       return ok(allRows.map(u => map(u)))
     } catch (e) {
       if (resourceDoesNotExist(e)) {
-        return err(new NotFound())
+        return ok([])
       }
       console.error('Unexpected error creating readingCycle', e)
       return err(new PersistenceError())

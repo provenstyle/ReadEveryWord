@@ -1,22 +1,24 @@
 import { app, type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
 import { isOk, assertNever } from '@read-every-word/infrastructure'
-import { handleUpdateReadingCycle, type UpdateReadingCycleSucceeded, type UpdateReadingCycleFailed } from './handler'
-import { type UpdateReadingCycle } from '../domain'
+import { handleGetSummary, type GetSummary, type GetSummarySucceeded, type GetSummaryFailed } from './handler'
+import { authenticate, type JwtPayload } from '../../authentication'
 
-app.http('update_readingCycle', {
-  methods: ['PATCH'],
+app.http('get_read', {
+  methods: ['GET'],
   authLevel: 'function',
-  handler: handleEndpoint,
-  route: 'readingCycle'
+  handler: authenticate(handleEndpoint),
+  route: 'read'
 })
 
-export async function handleEndpoint (request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+export async function handleEndpoint (request: HttpRequest, context: InvocationContext, token: JwtPayload ): Promise<HttpResponseInit> {
   try {
     console.log(`${request.method} request for url "${request.url}"`)
 
-    const body = await request.json() as UpdateReadingCycle
+    const getRequest: GetSummary = {
+      authId: token.sub ?? ''
+    }
 
-    const result = await handleUpdateReadingCycle(body)
+    const result = await handleGetSummary(getRequest)
 
     return isOk(result)
       ? handleSuccess(result.data)
@@ -30,19 +32,19 @@ export async function handleEndpoint (request: HttpRequest, context: InvocationC
   }
 }
 
-const handleSuccess = (data: UpdateReadingCycleSucceeded) => {
+const handleSuccess = (data: GetSummarySucceeded) => {
   return json(200, data)
 }
 
-const handleFailures = (err: UpdateReadingCycleFailed) => {
+const handleFailures = (err: GetSummaryFailed) => {
   switch (err.code) {
     case 'invalid-server-configuration': return json(500, err)
     case 'persistence-error': return json(500, err)
     case 'server-error': return json(500, err)
     case 'unexpected-http-exception': return json(500, err)
     case 'unexpected-response-code': return json(500, err)
-    case 'validation-failed': return json(400, err)
     case 'not-found': return json(404, err)
+    case 'validation-failed': return json(400, err)
     default: return assertNever(err)
   }
 }

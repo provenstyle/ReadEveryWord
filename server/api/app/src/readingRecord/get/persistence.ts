@@ -1,5 +1,5 @@
 import { Result, err, ok, cacheTableClient, PersistenceError } from '@read-every-word/infrastructure'
-import { TableClient } from '@azure/data-tables'
+import { TableClient, RestError } from '@azure/data-tables'
 import { Config } from '../../config'
 import { GetReadingRecord } from './handler'
 import { ReadingRecord, ReadingRecordRow, map } from '../domain'
@@ -24,10 +24,21 @@ export class Persistence {
       }
       return ok(allRows.map(u => map(u)))
     } catch (e) {
+      if (resourceDoesNotExist(e)) {
+        return ok([])
+      }
       console.error('Unexpected error creating readingRecord', e)
       return err(new PersistenceError())
     }
   }
+}
+
+function resourceDoesNotExist (error) {
+  return (
+    error instanceof RestError &&
+    error?.statusCode === 404 &&
+    error?.message.includes('The specified resource does not exist.')
+  )
 }
 
 export type CreateFailed =

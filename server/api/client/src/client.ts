@@ -19,7 +19,6 @@ export class Client {
 
     const protocol = process.env.http ? 'http' : 'https'
     const baseURL =  new URL('api', `${protocol}://${serviceConfig.baseUrl}`).href
-    console.log('UsersClient baseUrl', baseURL)
 
     const axios = axiosStatic.create({
       httpAgent: httpAgent,

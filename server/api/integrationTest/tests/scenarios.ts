@@ -24,7 +24,8 @@ export async function withReadingCycle(user: User): Promise<ReadingCycle> {
     const readingCycleResult = await readingCycleClient
       .create({
         authId: user.authId,
-        dateStarted: new Date().toISOString()
+        dateStarted: new Date().toISOString(),
+        name: 'name'
       })
     return expectOk(readingCycleResult)
 }

@@ -34,6 +34,7 @@ const handleFailures = (err: GetHealthCheckFailed) => {
     case 'invalid-server-configuration': return json(500, err)
     case 'unexpected-http-exception': return json(500, err)
     case 'unexpected-response-code': return json(500, err)
+    case 'persistence-error': return json(500, err)
     case 'server-error': return json(500, err)
     case 'validation-failed': return json(400, err)
     case 'not-found': return json(404, err)
