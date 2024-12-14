@@ -9,7 +9,7 @@ export class Client {
   read: ReadClient
   healthCheck: HealthCheckClient
 
-  constructor (serviceConfig: ServiceConfig) {
+  constructor (serviceConfig: ServiceConfig, authToken: string) {
     const httpAgent = new http.Agent({ keepAlive: true })
     const httpsAgent = new https.Agent({ keepAlive: true })
 
@@ -21,7 +21,7 @@ export class Client {
       httpsAgent: httpsAgent,
       baseURL,
       headers: {
-        'x-functions-key': serviceConfig.subscriptionKey
+        Authorization: `Bearer ${authToken}`
       },
       validateStatus: (_) => true
     })

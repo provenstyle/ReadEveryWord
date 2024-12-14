@@ -6,6 +6,7 @@ import {
   NotFound, ServerError,
   UnexpectedResponseCode,
   UnexpectedHttpException,
+  Unauthorized,
   GetFailed,
 } from '@read-every-word/infrastructure'
 
@@ -13,7 +14,7 @@ export class ReadClient {
   axios: AxiosInstance
 
   constructor (axios: AxiosInstance) {
-    this.axios = axios
+    this.axios  = axios
   }
 
   async get(request: GetSummary): Promise<Result<Summary, GetFailed>> {
@@ -23,6 +24,7 @@ export class ReadClient {
       switch(result.status) {
         case 200: return ok(result.data)
         case 400: return err(result.data as ValidationFailed)
+        case 401: return err(new Unauthorized())
         case 404: return err(new NotFound())
         case 500: return err(new ServerError())
         default: return err(new UnexpectedResponseCode(result.status))

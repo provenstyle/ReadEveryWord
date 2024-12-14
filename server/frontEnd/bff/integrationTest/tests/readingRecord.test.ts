@@ -5,8 +5,8 @@ import { v4 as uuid } from 'uuid'
 
 describe('reading', () => {
     const config= withConfig()
-
-    const readClient = new Client(config.service).read
+    const authToken = process.env.AUTH_TOKEN ?? ''
+    const readClient = new Client(config.service, authToken).read
 
     it('read creates a read summary when none is found', async () => {
       const readResult = await readClient.get({
@@ -14,6 +14,7 @@ describe('reading', () => {
       })
       const read = expectOk(readResult)
       expect(read.readingCycles.length).toEqual(1)
+      expect(read.readingCycles[0].name).toEqual('First Time Through')
     })
 })
 
