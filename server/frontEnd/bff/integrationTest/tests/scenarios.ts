@@ -7,6 +7,13 @@ export function withConfig(): Config {
   return expectOk(configResult)
 }
 
+export const withAuthToken = (): Promise<string> => {
+  return new Promise<string>((resolve) => {
+    const authToken = process.env.AUTH_TOKEN ?? ''
+    resolve(authToken)
+  })
+}
+
 // export async function withUser(): Promise<User> {
 //   const config = withConfig()
 //   const userClient = new Client(config.service).user

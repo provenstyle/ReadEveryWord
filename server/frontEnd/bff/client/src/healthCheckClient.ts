@@ -9,16 +9,17 @@ import {
 } from '@read-every-word/infrastructure'
 
 export class HealthCheckClient {
-  axios: AxiosInstance
+  configureAxios: () => Promise<AxiosInstance>
 
-  constructor (axios: AxiosInstance) {
-    this.axios = axios
+  constructor (configureAxios: () => Promise<AxiosInstance>) {
+    this.configureAxios = configureAxios
   }
 
   async get(): Promise<Result<HealthCheckSucceeded, GetFailed>> {
     const uri = 'healthCheck'
     try {
-      const result = await this.axios.get(uri)
+      const axios = await this.configureAxios()
+      const result = await axios.get(uri)
       switch(result.status) {
         case 200: return ok(new HealthCheckSucceeded())
         case 500: return err(new ServerError())

@@ -50,25 +50,23 @@ export async function handleGetSummary(request: GetSummary): Promise<GetSummaryR
   }
   const readingRecords = readingRecordResult.data
 
-  const summary: Summary = {
+  return ok({
     readingCycles,
     readingRecords
-  }
-
-  return ok(summary)
+  })
 }
 
 export interface GetSummary {
   authId: string
 }
 
-export interface Summary {
+export interface ReadingSummary {
   readingCycles: ReadingCycle[]
   readingRecords: ReadingRecord[]
 }
 
 export type GetSummarySucceeded =
-  | Summary
+  | ReadingSummary
 
 export type GetSummaryFailed =
   | InvalidConfiguration

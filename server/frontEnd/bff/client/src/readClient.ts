@@ -11,16 +11,17 @@ import {
 } from '@read-every-word/infrastructure'
 
 export class ReadClient {
-  axios: AxiosInstance
+  configureAxios: () => Promise<AxiosInstance>
 
-  constructor (axios: AxiosInstance) {
-    this.axios  = axios
+  constructor (configureAxios: () => Promise<AxiosInstance>) {
+    this.configureAxios = configureAxios
   }
 
-  async get(request: GetSummary): Promise<Result<Summary, GetFailed>> {
+  async get(): Promise<Result<ReadingSummary, GetFailed>> {
     const uri = 'read'
     try {
-      const result = await this.axios.get(uri)
+      const axios = await this.configureAxios()
+      const result = await axios.get(uri)
       switch(result.status) {
         case 200: return ok(result.data)
         case 400: return err(result.data as ValidationFailed)
@@ -36,11 +37,7 @@ export class ReadClient {
   }
 }
 
-export interface GetSummary {
-  authId: string
-}
-
-export interface Summary {
+export interface ReadingSummary {
   readingCycles: ReadingCycle[]
   readingRecords: ReadingRecord[]
 }

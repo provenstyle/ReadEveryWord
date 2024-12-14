@@ -1,4 +1,4 @@
-import { default as axiosStatic } from 'axios'
+import { default as axiosStatic, AxiosInstance } from 'axios'
 import { ServiceConfig } from './config'
 import * as http from 'http'
 import * as https from 'https'
@@ -6,27 +6,35 @@ import { ReadClient } from './readClient'
 import { HealthCheckClient } from './healthCheckClient'
 
 export class Client {
-  read: ReadClient
-  healthCheck: HealthCheckClient
+  httpAgent: http.Agent = new http.Agent({ keepAlive: true })
+  httpsAgent: https.Agent = new https.Agent({ keepAlive: true })
+  baseUrl: string
+  getAuthToken: () => Promise<string>
 
-  constructor (serviceConfig: ServiceConfig, authToken: string) {
-    const httpAgent = new http.Agent({ keepAlive: true })
-    const httpsAgent = new https.Agent({ keepAlive: true })
-
+  constructor (serviceConfig: ServiceConfig, getAuthToken: () => Promise<string>) {
     const protocol = process.env.http ? 'http' : 'https'
-    const baseURL =  new URL('api', `${protocol}://${serviceConfig.baseUrl}`).href
+    this.baseUrl = new URL('api', `${protocol}://${serviceConfig.baseUrl}`).href
+    this.getAuthToken = getAuthToken
+  }
 
-    const axios = axiosStatic.create({
-      httpAgent: httpAgent,
-      httpsAgent: httpsAgent,
-      baseURL,
+  configureAxios = async (): Promise<AxiosInstance> => {
+    const authToken = await this.getAuthToken()
+    return axiosStatic.create({
+      httpAgent: this.httpAgent,
+      httpsAgent: this.httpsAgent,
+      baseURL: this.baseUrl,
       headers: {
         Authorization: `Bearer ${authToken}`
       },
       validateStatus: (_) => true
     })
+  }
 
-    this.healthCheck = new HealthCheckClient(axios)
-    this.read = new ReadClient(axios)
+  healthCheck = (): HealthCheckClient => {
+    return new HealthCheckClient(this.configureAxios)
+  }
+
+  readClient = (): ReadClient => {
+    return new ReadClient(this.configureAxios)
   }
 }

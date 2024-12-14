@@ -11,4 +11,8 @@ export function logAxiosError (e: any, uri: string) {
     console.log(`Message: ${e.response?.data?.message}`)
     console.log(`Failures: ${JSON.stringify(e.response?.data?.failures)})`)
   }
+  if (!e.code && !e.response) {
+    console.log('Non-Axios Error Thrown')
+    console.log(e)
+  }
 }
