@@ -1,0 +1,28 @@
+name: build ci.cd
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  containerized_job:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: read
+      contents: write
+    container:
+      image: ghcr.io/miruken-go/demo.microservice.build:1713989236
+      env:
+        ghToken:         ${{ secrets.CI_CD_TOKEN }}
+        repositoryPath:  ${{ github.workspace }}
+        ref:             ${{ github.event.client_payload.ref || github.ref }}
+        
+    steps:
+    - uses: actions/checkout@v4
+      with: 
+        fetch-depth: 0
+    - run:  npm ci
+    - run:  npm run test
+    - run:  npm run build
+    - run:  npm run publish

@@ -5,7 +5,11 @@ const config: Config = {
   setupFiles: ['dotenv/config'], // Supports using .env and process.env  for reading environmental variables
   transform: {
     '^.+\\.tsx?$': 'ts-jest'
-  }
+  },
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/dist/'
+  ]
 }
 
 export default config

@@ -38,6 +38,7 @@ const handleFailures = (err: GetHealthCheckFailed) => {
     case 'server-error': return json(500, err)
     case 'validation-failed': return json(400, err)
     case 'not-found': return json(404, err)
+    case 'unauthorized': return json(401, err)
     default: return assertNever(err)
   }
 }

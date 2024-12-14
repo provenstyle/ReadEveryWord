@@ -42,6 +42,7 @@ const handleFailures = (err: CreateReadingCycleFailed) => {
     case 'unexpected-http-exception': return json(500, err)
     case 'unexpected-response-code': return json(500, err)
     case 'not-found': return json(404, err)
+    case 'unauthorized': return json(401, err)
     case 'validation-failed': return json(400, err)
     default: return assertNever(err)
   }
