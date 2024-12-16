@@ -52,6 +52,7 @@ export type CreateFailed =
   | ServerError
   | PersistenceError
   | Unauthorized
+  | InvalidConfiguration
 
 export type GetFailed =
   | UnexpectedHttpException
@@ -61,6 +62,7 @@ export type GetFailed =
   | ServerError
   | PersistenceError
   | Unauthorized
+  | InvalidConfiguration
 
 export type UpdateFailed =
   | UnexpectedHttpException
@@ -70,6 +72,7 @@ export type UpdateFailed =
   | ServerError
   | PersistenceError
   | Unauthorized
+  | InvalidConfiguration
 
 export type DeleteFailed =
   | UnexpectedHttpException
@@ -79,3 +82,4 @@ export type DeleteFailed =
   | ServerError
   | PersistenceError
   | Unauthorized
+  | InvalidConfiguration

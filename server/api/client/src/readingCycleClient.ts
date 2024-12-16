@@ -26,7 +26,7 @@ export class ReadingCycleClient {
         case 200: return ok(result.data)
         case 400: return err(result.data as ValidationFailed)
         case 500: return err(new ServerError())
-        default: return err(new UnexpectedResponseCode())
+        default: return err(new UnexpectedResponseCode(result.status))
       }
     } catch(e) {
       logAxiosError(e, uri)
@@ -43,7 +43,7 @@ export class ReadingCycleClient {
         case 400: return err(result.data as ValidationFailed)
         case 404: return err(new NotFound())
         case 500: return err(new ServerError())
-        default: return err(new UnexpectedResponseCode())
+        default: return err(new UnexpectedResponseCode(result.status))
       }
     } catch (e) {
       logAxiosError(e, uri)
@@ -60,7 +60,7 @@ export class ReadingCycleClient {
         case 400: return err(result.data as ValidationFailed)
         case 404: return err(new NotFound())
         case 500: return err(new ServerError())
-        default: return err(new UnexpectedResponseCode())
+        default: return err(new UnexpectedResponseCode(result.status))
       }
     } catch (e) {
       logAxiosError(e, uri)
@@ -77,7 +77,7 @@ export class ReadingCycleClient {
         case 400: return err(result.data as ValidationFailed)
         case 404: return err(new NotFound())
         case 500: return err(new ServerError())
-        default: return err(new UnexpectedResponseCode())
+        default: return err(new UnexpectedResponseCode(result.status))
       }
     } catch (e) {
       logAxiosError(e, uri)

@@ -3,12 +3,13 @@ import {
   Result, ok, err,
   ValidationFailed,
   NotFound, ServerError,
+  Unauthorized,
   logAxiosError,
   UnexpectedResponseCode,
   UnexpectedHttpException,
-  CreateFailed,
   GetFailed,
 } from '@read-every-word/infrastructure'
+import { CreateReadingRecord, CreateReadingRecordResult } from '@read-every-word/domain'
 
 export class ReadingRecordClient {
   axios: AxiosInstance
@@ -17,15 +18,17 @@ export class ReadingRecordClient {
     this.axios = axios
   }
 
-  async create(request: CreateReadingRecord): Promise<Result<ReadingRecord, CreateFailed>> {
+  async create(request: CreateReadingRecord): Promise<CreateReadingRecordResult> {
     const uri = 'readingRecord'
     try {
       const result = await this.axios.post(uri, request)
       switch(result.status) {
         case 200: return ok(result.data)
         case 400: return err(result.data as ValidationFailed)
+        case 401: return err(new Unauthorized())
+        case 404: return err(new NotFound())
         case 500: return err(new ServerError())
-        default: return err(new UnexpectedResponseCode())
+        default: return err(new UnexpectedResponseCode(result.status))
       }
     } catch(e) {
       logAxiosError(e, uri)
@@ -42,7 +45,7 @@ export class ReadingRecordClient {
         case 400: return err(result.data as ValidationFailed)
         case 404: return err(new NotFound())
         case 500: return err(new ServerError())
-        default: return err(new UnexpectedResponseCode())
+        default: return err(new UnexpectedResponseCode(result.status))
       }
     } catch (e) {
       logAxiosError(e, uri)
@@ -59,7 +62,7 @@ export class ReadingRecordClient {
         case 400: return err(result.data as ValidationFailed)
         case 404: return err(new NotFound())
         case 500: return err(new ServerError())
-        default: return err(new UnexpectedResponseCode())
+        default: return err(new UnexpectedResponseCode(result.status))
       }
     } catch (e) {
       logAxiosError(e, uri)
@@ -72,13 +75,6 @@ export interface ReadingRecord {
   readingCycleId: string
   id: string
   lastModified: string
-  dateRead: string
-  bookId: number
-  chapterId: number
-}
-
-export interface CreateReadingRecord {
-  readingCycleId: string
   dateRead: string
   bookId: number
   chapterId: number

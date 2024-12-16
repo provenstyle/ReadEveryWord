@@ -1,4 +1,4 @@
-import { Result, ok, err} from '@read-every-word/infrastructure'
+import { Result, ok, err, InvalidConfiguration} from '@read-every-word/infrastructure'
 import * as dotenv from 'dotenv'
 dotenv.config()
 
@@ -34,9 +34,4 @@ export function fromEnv (): Result<Config, InvalidConfiguration> {
       subscriptionKey: vars.SUBSCRIPTION_KEY
     }
   })
-}
-
-export class InvalidConfiguration {
-    code = 'invalid-server-configuration' as const
-    message = 'Unexpected server error'
 }

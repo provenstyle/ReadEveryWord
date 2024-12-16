@@ -4,6 +4,7 @@ import * as http from 'http'
 import * as https from 'https'
 import { ReadClient } from './readClient'
 import { HealthCheckClient } from './healthCheckClient'
+import { ReadingRecordClient } from './readingRecordClient'
 
 export class Client {
   httpAgent: http.Agent = new http.Agent({ keepAlive: true })
@@ -36,5 +37,9 @@ export class Client {
 
   readClient = (): ReadClient => {
     return new ReadClient(this.configureAxios)
+  }
+
+  readingRecordClient = (): ReadingRecordClient => {
+    return new ReadingRecordClient(this.configureAxios)
   }
 }

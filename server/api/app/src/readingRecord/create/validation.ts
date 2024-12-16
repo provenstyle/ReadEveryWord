@@ -1,7 +1,7 @@
 import { Ajv } from 'ajv'
 import addFormats from 'ajv-formats'
 import { Result, ok, err, ValidationFailed, InvalidSchema } from '@read-every-word/infrastructure'
-import { CreateReadingRecord } from './handler'
+import { CreateReadingRecord } from '@read-every-word/domain'
 
 const ajv = new Ajv()
 addFormats(ajv)

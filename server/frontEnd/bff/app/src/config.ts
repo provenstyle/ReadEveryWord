@@ -1,4 +1,4 @@
-import { err, ok, type Result } from '@read-every-word/infrastructure'
+import { err, ok, type Result, InvalidConfiguration } from '@read-every-word/infrastructure'
 
 export interface OpenIdConfig {
   jwksUri: string
@@ -37,9 +37,4 @@ export function fromEnv (): Result<Config, InvalidConfiguration> {
       issuer: vars.OPEN_ID_ISSUER
     }
   })
-}
-
-export class InvalidConfiguration {
-    code = 'invalid-server-configuration' as const
-    message = 'Unexpected server error'
 }

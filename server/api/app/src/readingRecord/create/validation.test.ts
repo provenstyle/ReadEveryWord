@@ -1,7 +1,7 @@
 import * as Factory from 'factory.ts'
 import { expectOk, expectErrorMessage } from '@read-every-word/infrastructure'
 import { validate } from './validation'
-import { CreateReadingRecord } from './handler'
+import { CreateReadingRecord } from '@read-every-word/domain'
 import { v4 as uuid } from 'uuid'
 
 describe('CreateReadingRecord validation', () => {

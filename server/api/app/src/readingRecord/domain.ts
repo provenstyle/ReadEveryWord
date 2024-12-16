@@ -1,11 +1,4 @@
-export interface ReadingRecord {
-  readingCycleId: string
-  id: string
-  lastModified: string
-  dateRead: string
-  bookId: number
-  chapterId: number
-}
+import {ReadingRecord} from '@read-every-word/domain'
 
 export interface ReadingRecordRow {
   partitionKey: string,

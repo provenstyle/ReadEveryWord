@@ -1,24 +1,24 @@
 import { app, type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
 import { isOk, assertNever } from '@read-every-word/infrastructure'
-import { handleGetSummary, type GetSummary, type GetSummarySucceeded, type GetSummaryFailed } from './handler'
+import { handleCreateReadingRecord } from './handler'
 import { authenticate, type JwtPayload } from '../../authentication'
 
-app.http('get_read', {
-  methods: ['GET'],
+import { CreateReadingRecord, CreateReadingRecordSucceeded, CreateReadingRecordFailed} from '@read-every-word/domain'
+
+app.http('create_reading_record', {
+  methods: ['POST'],
   authLevel: 'anonymous',
   handler: authenticate(handleEndpoint),
-  route: 'read'
+  route: 'readingRecord'
 })
 
 export async function handleEndpoint (request: HttpRequest, context: InvocationContext, token: JwtPayload ): Promise<HttpResponseInit> {
   try {
     console.log(`${request.method} request for url "${request.url}"`)
 
-    const getRequest: GetSummary = {
-      authId: token.sub ?? ''
-    }
+    const body = await request.json() as CreateReadingRecord
 
-    const result = await handleGetSummary(getRequest)
+    const result = await handleCreateReadingRecord(body)
 
     return isOk(result)
       ? handleSuccess(result.data)
@@ -32,11 +32,11 @@ export async function handleEndpoint (request: HttpRequest, context: InvocationC
   }
 }
 
-const handleSuccess = (data: GetSummarySucceeded) => {
+const handleSuccess = (data: CreateReadingRecordSucceeded) => {
   return json(200, data)
 }
 
-const handleFailures = (err: GetSummaryFailed) => {
+const handleFailures = (err: CreateReadingRecordFailed) => {
   switch (err.code) {
     case 'invalid-server-configuration': return json(500, err)
     case 'persistence-error': return json(500, err)

@@ -1,9 +1,8 @@
 import { Result, err, ok, cacheTableClient, PersistenceError } from '@read-every-word/infrastructure'
 import { TableClient } from '@azure/data-tables'
 import { Config } from '../../config'
-import { CreateReadingRecord } from './handler'
+import { ReadingRecord, CreateReadingRecord } from '@read-every-word/domain'
 import { v4 as uuid } from 'uuid'
-import { ReadingRecord } from '../domain'
 
 export class Persistence {
   private tableClient: TableClient

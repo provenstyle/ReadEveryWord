@@ -22,7 +22,7 @@ export class HealthCheckClient {
       switch(result.status) {
         case 200: return ok(new HealthCheckSucceeded())
         case 500: return err(new ServerError())
-        default: return err(new UnexpectedResponseCode())
+        default: return err(new UnexpectedResponseCode(result.status))
       }
     } catch (e) {
       logAxiosError(e, uri)
