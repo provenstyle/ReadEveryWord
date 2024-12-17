@@ -1,4 +1,4 @@
-import { TableClient } from '@azure/data-tables'
+import { TableClient, RestError } from '@azure/data-tables'
 
 const clients: Record<string, TableClient> = {}
 
@@ -8,4 +8,12 @@ export const cacheTableClient = (connectionString: string, table: string) => {
   }
 
   return clients[table]
+}
+
+export function resourceDoesNotExist (error: any) {
+  return (
+    error instanceof RestError &&
+    error?.statusCode === 404 &&
+    error?.message.includes('The specified resource does not exist.')
+  )
 }

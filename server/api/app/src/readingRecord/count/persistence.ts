@@ -1,7 +1,7 @@
 import { Result, err, ok, cacheTableClient, PersistenceError } from '@read-every-word/infrastructure'
+import { CountReadingRecord } from '@read-every-word/domain'
 import { TableClient } from '@azure/data-tables'
 import { Config } from '../../config'
-import { CountReadingRecord } from './handler'
 import { ReadingRecordRow } from '../domain'
 
 export class Persistence {

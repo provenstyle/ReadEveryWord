@@ -1,7 +1,7 @@
+import { Result, ok, err, ValidationFailed, InvalidSchema } from '@read-every-word/infrastructure'
+import { CountReadingRecord } from '@read-every-word/domain'
 import { Ajv } from 'ajv'
 import addFormats from 'ajv-formats'
-import { Result, ok, err, ValidationFailed, InvalidSchema } from '@read-every-word/infrastructure'
-import { CountReadingRecord } from './handler'
 
 const ajv = new Ajv()
 addFormats(ajv)

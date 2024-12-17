@@ -1,7 +1,7 @@
 import { app, type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
-import { isOk, assertNever } from '@read-every-word/infrastructure'
-import { handleUpdateReadingCycle, type UpdateReadingCycleSucceeded, type UpdateReadingCycleFailed } from './handler'
-import { type UpdateReadingCycle } from '../domain'
+import { isOk, assertNever, json } from '@read-every-word/infrastructure'
+import { type UpdateReadingCycle, type UpdateReadingCycleSucceeded, type UpdateReadingCycleFailed } from '@read-every-word/domain'
+import { handleUpdateReadingCycle } from './handler'
 
 app.http('update_readingCycle', {
   methods: ['PATCH'],
@@ -45,15 +45,5 @@ const handleFailures = (err: UpdateReadingCycleFailed) => {
     case 'not-found': return json(404, err)
     case 'unauthorized': return json(401, err)
     default: return assertNever(err)
-  }
-}
-
-const json = (status: number, data: any) => {
-  return {
-    status: status,
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
   }
 }

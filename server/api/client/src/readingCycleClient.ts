@@ -1,15 +1,20 @@
 import { AxiosInstance } from 'axios'
 import {
-  Result, ok, err,
+  ok, err,
   ValidationFailed,
   logAxiosError,
   NotFound, ServerError,
   UnexpectedResponseCode,
   UnexpectedHttpException,
-  CreateFailed,
-  GetFailed,
-  UpdateFailed
+  Unauthorized
 } from '@read-every-word/infrastructure'
+
+import {
+  CreateReadingCycle, CreateReadingCycleResult,
+  GetReadingCycle, GetReadingCycleResult,
+  SetDefaultReadingCycle, SetDefaultReadingCycleResult,
+  UpdateReadingCycle, UpdateReadingCycleResult
+} from '@read-every-word/domain'
 
 export class ReadingCycleClient {
   axios: AxiosInstance
@@ -18,13 +23,15 @@ export class ReadingCycleClient {
     this.axios = axios
   }
 
-  async create(request: CreateReadingCycle): Promise<Result<ReadingCycle, CreateFailed>> {
+  async create(request: CreateReadingCycle): Promise<CreateReadingCycleResult> {
     const uri = 'readingCycle'
     try {
       const result = await this.axios.post(uri, request)
       switch(result.status) {
         case 200: return ok(result.data)
         case 400: return err(result.data as ValidationFailed)
+        case 401: return err(new Unauthorized())
+        case 404: return err(new NotFound())
         case 500: return err(new ServerError())
         default: return err(new UnexpectedResponseCode(result.status))
       }
@@ -34,13 +41,14 @@ export class ReadingCycleClient {
     }
   }
 
-  async get(request: GetReadingCycle): Promise<Result<ReadingCycle[], GetFailed>> {
+  async get(request: GetReadingCycle): Promise<GetReadingCycleResult> {
     const uri = `readingCycle/${request.authId}`
     try {
       const result = await this.axios.get(uri)
       switch(result.status) {
         case 200: return ok(result.data)
         case 400: return err(result.data as ValidationFailed)
+        case 401: return err(new Unauthorized())
         case 404: return err(new NotFound())
         case 500: return err(new ServerError())
         default: return err(new UnexpectedResponseCode(result.status))
@@ -51,13 +59,14 @@ export class ReadingCycleClient {
     }
   }
 
-  async setDefault(request: SetDefaultReadingCycle): Promise<Result<ReadingCycle, UpdateFailed>> {
+  async setDefault(request: SetDefaultReadingCycle): Promise<SetDefaultReadingCycleResult> {
     const uri = `readingCycle/default`
     try {
       const result = await this.axios.post(uri, request)
       switch(result.status) {
         case 200: return ok(result.data)
         case 400: return err(result.data as ValidationFailed)
+        case 401: return err(new Unauthorized())
         case 404: return err(new NotFound())
         case 500: return err(new ServerError())
         default: return err(new UnexpectedResponseCode(result.status))
@@ -68,13 +77,14 @@ export class ReadingCycleClient {
     }
   }
 
-  async update(request: UpdateReadingCycle): Promise<Result<ReadingCycle, UpdateFailed>> {
+  async update(request: UpdateReadingCycle): Promise<UpdateReadingCycleResult> {
     const uri = `readingCycle`
     try {
       const result = await this.axios.patch(uri, request)
       switch(result.status) {
         case 200: return ok(result.data)
         case 400: return err(result.data as ValidationFailed)
+        case 401: return err(new Unauthorized())
         case 404: return err(new NotFound())
         case 500: return err(new ServerError())
         default: return err(new UnexpectedResponseCode(result.status))
@@ -84,36 +94,4 @@ export class ReadingCycleClient {
       return err(new UnexpectedHttpException())
     }
   }
-}
-
-export interface ReadingCycle {
-  authId: string
-  id: string
-  lastModified: string
-  name: string
-  dateStarted: string
-  dateCompleted?: string
-  default: boolean
-}
-
-export interface CreateReadingCycle {
-  authId: string
-  name: string
-  dateStarted: string
-}
-
-export interface GetReadingCycle {
-  authId: string
-}
-
-export interface SetDefaultReadingCycle {
-  authId: string
-  id: string
-}
-
-export interface UpdateReadingCycle {
-  authId: string
-  id: string
-  name?: string
-  dateCompleted?: string
 }

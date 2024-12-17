@@ -1,7 +1,7 @@
 import { app, type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
-import { isOk, assertNever } from '@read-every-word/infrastructure'
-import { handleSetDefaultReadingCycle, type SetDefaultReadingCycleSucceeded, type SetDefaultReadingCycleFailed } from './handler'
-import { type SetDefaultReadingCycle } from '../domain'
+import { isOk, assertNever, json } from '@read-every-word/infrastructure'
+import { type SetDefaultReadingCycle, type SetDefaultReadingCycleSucceeded, type SetDefaultReadingCycleFailed} from '@read-every-word/domain'
+import { handleSetDefaultReadingCycle } from './handler'
 
 app.http('set_default_readingCycle', {
   methods: ['POST'],
@@ -45,15 +45,5 @@ const handleFailures = (err: SetDefaultReadingCycleFailed) => {
     case 'unauthorized': return json(401, err)
     case 'not-found': return json(404, err)
     default: return assertNever(err)
-  }
-}
-
-const json = (status: number, data: any) => {
-  return {
-    status: status,
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
   }
 }

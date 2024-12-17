@@ -1,8 +1,8 @@
-import { Result, isErr, ok, InvalidConfiguration, ValidationFailed, GetFailed } from '@read-every-word/infrastructure'
+import { isErr, ok } from '@read-every-word/infrastructure'
+import { GetReadingCycle, GetReadingCycleResult } from '@read-every-word/domain'
 import { validate } from './validation'
 import { Persistence } from '../persistence'
 import { fromEnv } from '../../config'
-import { ReadingCycle, GetReadingCycle } from '../domain'
 
 export async function handleGetReadingCycle(request: GetReadingCycle): Promise<GetReadingCycleResult> {
   const configResponse = fromEnv()
@@ -25,15 +25,3 @@ export async function handleGetReadingCycle(request: GetReadingCycle): Promise<G
 
   return ok(readingCycle)
 }
-
-export type GetReadingCycleSucceeded =
-  | ReadingCycle[]
-
-export type GetReadingCycleFailed =
-  | InvalidConfiguration
-  | ValidationFailed
-  | GetFailed
-
-export type GetReadingCycleResult = Result<GetReadingCycleSucceeded, GetReadingCycleFailed>
-
-

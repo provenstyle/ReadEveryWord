@@ -1,5 +1,6 @@
 import { Result, isErr, ok, InvalidConfiguration, ValidationFailed, GetFailed, CreateFailed } from '@read-every-word/infrastructure'
-import { Client, fromEnv, ReadingCycle, ReadingRecord} from '@read-every-word/client'
+import { ReadingCycle, ReadingRecord } from '@read-every-word/domain'
+import { Client, fromEnv} from '@read-every-word/client'
 import { validate } from './validation'
 
 export async function handleGetSummary(request: GetSummary): Promise<GetSummaryResult> {

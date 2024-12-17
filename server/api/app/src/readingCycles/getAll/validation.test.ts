@@ -1,7 +1,7 @@
-import * as Factory from 'factory.ts'
 import { expectOk, expectErrorMessage } from '@read-every-word/infrastructure'
+import { GetReadingCycle } from '@read-every-word/domain'
+import * as Factory from 'factory.ts'
 import { validate } from './validation'
-import { GetReadingCycle } from '../domain'
 
 describe('GetReadingCycle validation', () => {
   const requestFactory = Factory.Sync.makeFactory<GetReadingCycle>({

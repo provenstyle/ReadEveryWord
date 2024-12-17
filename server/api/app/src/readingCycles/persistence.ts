@@ -1,7 +1,8 @@
-import { Result, err, ok, cacheTableClient, PersistenceError, isErr, CreateFailed, GetFailed, UpdateFailed, NotFound } from '@read-every-word/infrastructure'
-import { TableClient, TableTransaction, RestError } from '@azure/data-tables'
+import { Result, err, ok, cacheTableClient, PersistenceError, isErr, CreateFailed, GetFailed, UpdateFailed, NotFound, resourceDoesNotExist } from '@read-every-word/infrastructure'
+import { ReadingCycle, GetReadingCycle, CreateReadingCycle, SetDefaultReadingCycle, UpdateReadingCycle } from '@read-every-word/domain'
+import { TableClient, TableTransaction } from '@azure/data-tables'
 import { Config } from '../config'
-import { ReadingCycle, ReadingCycleRow, map, GetReadingCycle, CreateReadingCycle, SetDefaultReadingCycle, UpdateReadingCycle } from './domain'
+import { ReadingCycleRow, map } from './domain'
 import { v4 as uuid } from 'uuid'
 import { chunk } from 'lodash'
 
@@ -142,12 +143,4 @@ export class Persistence {
     }
   }
 
-}
-
-function resourceDoesNotExist (error) {
-  return (
-    error instanceof RestError &&
-    error?.statusCode === 404 &&
-    error?.message.includes('The specified resource does not exist.')
-  )
 }

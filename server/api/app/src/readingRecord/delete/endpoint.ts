@@ -1,24 +1,22 @@
 import { app, type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
-import { isOk, assertNever, json } from '@read-every-word/infrastructure'
-import { type GetReadingCycle, type GetReadingCycleSucceeded, type GetReadingCycleFailed } from '@read-every-word/domain'
-import { handleGetReadingCycle } from './handler'
+import { isOk, assertNever, json} from '@read-every-word/infrastructure'
+import { type DeleteReadingRecord, type DeleteReadingRecordSucceeded, type DeleteReadingRecordFailed } from '@read-every-word/domain'
+import { handleDeleteReadingRecord } from './handler'
 
-app.http('get_readingCycle', {
-  methods: ['GET'],
+app.http('delete_readingRecord', {
+  methods: ['DELETE'],
   authLevel: 'function',
   handler: handleEndpoint,
-  route: 'readingCycle/{authId}'
+  route: 'readingRecord'
 })
 
 export async function handleEndpoint (request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
   try {
     console.log(`${request.method} request for url "${request.url}"`)
 
-    const getRequest: GetReadingCycle = {
-      authId: request.params.authId ?? ''
-    }
+    const body = await request.json() as DeleteReadingRecord
 
-    const result = await handleGetReadingCycle(getRequest)
+    const result = await handleDeleteReadingRecord(body)
 
     return isOk(result)
       ? handleSuccess(result.data)
@@ -32,11 +30,11 @@ export async function handleEndpoint (request: HttpRequest, context: InvocationC
   }
 }
 
-const handleSuccess = (data: GetReadingCycleSucceeded) => {
+const handleSuccess = (data: DeleteReadingRecordSucceeded) => {
   return json(200, data)
 }
 
-const handleFailures = (err: GetReadingCycleFailed) => {
+const handleFailures = (err: DeleteReadingRecordFailed) => {
   switch (err.code) {
     case 'invalid-server-configuration': return json(500, err)
     case 'persistence-error': return json(500, err)

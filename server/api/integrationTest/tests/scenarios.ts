@@ -1,6 +1,7 @@
 import { v4 as uuid } from 'uuid'
 import { expectOk } from '@read-every-word/infrastructure'
-import { Client, Config, fromEnv, User, ReadingCycle } from '@read-every-word/client'
+import { Client, Config, fromEnv, User } from '@read-every-word/client'
+import { ReadingCycle, ReadingRecord } from '@read-every-word/domain'
 
 export function withConfig(): Config {
   const configResult = fromEnv()
@@ -28,4 +29,15 @@ export async function withReadingCycle(user: User): Promise<ReadingCycle> {
         name: 'name'
       })
     return expectOk(readingCycleResult)
+}
+
+export async function withReadingRecord(readingCycle: ReadingCycle): Promise<ReadingRecord> {
+    const config = withConfig()
+    const readingRecordResult = await new Client(config.service).readingRecord.create({
+      readingCycleId: readingCycle.id,
+      bookId: 0,
+      chapterId: 0,
+      dateRead: new Date().toISOString()
+    })
+    return expectOk(readingRecordResult)
 }

@@ -1,6 +1,6 @@
 import { isErr, ok } from '@read-every-word/infrastructure'
-import { fromEnv } from '../config'
 import { GetHealthCheck, GetHealthCheckResult } from '@read-every-word/domain'
+import { fromEnv } from '../config'
 
 export async function handleGetHealthCheck(request: GetHealthCheck): Promise<GetHealthCheckResult> {
   const configResponse = fromEnv()

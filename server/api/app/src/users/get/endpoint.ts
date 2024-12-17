@@ -1,5 +1,5 @@
 import { app, type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
-import { isOk, assertNever } from '@read-every-word/infrastructure'
+import { isOk, assertNever, json } from '@read-every-word/infrastructure'
 import { handleGetUser, type GetUser, type GetUserSucceeded, type GetUserFailed } from './handler'
 
 app.http('get_user', {
@@ -42,15 +42,5 @@ const handleFailures = (err: GetUserFailed) => {
     case 'validation-failed': return json(400, err)
     case 'user-not-found': return json(404, err)
     default: return assertNever(err)
-  }
-}
-
-const json = (status: number, data: any) => {
-  return {
-    status: status,
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
   }
 }
