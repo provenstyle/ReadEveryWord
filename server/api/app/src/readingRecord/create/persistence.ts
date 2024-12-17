@@ -2,7 +2,6 @@ import { Result, err, ok, cacheTableClient, PersistenceError } from '@read-every
 import { TableClient } from '@azure/data-tables'
 import { Config } from '../../config'
 import { ReadingRecord, CreateReadingRecord } from '@read-every-word/domain'
-import { v4 as uuid } from 'uuid'
 
 export class Persistence {
   private tableClient: TableClient
@@ -13,7 +12,7 @@ export class Persistence {
 
   async createReadingRecord(request: CreateReadingRecord): Promise<Result<ReadingRecord, CreateFailed>> {
     try {
-      const rowKey = uuid()
+      const rowKey = `${request.bookId}-${request.chapterId}`
 
       await this.tableClient.createEntity({
         partitionKey: request.readingCycleId,
