@@ -2,7 +2,8 @@ import { Result, err, ok, cacheTableClient, PersistenceError } from '@read-every
 import { TableClient, RestError } from '@azure/data-tables'
 import { Config } from '../../config'
 import { GetReadingRecord } from './handler'
-import { ReadingRecord, ReadingRecordRow, map } from '../domain'
+import { ReadingRecord } from '@read-every-word/domain'
+import { ReadingRecordRow, map } from '../domain'
 
 export class Persistence {
   private tableClient: TableClient

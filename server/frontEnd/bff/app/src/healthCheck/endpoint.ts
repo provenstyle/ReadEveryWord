@@ -1,7 +1,8 @@
 import { app, type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
-import { handleGetHealthCheck, GetHealthCheckSucceeded, GetHealthCheckFailed } from './handler'
-import { assertNever, isOk} from '@read-every-word/infrastructure'
+import { assertNever, isOk, json } from '@read-every-word/infrastructure'
+import { GetHealthCheckSucceeded, GetHealthCheckFailed } from '@read-every-word/domain'
 import { authenticate, type JwtPayload } from '../authentication'
+import { handleGetHealthCheck } from './handler'
 
 app.http('health_check', {
   methods: ['GET'],
@@ -13,7 +14,7 @@ app.http('health_check', {
 export async function handleEndpoint (request: HttpRequest, context: InvocationContext, jwt: JwtPayload): Promise<HttpResponseInit> {
   try {
     console.log(`${request.method} request for url "${request.url}"`)
-    const result = await handleGetHealthCheck()
+    const result = await handleGetHealthCheck({})
 
     return isOk(result)
       ? handleSuccess(result.data)
@@ -40,15 +41,5 @@ const handleFailures = (err: GetHealthCheckFailed) => {
     case 'not-found': return json(404, err)
     case 'unauthorized': return json(401, err)
     default: return assertNever(err)
-  }
-}
-
-const json = (status: number, data: any) => {
-  return {
-    status: status,
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
   }
 }

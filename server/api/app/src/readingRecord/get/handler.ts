@@ -2,7 +2,7 @@ import { Result, isErr, ok, InvalidConfiguration, ValidationFailed, InvalidSchem
 import { validate } from './validation'
 import { Persistence, CreateFailed } from './persistence'
 import { fromEnv } from '../../config'
-import { ReadingRecord } from '../domain'
+import { ReadingRecord } from '@read-every-word/domain'
 
 export async function handleGetReadingRecord(request: GetReadingRecord): Promise<GetReadingRecordResult> {
   const configResponse = fromEnv()

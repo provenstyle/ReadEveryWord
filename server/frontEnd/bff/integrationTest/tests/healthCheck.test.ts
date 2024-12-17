@@ -5,11 +5,16 @@ import { withConfig, withAuthToken } from './scenarios'
 describe('healthCheck', () => {
     const config= withConfig()
 
-    const healthCheck = new Client(config.service, withAuthToken).healthCheck()
+    const healthCheckClient = new Client(config.service, withAuthToken).healthCheck()
 
     it('health check is successful', async () => {
-      const readResult = await healthCheck.get()
-      const read = expectOk(readResult)
+      const healthCheckResult = await healthCheckClient.get()
+      const healthCheck = expectOk(healthCheckResult)
+      expect(healthCheck.length).toEqual(2)
+      expect(healthCheck[0].name).toEqual("Read Every Word Api")
+      expect(healthCheck[0].configured).toEqual(true)
+      expect(healthCheck[1].name).toEqual("Read Every Word BFF")
+      expect(healthCheck[1].configured).toEqual(true)
     })
 })
 

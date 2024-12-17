@@ -1,5 +1,5 @@
 {
-  "name": "read-every-word",
+  "name": "@read-every-word/api",
   "version": "0.0.1",
   "license": "ISC",
   "main": "dist/src/{index.js,**/endpoint.js}",
