@@ -1,5 +1,5 @@
 import { app, type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
-import { isOk, assertNever } from '@read-every-word/infrastructure'
+import { isOk, assertNever, json } from '@read-every-word/infrastructure'
 import { handleGetSummary, type GetSummary, type GetSummarySucceeded, type GetSummaryFailed } from './handler'
 import { authenticate, type JwtPayload } from '../../authentication'
 
@@ -47,15 +47,5 @@ const handleFailures = (err: GetSummaryFailed) => {
     case 'validation-failed': return json(400, err)
     case 'unauthorized': return json(401, err)
     default: return assertNever(err)
-  }
-}
-
-const json = (status: number, data: any) => {
-  return {
-    status: status,
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
   }
 }

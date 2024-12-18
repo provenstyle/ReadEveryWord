@@ -12,9 +12,11 @@ export const validate = async (request: CountReadingRecord)
     const schema = {
         type: 'object',
         properties: {
+            authId: {type: 'string'},
             readingCycleId: {type: 'string', format: 'uuid'}
         },
         required: [
+            'authId',
             'readingCycleId'
         ],
         additionalProperties: false

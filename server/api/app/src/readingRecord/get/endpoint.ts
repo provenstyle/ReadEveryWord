@@ -7,7 +7,7 @@ app.http('get_readingRecord', {
   methods: ['GET'],
   authLevel: 'function',
   handler: handleEndpoint,
-  route: 'readingRecord/{readingCycleId}'
+  route: 'readingRecord/{authId}/{readingCycleId}'
 })
 
 export async function handleEndpoint (request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
@@ -15,6 +15,7 @@ export async function handleEndpoint (request: HttpRequest, context: InvocationC
     console.log(`${request.method} request for url "${request.url}"`)
 
     const getRequest: GetReadingRecord = {
+      authId: request.params.authId ?? '',
       readingCycleId: request.params.readingCycleId ?? ''
     }
 

@@ -12,11 +12,13 @@ export const validate = async (request: DeleteReadingRecord)
     const schema = {
         type: 'object',
         properties: {
+            authId: {type: 'string'},
             readingCycleId: { type: 'string', format: 'uuid' },
             bookId: { type: 'number', minimum: 0 },
             chapterId: { type: 'number', minimum: 0 }
         },
         required: [
+            'authId',
             'readingCycleId',
             'bookId',
             'chapterId'

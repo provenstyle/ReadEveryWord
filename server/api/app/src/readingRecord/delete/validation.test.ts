@@ -6,6 +6,7 @@ import { v4 as uuid } from 'uuid'
 
 describe('DeleteReadingRecord validation', () => {
   const requestFactory = Factory.Sync.makeFactory<DeleteReadingRecord>({
+    authId: 'myAuthId',
     readingCycleId: uuid(),
     bookId: 1,
     chapterId: 2
@@ -14,6 +15,13 @@ describe('DeleteReadingRecord validation', () => {
   it('valid request is valid', async () => {
     const response = await validate(requestFactory.build())
     expectOk(response)
+  })
+
+  it('authId is required', async () => {
+    const response = await validate(requestFactory.build({
+      authId: undefined
+    }))
+    expectErrorMessage(response, "must have required property 'authId'")
   })
 
   it('readingCycleId is required', async () => {

@@ -44,6 +44,7 @@ export async function handleGetSummary(request: GetSummary): Promise<GetSummaryR
 
   //ReadingRecords
   const readingRecordResult = await client.readingRecord.get({
+    authId: request.authId,
     readingCycleId: defaultReadingCycle.id
   })
   if (isErr(readingRecordResult)) {

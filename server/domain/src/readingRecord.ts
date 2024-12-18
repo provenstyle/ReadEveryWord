@@ -1,15 +1,17 @@
 import { Result, CreateFailed, DeleteFailed } from '@read-every-word/infrastructure'
 
 export interface ReadingRecord {
-  readingCycleId?: string
+  authId: string
   id?: string
   lastModified?: string
+  readingCycleId?: string
   dateRead?: string
   bookId: number
   chapterId: number
 }
 
 export interface CreateReadingRecord {
+  authId: string
   readingCycleId: string
   dateRead: string
   bookId: number
@@ -25,6 +27,7 @@ export type CreateReadingRecordFailed =
 export type CreateReadingRecordResult = Result<CreateReadingRecordSucceeded, CreateReadingRecordFailed>
 
 export interface GetReadingRecord {
+  authId: string
   readingCycleId: string
 }
 
@@ -37,6 +40,7 @@ export type GetReadingRecordFailed =
 export type GetReadingRecordResult = Result<GetReadingRecordSucceeded, GetReadingRecordFailed>
 
 export interface CountReadingRecord {
+  authId: string
   readingCycleId: string
 }
 
@@ -49,12 +53,14 @@ export type CountReadingRecordFailed =
 export type CountReadingRecordResult = Result<CountReadingRecordSucceeded, CountReadingRecordFailed>
 
 export interface DeleteReadingRecord {
+  authId: string
   readingCycleId: string
   bookId: number
   chapterId: number
 }
 
 export interface DeletedReadingRecord {
+  authId: string
   readingCycleId?: string
   id?: string
   deleted: boolean

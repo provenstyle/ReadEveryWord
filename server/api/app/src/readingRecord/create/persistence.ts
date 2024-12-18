@@ -12,17 +12,21 @@ export class Persistence {
 
   async createReadingRecord(request: CreateReadingRecord): Promise<Result<ReadingRecord, CreateFailed>> {
     try {
+      const partitionKey = `${request.authId}-${request.readingCycleId}`
       const rowKey = `${request.bookId}-${request.chapterId}`
 
       await this.tableClient.createEntity({
-        partitionKey: request.readingCycleId,
+        partitionKey,
         rowKey,
+        authId: request.authId,
+        readingCycleId: request.readingCycleId,
         dateRead: request.dateRead,
         bookId: request.bookId,
         chapterId: request.chapterId
       })
 
       return ok({
+        authId: request.authId,
         readingCycleId: request.readingCycleId,
         id: rowKey,
         lastModified: '',

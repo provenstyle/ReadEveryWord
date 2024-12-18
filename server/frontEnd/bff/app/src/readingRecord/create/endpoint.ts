@@ -18,7 +18,10 @@ export async function handleEndpoint (request: HttpRequest, context: InvocationC
 
     const body = await request.json() as CreateReadingRecord
 
-    const result = await handleCreateReadingRecord(body)
+    const result = await handleCreateReadingRecord({
+      ...body,
+      authId: token.sub ?? ''
+    })
 
     return isOk(result)
       ? handleSuccess(result.data)

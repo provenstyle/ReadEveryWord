@@ -14,10 +14,11 @@ export class Persistence {
 
   async getReadingRecord(request: GetReadingRecord): Promise<Result<ReadingRecord[], CreateFailed>> {
     try {
+      const partitionKey = `${request.authId}-${request.readingCycleId}`
       const allRows: ReadingRecordRow[] = []
       const allRowsResult = this.tableClient.listEntities<ReadingRecordRow>({
         queryOptions: {
-          filter: `PartitionKey eq '${request.readingCycleId}'`
+          filter: `PartitionKey eq '${partitionKey}'`
         }
       })
       for await (const row of allRowsResult) {

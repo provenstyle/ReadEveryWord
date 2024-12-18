@@ -4,6 +4,8 @@ export interface ReadingRecordRow {
   partitionKey: string,
   rowKey: string,
   timestamp: string,
+  authId: string,
+  readingCycleId: string,
   dateRead: string
   bookId: number
   chapterId: number
@@ -11,7 +13,8 @@ export interface ReadingRecordRow {
 
 export const map = (row: ReadingRecordRow): ReadingRecord => {
   return {
-    readingCycleId: row.partitionKey,
+    authId: row.authId,
+    readingCycleId: row.readingCycleId,
     id: row.rowKey,
     lastModified: row.timestamp,
     dateRead: row.dateRead,

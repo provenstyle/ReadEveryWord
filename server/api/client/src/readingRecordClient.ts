@@ -41,7 +41,7 @@ export class ReadingRecordClient {
   }
 
   async get(request: GetReadingRecord): Promise<GetReadingRecordResult> {
-    const uri = `readingRecord/${request.readingCycleId}`
+    const uri = `readingRecord/${request.authId}/${request.readingCycleId}`
     try {
       const result = await this.axios.get(uri)
       switch(result.status) {
@@ -59,7 +59,7 @@ export class ReadingRecordClient {
   }
 
   async count(request: CountReadingRecord): Promise<CountReadingRecordResult> {
-    const uri = `readingRecord/${request.readingCycleId}/count`
+    const uri = `readingRecord/${request.authId}/${request.readingCycleId}/count`
     try {
       const result = await this.axios.get(uri)
       switch(result.status) {

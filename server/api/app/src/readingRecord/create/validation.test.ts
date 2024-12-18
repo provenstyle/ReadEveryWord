@@ -6,6 +6,7 @@ import { v4 as uuid } from 'uuid'
 
 describe('CreateReadingRecord validation', () => {
   const requestFactory = Factory.Sync.makeFactory<CreateReadingRecord>({
+    authId: 'myAuthId',
     readingCycleId: uuid(),
     dateRead: '2024-11-06T23:01:00Z',
     bookId: 1,
@@ -15,6 +16,13 @@ describe('CreateReadingRecord validation', () => {
   it('valid request is valid', async () => {
     const response = await validate(requestFactory.build())
     expectOk(response)
+  })
+
+  it('authId is required', async () => {
+    const response = await validate(requestFactory.build({
+      authId: undefined
+    }))
+    expectErrorMessage(response, "must have required property 'authId'")
   })
 
   it('readingCycleId is required', async () => {

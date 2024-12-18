@@ -13,6 +13,7 @@ describe('readingRecord', () => {
 
         // create
         const readingRecordResult = await readingRecordClient.create({
+          authId: user.authId,
           readingCycleId: readingCycle.id,
           bookId: 0,
           chapterId: 0,
@@ -22,6 +23,7 @@ describe('readingRecord', () => {
 
         // get
         const getReadingRecordsResult = await readingRecordClient.get({
+          authId: user.authId,
           readingCycleId: readingCycle.id
         })
         const readingRecords = expectOk(getReadingRecordsResult)
@@ -37,17 +39,19 @@ describe('readingRecord', () => {
     it('can delete reading record', async () => {
         const user = await withUser()
         const readingCycle = await withReadingCycle(user)
-        const readingRecord = await withReadingRecord(readingCycle)
+        const readingRecord = await withReadingRecord(user, readingCycle)
 
         let getReadingRecordsResult
         let readingRecords
         getReadingRecordsResult = await readingRecordClient.get({
+          authId: user.authId,
           readingCycleId: readingCycle.id
         })
         readingRecords = expectOk(getReadingRecordsResult)
         expect(readingRecords.length).toBe(1)
 
         const deleteResult = await readingRecordClient.delete({
+          authId: user.authId,
           readingCycleId: readingCycle.id,
           bookId: readingRecord.bookId,
           chapterId: readingRecord.chapterId
@@ -55,6 +59,7 @@ describe('readingRecord', () => {
         const deleteReadingRecord = expectOk(deleteResult)
 
         getReadingRecordsResult = await readingRecordClient.get({
+          authId: user.authId,
           readingCycleId: readingCycle.id
         })
         readingRecords = expectOk(getReadingRecordsResult)

@@ -1,22 +1,27 @@
 import { app, type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
-import { isOk, assertNever, json} from '@read-every-word/infrastructure'
-import { type DeleteReadingRecord, type DeleteReadingRecordSucceeded, type DeleteReadingRecordFailed } from '@read-every-word/domain'
+import { isOk, assertNever } from '@read-every-word/infrastructure'
 import { handleDeleteReadingRecord } from './handler'
+import { authenticate, type JwtPayload } from '../../authentication'
+
+import { DeleteReadingRecord, DeleteReadingRecordSucceeded, DeleteReadingRecordFailed} from '@read-every-word/domain'
 
 app.http('delete_reading_record', {
   methods: ['DELETE'],
-  authLevel: 'function',
-  handler: handleEndpoint,
+  authLevel: 'anonymous',
+  handler: authenticate(handleEndpoint),
   route: 'readingRecord'
 })
 
-export async function handleEndpoint (request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+export async function handleEndpoint (request: HttpRequest, context: InvocationContext, token: JwtPayload ): Promise<HttpResponseInit> {
   try {
     console.log(`${request.method} request for url "${request.url}"`)
 
     const body = await request.json() as DeleteReadingRecord
 
-    const result = await handleDeleteReadingRecord(body)
+    const result = await handleDeleteReadingRecord({
+      ...body,
+      authId: token.sub ?? ''
+    })
 
     return isOk(result)
       ? handleSuccess(result.data)
@@ -42,8 +47,18 @@ const handleFailures = (err: DeleteReadingRecordFailed) => {
     case 'unexpected-http-exception': return json(500, err)
     case 'unexpected-response-code': return json(500, err)
     case 'not-found': return json(404, err)
-    case 'unauthorized': return json(401, err)
     case 'validation-failed': return json(400, err)
+    case 'unauthorized': return json(401, err)
     default: return assertNever(err)
+  }
+}
+
+const json = (status: number, data: any) => {
+  return {
+    status: status,
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
   }
 }

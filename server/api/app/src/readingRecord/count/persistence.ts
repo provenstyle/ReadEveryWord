@@ -13,10 +13,11 @@ export class Persistence {
 
   async countReadingRecords(request: CountReadingRecord): Promise<Result<number, CreateFailed>> {
     try {
+      const partitionKey = `${request.authId}-${request.readingCycleId}`
       let count = 0
       const allRowsResult = this.tableClient.listEntities<ReadingRecordRow>({
         queryOptions: {
-          filter: `PartitionKey eq '${request.readingCycleId}'`,
+          filter: `PartitionKey eq '${partitionKey}'`,
           select: ['PartitionKey']
         }
       })

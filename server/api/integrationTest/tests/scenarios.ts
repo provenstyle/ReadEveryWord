@@ -31,9 +31,10 @@ export async function withReadingCycle(user: User): Promise<ReadingCycle> {
     return expectOk(readingCycleResult)
 }
 
-export async function withReadingRecord(readingCycle: ReadingCycle): Promise<ReadingRecord> {
+export async function withReadingRecord(user: User, readingCycle: ReadingCycle): Promise<ReadingRecord> {
     const config = withConfig()
     const readingRecordResult = await new Client(config.service).readingRecord.create({
+      authId: user.authId,
       readingCycleId: readingCycle.id,
       bookId: 0,
       chapterId: 0,

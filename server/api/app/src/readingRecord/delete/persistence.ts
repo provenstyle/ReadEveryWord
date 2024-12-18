@@ -12,11 +12,13 @@ export class Persistence {
 
   async deleteReadingRecord(request: DeleteReadingRecord): Promise<DeleteReadingRecordResult> {
     try {
+      const partitionKey = `${request.authId}-${request.readingCycleId}`
       const rowKey = `${request.bookId}-${request.chapterId}`
 
-      await this.tableClient.deleteEntity(request.readingCycleId, rowKey)
+      await this.tableClient.deleteEntity(partitionKey, rowKey)
 
       return ok({
+        authId: request.authId,
         readingCycleId: request.readingCycleId,
         id: rowKey,
         deleted: true
