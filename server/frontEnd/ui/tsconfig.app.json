@@ -15,6 +15,12 @@
       "@/*": ["./src/*"],
       "@read-every-word/domain": [
         "node_modules/@read-every-word/domain/dist/types/index.d.ts"
+      ],
+      "@read-every-word/bff": [
+        "node_modules/@read-every-word/bff/dist/types/index.d.ts"
+      ],
+      "@read-every-word/infrastructure": [
+        "node_modules/@read-every-word/infrastructure/dist/types/index.d.ts"
       ]
     }
   }

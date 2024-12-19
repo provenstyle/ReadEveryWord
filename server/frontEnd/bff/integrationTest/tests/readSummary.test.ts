@@ -1,11 +1,9 @@
 import { expectOk } from '@read-every-word/infrastructure'
 import { Client } from '@read-every-word/bff'
-import { withConfig, withAuthToken } from './scenarios'
+import { withBaseUrl, withAuthToken } from './scenarios'
 
 describe('readSummary', () => {
-    const config= withConfig()
-
-    const client = new Client(config.service, withAuthToken)
+    const client = new Client(withBaseUrl(), withAuthToken)
 
     it('return the default reading cycle', async () => {
       const readSummaryResult = await client.readSummary.get()

@@ -1,11 +1,13 @@
-// import { v4 as uuid } from 'uuid'
 import { expectOk } from '@read-every-word/infrastructure'
 import { ReadingCycle } from '@read-every-word/domain'
-import { Client, Config, fromEnv } from '@read-every-word/bff'
+import { Client, fromEnv } from '@read-every-word/bff'
 
-export function withConfig(): Config {
-  const configResult = fromEnv()
-  return expectOk(configResult)
+export function withBaseUrl(): string {
+  const baseUrl = process.env.BASE_URL
+  if (!baseUrl) {
+    throw new Error('Expected BASE_URL environment variable')
+  }
+  return baseUrl
 }
 
 export const withAuthToken = (): Promise<string> => {
@@ -16,8 +18,7 @@ export const withAuthToken = (): Promise<string> => {
 }
 
 export async function withDefaultReadingCycle(): Promise<ReadingCycle> {
-  const config = withConfig()
-  const client = new Client(config.service, withAuthToken)
+  const client = new Client(withBaseUrl(), withAuthToken)
   const readSummaryResult = await client.readSummary.get()
   const read = expectOk(readSummaryResult)
   const defaultReadingCycle = read.readingCycles.find(x => x.default)

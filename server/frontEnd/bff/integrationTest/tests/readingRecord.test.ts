@@ -1,10 +1,9 @@
 import { expectOk } from '@read-every-word/infrastructure'
 import { Client } from '@read-every-word/bff'
-import { withConfig, withAuthToken, withDefaultReadingCycle } from './scenarios'
+import { withBaseUrl, withAuthToken, withDefaultReadingCycle } from './scenarios'
 
 describe('readingRecord', () => {
-    const config= withConfig()
-    const client = new Client(config.service, withAuthToken)
+    const client = new Client(withBaseUrl(), withAuthToken)
 
     it('can create readingRecord', async () => {
       const defaultReadingCycle = await withDefaultReadingCycle()

@@ -1,14 +1,18 @@
 import { AxiosInstance } from 'axios'
 import {
-  Result, ok, err,
+  ok, err,
   ValidationFailed,
   logAxiosError,
   NotFound, ServerError,
   UnexpectedResponseCode,
   UnexpectedHttpException,
   Unauthorized,
-  GetFailed,
+  FailedToAcquireDataLock
 } from '@read-every-word/infrastructure'
+
+import {
+  GetReadSummaryResult
+} from '@read-every-word/domain'
 
 export class ReadSummaryClient {
   private configureAxios: () => Promise<AxiosInstance>
@@ -17,7 +21,7 @@ export class ReadSummaryClient {
     this.configureAxios = configureAxios
   }
 
-  async get(): Promise<Result<ReadingSummary, GetFailed>> {
+  async get(): Promise<GetReadSummaryResult> {
     const uri = 'read'
     try {
       const axios = await this.configureAxios()
@@ -27,6 +31,7 @@ export class ReadSummaryClient {
         case 400: return err(result.data as ValidationFailed)
         case 401: return err(new Unauthorized())
         case 404: return err(new NotFound())
+        case 409: return err(new FailedToAcquireDataLock())
         case 500: return err(new ServerError())
         default: return err(new UnexpectedResponseCode(result.status))
       }
@@ -35,28 +40,4 @@ export class ReadSummaryClient {
       return err(new UnexpectedHttpException())
     }
   }
-}
-
-export interface ReadingSummary {
-  readingCycles: ReadingCycle[]
-  readingRecords: ReadingRecord[]
-}
-
-export interface ReadingCycle {
-  authId: string
-  id: string
-  lastModified: string
-  name: string
-  dateStarted: string
-  dateCompleted?: string
-  default: boolean
-}
-
-export interface ReadingRecord {
-  readingCycleId: string
-  id: string
-  lastModified: string
-  dateRead: string
-  bookId: number
-  chapterId: number
 }

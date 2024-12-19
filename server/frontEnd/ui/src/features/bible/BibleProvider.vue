@@ -1,30 +1,30 @@
 <script setup lang="ts">
 import { useAuth0 } from '@auth0/auth0-vue'
+import { isErr } from '@read-every-word/infrastructure'
 import { Bible } from '@read-every-word/domain'
+import { Client } from '@read-every-word/bff'
 import { provide, reactive } from 'vue'
-import axios from 'axios'
-import { onMounted } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 
 const auth = useAuth0()
-const bible = reactive(new Bible())
-
+const bible = reactive<Bible>(new Bible())
 provide('bible', bible)
 
-onMounted(async () => {
-  const token = await auth.getAccessTokenSilently()
-  const axiosConfig = {
-    headers: {
-        Authorization: `Bearer ${token}`
+const errorFetchingData = ref(false)
+
+onBeforeMount(async () => {
+  const client = new Client(window.location.origin, auth.getAccessTokenSilently)
+
+  const readSummaryResult = await client.readSummary.get()
+  if(isErr(readSummaryResult))
+  {
+    errorFetchingData.value = true
+  } else {
+    const readSummary = readSummaryResult.data
+    for(const record of readSummary.readingRecords) {
+      bible.books[record.bookId].chapters[record.chapterId].read = true
     }
   }
-
-  axios.get('/api/healthCheck', axiosConfig)
-    .then((r) => {
-      console.log(r)
-    })
-    .catch((e) => {
-      console.log(e)
-    })
 })
 
 </script>

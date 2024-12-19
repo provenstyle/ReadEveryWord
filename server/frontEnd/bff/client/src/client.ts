@@ -1,23 +1,19 @@
 import { default as axiosStatic, AxiosInstance } from 'axios'
-import { ServiceConfig } from './config'
-import * as http from 'http'
-import * as https from 'https'
 import { ReadSummaryClient } from './readSummaryClient'
 import { HealthCheckClient } from './healthCheckClient'
 import { ReadingRecordClient } from './readingRecordClient'
 
+// this client is optimized for the fronted web browser environment
+// if has no concept of process.env or http.Agent
 export class Client {
-  private httpAgent: http.Agent = new http.Agent({ keepAlive: true })
-  private httpsAgent: https.Agent = new https.Agent({ keepAlive: true })
   private baseUrl: string
   private getAuthToken: () => Promise<string>
   healthCheck: HealthCheckClient
   readSummary: ReadSummaryClient
   readingRecord: ReadingRecordClient
 
-  constructor (serviceConfig: ServiceConfig, getAuthToken: () => Promise<string>) {
-    const protocol = process.env.http ? 'http' : 'https'
-    this.baseUrl = new URL('api', `${protocol}://${serviceConfig.baseUrl}`).href
+  constructor (baseUrl: string, getAuthToken: () => Promise<string>) {
+    this.baseUrl = new URL('api', baseUrl).href
     this.getAuthToken = getAuthToken
 
     this.healthCheck = new HealthCheckClient(this.configureAxios)
@@ -28,8 +24,6 @@ export class Client {
   configureAxios = async (): Promise<AxiosInstance> => {
     const authToken = await this.getAuthToken()
     return axiosStatic.create({
-      httpAgent: this.httpAgent,
-      httpsAgent: this.httpsAgent,
       baseURL: this.baseUrl,
       headers: {
         Authorization: `Bearer ${authToken}`
