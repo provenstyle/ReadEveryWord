@@ -1,18 +1,22 @@
 <script setup lang="ts">
 import { inject } from 'vue'
-import { Bible } from '@read-every-word/domain'
+import { type BibleContext } from '@/features/bible/BibleProvider.vue'
 
 const props = defineProps<{
   bookId: number,
   chapterId: number
 }>()
 
-const bible = inject<Bible>('bible')
-if (!bible) throw new Error('BibleProvider is required')
-const chapter = bible.books[props.bookId].chapters[props.chapterId]
+const bibleContext = inject<BibleContext>('bible')
+if (!bibleContext) throw new Error('BibleContext is required')
 
-const clicked = () => {
-  chapter.read = !chapter.read
+const chapter = bibleContext.bible.books[props.bookId].chapters[props.chapterId]
+
+const clicked = async () => {
+  if (!chapter.read) {
+    chapter.read = await bibleContext.readChapter(props.bookId, props.chapterId)
+  }
+  //chapter.read = !chapter.read
 }
 
 const color = computed(() => {

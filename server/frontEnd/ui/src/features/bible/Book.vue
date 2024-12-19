@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { Bible, Chapter } from '@read-every-word/domain'
+import { Chapter } from '@read-every-word/domain'
 import { inject } from 'vue'
 import { useRouter } from 'vue-router'
 import ChapterCard from './ChapterCard.vue'
 import { chunk } from 'lodash'
+import { type BibleContext } from '@/features/bible/BibleProvider.vue'
 
 const router = useRouter()
 
@@ -11,9 +12,10 @@ const props = defineProps<{
   id: number
 }>()
 
-const bible = inject<Bible>('bible')
-if (!bible) throw new Error('BibleProvider is required')
-const book = bible.books[props.id]
+const bibleContext = inject<BibleContext>('bible')
+if (!bibleContext) throw new Error('BibleContext is required')
+
+const book = bibleContext.bible.books[props.id]
 
 </script>
 

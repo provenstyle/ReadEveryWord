@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { Bible } from '@read-every-word/domain'
 import { inject, computed } from 'vue'
+import { type BibleContext } from '@/features/bible/BibleProvider.vue'
 
 const props = defineProps<{
   id: number,
@@ -9,9 +9,10 @@ const props = defineProps<{
   shortName: string
 }>()
 
-const bible = inject<Bible>('bible')
-if (!bible) throw new Error('BibleProvider is required')
-const book = bible.books[props.id]
+const bibleContext = inject<BibleContext>('bible')
+if (!bibleContext) throw new Error('BibleContext is required')
+
+const book = bibleContext.bible.books[props.id]
 const router = useRouter()
 
 const goToBook = () => {
