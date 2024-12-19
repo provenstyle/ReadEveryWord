@@ -1,4 +1,4 @@
-import { Result, CreateFailed, GetFailed, UpdateFailed} from '@read-every-word/infrastructure'
+import { Result, CreateFailed, GetFailed, UpdateFailed, FailedToAcquireDataLock } from '@read-every-word/infrastructure'
 
 export interface ReadingCycle {
   authId: string
@@ -21,6 +21,7 @@ export type CreateReadingCycleSucceeded =
 
 export type CreateReadingCycleFailed =
   | CreateFailed
+  | FailedToAcquireDataLock
 
 export type CreateReadingCycleResult = Result<CreateReadingCycleSucceeded, CreateReadingCycleFailed>
 

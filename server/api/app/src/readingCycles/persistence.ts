@@ -1,45 +1,57 @@
-import { Result, err, ok, cacheTableClient, PersistenceError, isErr, CreateFailed, GetFailed, UpdateFailed, NotFound, resourceDoesNotExist } from '@read-every-word/infrastructure'
-import { ReadingCycle, GetReadingCycle, CreateReadingCycle, SetDefaultReadingCycle, UpdateReadingCycle } from '@read-every-word/domain'
+import { Result, err, ok, cacheTableClient, PersistenceError, isErr, GetFailed, UpdateFailed, NotFound, resourceDoesNotExist, withLock } from '@read-every-word/infrastructure'
+import { ReadingCycle, GetReadingCycle, CreateReadingCycle, CreateReadingCycleResult, SetDefaultReadingCycle, UpdateReadingCycle } from '@read-every-word/domain'
 import { TableClient, TableTransaction } from '@azure/data-tables'
 import { Config } from '../config'
 import { ReadingCycleRow, map } from './domain'
 import { v4 as uuid } from 'uuid'
 import { chunk } from 'lodash'
 
+const LOCK_TIME_OUT = 30 * 1000 // 30 seconds
+
 export class Persistence {
   private tableClient: TableClient
+  private config: Config
 
   constructor (config: Config) {
+      this.config = config
       this.tableClient = cacheTableClient(config.tableStorageConnectionString, 'readingCycle')
   }
 
-  async createReadingCycle(request: CreateReadingCycle): Promise<Result<ReadingCycle, CreateFailed>> {
+  async createReadingCycle(request: CreateReadingCycle): Promise<CreateReadingCycleResult> {
     try {
-      const getAllReadingCyclesResult = await this.getAllReadingCycles({authId: request.authId})
-      if (isErr(getAllReadingCyclesResult)) {
-        return getAllReadingCyclesResult
-      }
-      const allReadingCycles = getAllReadingCyclesResult.data
+      return await withLock({
+        storageConnectionString: this.config.tableStorageConnectionString,
+        containerName: request.authId,
+        lockFileName: 'readingCycle_create.lock',
+        wait: LOCK_TIME_OUT,
+        func: async () => {
+          const getAllReadingCyclesResult = await this.getAllReadingCycles({authId: request.authId})
+          if (isErr(getAllReadingCyclesResult)) {
+            return getAllReadingCyclesResult
+          }
+          const allReadingCycles = getAllReadingCyclesResult.data
 
-      const readingCycle = {
-        partitionKey: request.authId,
-        rowKey: uuid(),
-        name: request.name,
-        dateStarted: request.dateStarted,
-        default: (allReadingCycles.length === 0)
-          ? true
-          : false
-      }
+          const readingCycle = {
+            partitionKey: request.authId,
+            rowKey: uuid(),
+            name: request.name,
+            dateStarted: request.dateStarted,
+            default: (allReadingCycles.length === 0)
+              ? true
+              : false
+          }
 
-      await this.tableClient.createEntity(readingCycle)
+          await this.tableClient.createEntity(readingCycle)
 
-      return ok({
-        authId: request.authId,
-        id: readingCycle.rowKey,
-        lastModified: '',
-        name: readingCycle.name,
-        dateStarted: readingCycle.dateStarted,
-        default: readingCycle.default
+          return ok({
+            authId: request.authId,
+            id: readingCycle.rowKey,
+            lastModified: '',
+            name: readingCycle.name,
+            dateStarted: readingCycle.dateStarted,
+            default: readingCycle.default
+          })
+        }
       })
     } catch (e) {
       if (resourceDoesNotExist(e)) {

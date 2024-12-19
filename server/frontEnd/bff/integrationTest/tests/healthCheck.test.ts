@@ -5,7 +5,7 @@ import { withConfig, withAuthToken } from './scenarios'
 describe('healthCheck', () => {
     const config= withConfig()
 
-    const healthCheckClient = new Client(config.service, withAuthToken).healthCheck()
+    const healthCheckClient = new Client(config.service, withAuthToken).healthCheck
 
     it('health check is successful', async () => {
       const healthCheckResult = await healthCheckClient.get()

@@ -1,4 +1,4 @@
 export * from './client'
 export * from './config'
 export * from './healthCheckClient'
-export * from './readClient'
+export * from './readSummaryClient'

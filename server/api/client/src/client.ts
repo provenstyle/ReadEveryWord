@@ -6,12 +6,14 @@ import { UserClient } from './userClient'
 import { ReadingCycleClient } from './readingCycleClient'
 import { ReadingRecordClient } from './readingRecordClient'
 import { HealthCheckClient } from './healthCheckClient'
+import { ReadSummaryClient } from './readSummaryClient'
 
 export class Client {
   user: UserClient
   readingCycle: ReadingCycleClient
   readingRecord: ReadingRecordClient
   healthCheck: HealthCheckClient
+  readSummary: ReadSummaryClient
 
   constructor (serviceConfig: ServiceConfig) {
     const httpAgent = new http.Agent({ keepAlive: true })
@@ -33,6 +35,7 @@ export class Client {
     this.user = new UserClient(axios)
     this.readingRecord = new ReadingRecordClient(axios)
     this.readingCycle = new ReadingCycleClient(axios)
+    this.readSummary = new ReadSummaryClient(axios)
     this.healthCheck = new HealthCheckClient(axios)
   }
 }

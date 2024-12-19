@@ -41,6 +41,7 @@ const handleFailures = (err: CreateReadingCycleFailed) => {
     case 'server-error': return json(500, err)
     case 'unexpected-http-exception': return json(500, err)
     case 'unexpected-response-code': return json(500, err)
+    case 'failed-to-acquire-data-lock': return json(409, err)
     case 'not-found': return json(404, err)
     case 'unauthorized': return json(401, err)
     case 'validation-failed': return json(400, err)

@@ -1,6 +1,7 @@
 import { expectOk } from '@read-every-word/infrastructure'
 import { Client } from '@read-every-word/client'
 import { withConfig, withUser } from './scenarios'
+import { v4 as uuid } from 'uuid'
 
 describe('readingCycle', () => {
     const config= withConfig()
@@ -144,4 +145,29 @@ describe('readingCycle', () => {
         expect(readingCycle.name).toEqual('a new name')
     }, 10 * 1000)
 
+    it('concurrent calls only create 1 default readingCycle', async () => {
+      const authId = uuid()
+
+      const promises = []
+      for (let i = 0; i < 5; i++) {
+        promises.push(
+          readingCycleClient.create({
+            authId,
+            dateStarted: new Date().toISOString(),
+            name: `${i}`
+          })
+        )
+      }
+
+      await Promise.all(promises)
+
+      const readingCycleResult = await readingCycleClient.get({
+        authId
+      })
+      const readingCycles = expectOk(readingCycleResult)
+
+      const defaults = readingCycles.filter(x => x.default)
+
+      expect(defaults.length).toEqual(1)
+    })
 })

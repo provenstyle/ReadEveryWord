@@ -1,7 +1,7 @@
 import { app, type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
 import { isOk, assertNever } from '@read-every-word/infrastructure'
 import { handleDeleteReadingRecord } from './handler'
-import { authenticate, type JwtPayload } from '../../authentication'
+import { authenticate, sanitizeAuthId, type JwtPayload } from '../../authentication'
 
 import { DeleteReadingRecord, DeleteReadingRecordSucceeded, DeleteReadingRecordFailed} from '@read-every-word/domain'
 
@@ -20,7 +20,7 @@ export async function handleEndpoint (request: HttpRequest, context: InvocationC
 
     const result = await handleDeleteReadingRecord({
       ...body,
-      authId: token.sub ?? ''
+      authId: sanitizeAuthId(token)
     })
 
     return isOk(result)

@@ -97,6 +97,12 @@ export const authenticate = (handler: AuthenticatedHandler): EndPointHandler => 
   };
 }
 
+export const sanitizeAuthId = (token: JwtPayload): string => {
+  const auth0Id = token.sub ?? ''
+  const sanitized = auth0Id.replace('|', '')
+  return sanitized
+}
+
 type ValidateTokenSucceeded =
   | JwtPayload
 

@@ -12,7 +12,7 @@ import {
 import { GetHealthCheckResult } from '@read-every-word/domain'
 
 export class HealthCheckClient {
-  configureAxios: () => Promise<AxiosInstance>
+  private configureAxios: () => Promise<AxiosInstance>
 
   constructor (configureAxios: () => Promise<AxiosInstance>) {
     this.configureAxios = configureAxios

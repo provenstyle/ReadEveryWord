@@ -10,8 +10,8 @@ import {
   GetFailed,
 } from '@read-every-word/infrastructure'
 
-export class ReadClient {
-  configureAxios: () => Promise<AxiosInstance>
+export class ReadSummaryClient {
+  private configureAxios: () => Promise<AxiosInstance>
 
   constructor (configureAxios: () => Promise<AxiosInstance>) {
     this.configureAxios = configureAxios

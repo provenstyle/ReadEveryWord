@@ -6,7 +6,8 @@ import {
   NotFound, ServerError,
   UnexpectedResponseCode,
   UnexpectedHttpException,
-  Unauthorized
+  Unauthorized,
+  FailedToAcquireDataLock
 } from '@read-every-word/infrastructure'
 
 import {
@@ -17,7 +18,7 @@ import {
 } from '@read-every-word/domain'
 
 export class ReadingCycleClient {
-  axios: AxiosInstance
+  private axios: AxiosInstance
 
   constructor (axios: AxiosInstance) {
     this.axios = axios
@@ -32,6 +33,7 @@ export class ReadingCycleClient {
         case 400: return err(result.data as ValidationFailed)
         case 401: return err(new Unauthorized())
         case 404: return err(new NotFound())
+        case 409: return err(new FailedToAcquireDataLock())
         case 500: return err(new ServerError())
         default: return err(new UnexpectedResponseCode(result.status))
       }

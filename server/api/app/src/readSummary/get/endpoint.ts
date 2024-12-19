@@ -1,24 +1,24 @@
 import { app, type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
 import { isOk, assertNever, json } from '@read-every-word/infrastructure'
-import { handleGetSummary, type GetSummary, type GetSummarySucceeded, type GetSummaryFailed } from './handler'
-import { authenticate, type JwtPayload } from '../../authentication'
+import { type GetReadSummary, type GetReadSummarySucceeded, type GetReadSummaryFailed } from '@read-every-word/domain'
+import { handleGetReadSummary } from './handler'
 
-app.http('get_read', {
+app.http('get_read_summary', {
   methods: ['GET'],
-  authLevel: 'anonymous',
-  handler: authenticate(handleEndpoint),
-  route: 'read'
+  authLevel: 'function',
+  handler: handleEndpoint,
+  route: 'readSummary/{authId}'
 })
 
-export async function handleEndpoint (request: HttpRequest, context: InvocationContext, token: JwtPayload ): Promise<HttpResponseInit> {
+export async function handleEndpoint (request: HttpRequest, context: InvocationContext ): Promise<HttpResponseInit> {
   try {
     console.log(`${request.method} request for url "${request.url}"`)
 
-    const getRequest: GetSummary = {
-      authId: token.sub ?? ''
+    const getRequest: GetReadSummary = {
+      authId: request.params.authId ?? ''
     }
 
-    const result = await handleGetSummary(getRequest)
+    const result = await handleGetReadSummary(getRequest)
 
     return isOk(result)
       ? handleSuccess(result.data)
@@ -32,11 +32,11 @@ export async function handleEndpoint (request: HttpRequest, context: InvocationC
   }
 }
 
-const handleSuccess = (data: GetSummarySucceeded) => {
+const handleSuccess = (data: GetReadSummarySucceeded) => {
   return json(200, data)
 }
 
-const handleFailures = (err: GetSummaryFailed) => {
+const handleFailures = (err: GetReadSummaryFailed) => {
   switch (err.code) {
     case 'invalid-server-configuration': return json(500, err)
     case 'persistence-error': return json(500, err)
@@ -46,6 +46,7 @@ const handleFailures = (err: GetSummaryFailed) => {
     case 'not-found': return json(404, err)
     case 'validation-failed': return json(400, err)
     case 'unauthorized': return json(401, err)
+    case 'failed-to-acquire-data-lock': return json(401, err)
     default: return assertNever(err)
   }
 }

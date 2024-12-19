@@ -1,12 +1,12 @@
+import { Result, ok, err, ValidationFailed, InvalidSchema } from '@read-every-word/infrastructure'
+import { GetReadSummary } from '@read-every-word/domain'
 import { Ajv } from 'ajv'
 import addFormats from 'ajv-formats'
-import { Result, ok, err, ValidationFailed, InvalidSchema } from '@read-every-word/infrastructure'
-import { GetSummary } from './handler'
 
 const ajv = new Ajv()
 addFormats(ajv)
 
-export const validate = async (request: GetSummary)
+export const validate = async (request: GetReadSummary)
     : Promise<Result<unknown, ValidationFailed>> => {
 
     const schema = {

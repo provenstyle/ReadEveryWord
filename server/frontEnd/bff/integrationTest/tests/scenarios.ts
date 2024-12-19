@@ -1,6 +1,7 @@
 // import { v4 as uuid } from 'uuid'
 import { expectOk } from '@read-every-word/infrastructure'
-import { Config, fromEnv } from '@read-every-word/bff'
+import { ReadingCycle } from '@read-every-word/domain'
+import { Client, Config, fromEnv } from '@read-every-word/bff'
 
 export function withConfig(): Config {
   const configResult = fromEnv()
@@ -14,25 +15,12 @@ export const withAuthToken = (): Promise<string> => {
   })
 }
 
-// export async function withUser(): Promise<User> {
-//   const config = withConfig()
-//   const userClient = new Client(config.service).user
-//   const guid = uuid()
-//   const createdUserResult = await userClient.create({
-//     authId: guid,
-//     email: `${guid}@email.com`
-//   })
-//   return expectOk(createdUserResult)
-// }
-
-// export async function withReadingCycle(user: User): Promise<ReadingCycle> {
-//     const config = withConfig()
-//     const readingCycleClient = new Client(config.service).readingCycle
-//     const readingCycleResult = await readingCycleClient
-//       .create({
-//         authId: user.authId,
-//         dateStarted: new Date().toISOString(),
-//         name: 'name'
-//       })
-//     return expectOk(readingCycleResult)
-// }
+export async function withDefaultReadingCycle(): Promise<ReadingCycle> {
+  const config = withConfig()
+  const client = new Client(config.service, withAuthToken)
+  const readSummaryResult = await client.readSummary.get()
+  const read = expectOk(readSummaryResult)
+  const defaultReadingCycle = read.readingCycles.find(x => x.default)
+  if (!defaultReadingCycle) throw new Error('Expected default reading cycle')
+  return defaultReadingCycle
+}

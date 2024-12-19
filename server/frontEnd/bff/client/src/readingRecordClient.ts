@@ -11,7 +11,7 @@ import {
 import { CreateReadingRecordResult, DeleteReadingRecordResult } from '@read-every-word/domain'
 
 export class ReadingRecordClient {
-  configureAxios: () => Promise<AxiosInstance>
+  private configureAxios: () => Promise<AxiosInstance>
 
   constructor (configureAxios: () => Promise<AxiosInstance>) {
     this.configureAxios = configureAxios

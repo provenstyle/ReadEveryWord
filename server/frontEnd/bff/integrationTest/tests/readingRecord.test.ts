@@ -1,16 +1,20 @@
 import { expectOk } from '@read-every-word/infrastructure'
 import { Client } from '@read-every-word/bff'
-import { withConfig, withAuthToken } from './scenarios'
+import { withConfig, withAuthToken, withDefaultReadingCycle } from './scenarios'
 
-describe('reading', () => {
+describe('readingRecord', () => {
     const config= withConfig()
+    const client = new Client(config.service, withAuthToken)
 
-    const readClient = new Client(config.service, withAuthToken).readClient()
-
-    it('return the default reading cycle', async () => {
-      const readResult = await readClient.get()
-      const read = expectOk(readResult)
-      expect(read.readingCycles.length).toEqual(1)
+    it('can create readingRecord', async () => {
+      const defaultReadingCycle = await withDefaultReadingCycle()
+      const readingRecordResult = await client.readingRecord.create({
+        readingCycleId: defaultReadingCycle.id,
+        bookId: 0,
+        chapterId: 0,
+        dateRead: new Date().toISOString(),
+      })
+      expectOk(readingRecordResult)
     })
 })
 

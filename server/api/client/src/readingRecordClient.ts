@@ -16,7 +16,7 @@ import {
 } from '@read-every-word/domain'
 
 export class ReadingRecordClient {
-  axios: AxiosInstance
+  private axios: AxiosInstance
 
   constructor (axios: AxiosInstance) {
     this.axios = axios

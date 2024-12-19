@@ -1,25 +1,27 @@
 import { AxiosInstance } from 'axios'
 import {
   ok, err,
+  ValidationFailed,
   logAxiosError,
-  ServerError,
+  NotFound, ServerError,
   UnexpectedResponseCode,
   UnexpectedHttpException,
-  ValidationFailed,
-  Unauthorized,
-  NotFound
+  Unauthorized
 } from '@read-every-word/infrastructure'
-import { GetHealthCheckResult } from '@read-every-word/domain'
 
-export class HealthCheckClient {
+import {
+  GetReadSummary, GetReadSummaryResult
+} from '@read-every-word/domain'
+
+export class ReadSummaryClient {
   private axios: AxiosInstance
 
   constructor (axios: AxiosInstance) {
     this.axios = axios
   }
 
-  async get(): Promise<GetHealthCheckResult> {
-    const uri = 'healthCheck'
+  async get(request: GetReadSummary): Promise<GetReadSummaryResult> {
+    const uri = `readSummary/${request.authId}`
     try {
       const result = await this.axios.get(uri)
       switch(result.status) {

@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import { Authentication } from './authentication'
+import { Authentication, sanitizeAuthId } from './authentication'
 import {type OpenIdConfig} from './config'
 import { isErr } from "@read-every-word/infrastructure"
 
@@ -28,6 +28,13 @@ describe('authentication', () => {
     expect(async () => {
       await authn.validateToken(token)
     })
+  })
+
+  it('can sanitize sub for authId', () => {
+    const jwt = {
+      sub: 'auth0|123'
+    }
+    expect(sanitizeAuthId(jwt)).toEqual('auth0123')
   })
 })
 
