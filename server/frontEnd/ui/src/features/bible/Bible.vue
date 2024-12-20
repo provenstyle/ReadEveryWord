@@ -34,7 +34,7 @@ if (!navigation) throw new Error('NavigationProvider is required')
         class="text-center"
         v-if="bibleContext.working.value"
       >
-        Loading...
+        <v-progress-circular class="mt-4" indeterminate></v-progress-circular>
       </div>
       <div v-if="!bibleContext.working.value">
         <h2 class="">Old Testament</h2>
