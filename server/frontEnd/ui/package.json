@@ -4,7 +4,7 @@
   "type": "module",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "swa start",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
@@ -15,11 +15,11 @@
   },
   "dependencies": {
     "@auth0/auth0-vue": "^2.3.3",
-    "@azure/static-web-apps-cli": "^2.0.1",
+    "@azure/static-web-apps-cli": "^2.0.2",
     "@mdi/font": "7.4.47",
+    "@read-every-word/bff": "file:../bff/client",
     "@read-every-word/domain": "file:../../domain",
     "@read-every-word/infrastructure": "file:../../infrastructure",
-    "@read-every-word/bff": "file:../bff/client",
     "axios": "^1.7.8",
     "core-js": "^3.37.1",
     "lodash": "^4.17.21",
