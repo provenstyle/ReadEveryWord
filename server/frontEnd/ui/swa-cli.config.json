@@ -5,8 +5,8 @@
       "appLocation": ".",
       "outputLocation": "dist",
       "appBuildCommand": "npm run build",
-      "apiBuildCommand": "npm run build",
-      "run": "npm run dev",
+      "apiBuildCommand": "echo 'api function are in the bff'",
+      "run": "vite",
       "appDevserverUrl": "http://localhost:3000",
       "apiDevserverUrl": "http://localhost:7778"
     }
