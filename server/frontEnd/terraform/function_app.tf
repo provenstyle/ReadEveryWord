@@ -44,6 +44,8 @@ resource "azurerm_linux_function_app" "this" {
     OPEN_ID_JWKS_URI                      = var.open_id_jwks_uri
     OPEN_ID_AUDIENCE                      = var.open_id_audience
     OPEN_ID_ISSUER                        = var.open_id_issuer
+    OPEN_ID_DOMAIN                        = var.open_id_domain
+    OPEN_ID_CLIENT_ID                     = var.open_id_client_id
     KEEP_WARM                             = var.keep_warm
   }
   identity {

@@ -54,6 +54,14 @@ variable "open_id_issuer" {
   type        = string
   description = "openId server address"
 }
+variable "open_id_domain" {
+  type        = string
+  description = "oauth domain name no https protocol"
+}
+variable "open_id_client_id" {
+  type        = string
+  description = "oauth client id from the configured application"
+}
 variable "keep_warm" {
   type        = bool
   description = "controls the health-check function timer"

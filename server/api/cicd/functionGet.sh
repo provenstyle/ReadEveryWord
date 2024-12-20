@@ -3,5 +3,6 @@ source ./variables.sh
 
 cd ../app
 
-func azure functionapp fetch-app-settings $FUNCTION_APP_NAME
+func azure functionapp fetch-app-settings $FUNCTION_APP_NAME --no-encrypt
+func settings decrypt
 

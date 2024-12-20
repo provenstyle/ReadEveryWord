@@ -10,5 +10,5 @@ SERVICE_NAME=read-every-word-front-end
 # prod variables
 ENVIRONMENT=prod
 STATE_KEY="$ENVIRONMENT/main/default/$SERVICE_NAME/terraform.tfstate"
-FUNCTION_APP_NAME=
-STATIC_APP_NAME=
+FUNCTION_APP_NAME=fa-glsuwfipqqitmbugqr
+STATIC_APP_NAME=stapp-xgnsvotromajjgexni

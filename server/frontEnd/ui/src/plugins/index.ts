@@ -14,25 +14,25 @@ import { createAuth0 } from '@auth0/auth0-vue'
 // Types
 import type { App } from 'vue'
 
-const configuration = {
-  auth: {
-    domain: 'dev-lr8vwbeyc7gmi0w2.us.auth0.com',
-    clientId: 'EklZm4b41JEMQtssQciDgZtHtNzE2pBw',
-    audience: 'read-every-word-bff-dev'
+export interface Config {
+  openId: {
+    domain: string
+    clientId: string
+    audience: string
   }
 }
 
-export function registerPlugins (app: App) {
+export function registerPlugins (app: App, config: Config) {
   app
     .use(vuetify)
     .use(router)
     .use(pinia)
     .use(createAuth0({
-      domain: configuration.auth.domain,
-      clientId: configuration.auth.clientId,
+      domain: config.openId.domain,
+      clientId: config.openId.clientId,
       authorizationParams: {
         redirect_uri: new URL('/login/callback', window.location.origin).href,
-        audience: configuration.auth.audience,
+        audience: config.openId.audience,
         scope: 'openid profile email'
       },
       useRefreshTokens: true,

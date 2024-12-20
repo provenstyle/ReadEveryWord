@@ -1,20 +1,15 @@
-/**
- * main.ts
- *
- * Bootstraps Vuetify and other plugins then mounts the App`
- */
-
-// Plugins
-import { registerPlugins } from '@/plugins'
-
-// Components
+import axios from 'axios'
+import { registerPlugins, type Config } from '@/plugins'
 import App from './App.vue'
-
-// Composables
 import { createApp } from 'vue'
 
-const app = createApp(App)
-
-registerPlugins(app)
-
-app.mount('#app')
+axios.get(`${window.location.origin}/api/config`)
+.then( response =>{
+  const config = response.data as Config
+  const app = createApp(App)
+  registerPlugins(app, config)
+  app.mount('#app')
+})
+.catch( error => {
+  console.error('Error fetching configuration:', error)
+})

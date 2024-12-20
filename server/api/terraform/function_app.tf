@@ -34,6 +34,7 @@ resource "azurerm_linux_function_app" "this" {
   # Runtime settings and things available in function environment
   # Merge allows users to pass in additional info
   app_settings = {
+    WEBSITE_MOUNT_ENABLED                 = 1,
     SCM_DO_BUILD_DURING_DEPLOYMENT        = true,
     FUNCTIONS_WORKER_RUNTIME              = "node",
     APPINSIGHTS_INSTRUMENTATIONKEY        = azurerm_application_insights.func.instrumentation_key
