@@ -10,7 +10,7 @@ const keepWarm = env?.toLowerCase() === 'true'
 if (keepWarm) {
   console.log('Keep warm is enabled.')
   app.timer('keep_warm_timer', {
-    schedule: '0 */5 * * * *',
+    schedule: '* * * * * *',
     handler: async () => {
       await handleGetHealthCheck({})
     }

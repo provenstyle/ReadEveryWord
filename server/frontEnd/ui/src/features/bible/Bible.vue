@@ -27,44 +27,54 @@ if (!navigation) throw new Error('NavigationProvider is required')
       <v-spacer />
     </v-toolbar>
 
-    <div class="px-2 mt-4">
-      <h2 class="">Old Testament</h2>
-
+    <div
+      class="px-2 mt-4"
+    >
       <div
-        v-for="(rowOfBooks, index1) in chunk<Book>(bibleContext.bible.oldTestament, 9)"
-        :key="index1"
-        class="d-flex"
+        class="text-center"
+        v-if="bibleContext.working.value"
       >
-        <div
-          v-for="(book, index2) in rowOfBooks"
-          :key="index2"
-          :class="['book']"
-        >
-          <BookCard
-            :id="book.id"
-            :long-name="book.longName"
-            :short-name="book.shortName"
-          />
-        </div>
+        Loading...
       </div>
+      <div v-if="!bibleContext.working.value">
+        <h2 class="">Old Testament</h2>
 
-      <h2 class="mt-4">New Testament</h2>
-
-      <div
-        v-for="(rowOfBooks, index1) in chunk<Book>(bibleContext.bible.newTestament, 9)"
-        :key="index1"
-        class="d-flex"
-      >
         <div
-          v-for="(book, index2) in rowOfBooks"
-          :key="index2"
-          class="book"
+          v-for="(rowOfBooks, index1) in chunk<Book>(bibleContext.bible.oldTestament, 9)"
+          :key="index1"
+          class="d-flex"
         >
-          <BookCard
-            :id="book.id"
-            :long-name="book.longName"
-            :short-name="book.shortName"
-          />
+          <div
+            v-for="(book, index2) in rowOfBooks"
+            :key="index2"
+            :class="['book']"
+          >
+            <BookCard
+              :id="book.id"
+              :long-name="book.longName"
+              :short-name="book.shortName"
+            />
+          </div>
+        </div>
+
+        <h2 class="mt-4">New Testament</h2>
+
+        <div
+          v-for="(rowOfBooks, index1) in chunk<Book>(bibleContext.bible.newTestament, 9)"
+          :key="index1"
+          class="d-flex"
+        >
+          <div
+            v-for="(book, index2) in rowOfBooks"
+            :key="index2"
+            class="book"
+          >
+            <BookCard
+              :id="book.id"
+              :long-name="book.longName"
+              :short-name="book.shortName"
+            />
+          </div>
         </div>
       </div>
     </div>
