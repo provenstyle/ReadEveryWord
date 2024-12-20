@@ -8,3 +8,4 @@ local.settings.json
 dist
 coverage
 .env*
+cicd/variables.sh
