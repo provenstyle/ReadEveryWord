@@ -34,7 +34,9 @@ export function registerPlugins (app: App) {
         redirect_uri: new URL('/login/callback', window.location.origin).href,
         audience: configuration.auth.audience,
         scope: 'openid profile email'
-      }
+      },
+      useRefreshTokens: true,
+      cacheLocation: 'localstorage'
     }, {
       errorPath: '/authorization-error'
     }))
