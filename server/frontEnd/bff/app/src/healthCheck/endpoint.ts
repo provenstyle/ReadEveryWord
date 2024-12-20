@@ -4,6 +4,19 @@ import { GetHealthCheckSucceeded, GetHealthCheckFailed } from '@read-every-word/
 import { authenticate, type JwtPayload } from '../authentication'
 import { handleGetHealthCheck } from './handler'
 
+const env = process.env.KEEP_WARM
+const keepWarm = env?.toLowerCase() === 'true'
+
+if (keepWarm) {
+  console.log('Keep warm is enabled.')
+  app.timer('keep_warm_timer', {
+    schedule: '0 */5 * * * *',
+    handler: async () => {
+      await handleGetHealthCheck({})
+    }
+  })
+}
+
 app.http('health_check', {
   methods: ['GET'],
   authLevel: 'anonymous',

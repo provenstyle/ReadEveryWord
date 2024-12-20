@@ -54,3 +54,8 @@ variable "open_id_issuer" {
   type        = string
   description = "openId server address"
 }
+variable "keep_warm" {
+  type        = bool
+  description = "controls the health-check function timer"
+  default     = false
+}
