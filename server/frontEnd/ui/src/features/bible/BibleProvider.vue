@@ -16,6 +16,7 @@ export interface BibleContext {
   bible: Reactive<Bible>
   fetch: () => Promise<void>
   readChapter: (bookId: number, chapterId: number) => Promise<boolean>
+  unreadChapter: (bookId: number, chapterId: number) => Promise<boolean>
   working: Ref<boolean>
   errorMessage: Ref<string | undefined>
 }
@@ -58,12 +59,24 @@ const readChapter = async (bookId: number, chapterId: number): Promise<boolean> 
   return (isErr(createResult)) ? false : true
 }
 
+const unreadChapter = async (bookId: number, chapterId: number): Promise<boolean> => {
+  if (!readingCycle.value) return false
+
+  const deleteResult = await client.readingRecord.delete({
+    bookId,
+    chapterId,
+    readingCycleId: readingCycle.value.id
+  })
+  return (isErr(deleteResult)) ? false : true
+}
+
 provide('bible', {
   bible,
   working,
   errorMessage,
   fetch,
-  readChapter
+  readChapter,
+  unreadChapter
 } satisfies BibleContext)
 
 onMounted(async () => {

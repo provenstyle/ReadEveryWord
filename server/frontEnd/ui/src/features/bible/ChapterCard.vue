@@ -14,9 +14,16 @@ const chapter = bibleContext.bible.books[props.bookId].chapters[props.chapterId]
 
 const clicked = async () => {
   if (!chapter.read) {
-    chapter.read = await bibleContext.readChapter(props.bookId, props.chapterId)
+    const result = await bibleContext.readChapter(props.bookId, props.chapterId)
+    if (result) {
+      chapter.read = true
+    }
+  } else {
+    const result = await bibleContext.unreadChapter(props.bookId, props.chapterId)
+    if (result) {
+      chapter.read = false
+    }
   }
-  //chapter.read = !chapter.read
 }
 
 const color = computed(() => {
