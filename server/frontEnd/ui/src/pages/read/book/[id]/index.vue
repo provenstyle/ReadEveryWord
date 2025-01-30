@@ -2,7 +2,7 @@
 import { useRoute } from 'vue-router'
 import Book from '@/features/bible/Book.vue'
 
-const route = useRoute('/read/book/[id]')
+const route = useRoute('/read/book/[id]/')
 </script>
 
 <template>

@@ -36,7 +36,18 @@ if (!navigation) throw new Error('NavigationProvider is required')
       >
         <v-progress-circular class="mt-4" indeterminate></v-progress-circular>
       </div>
-      <div v-if="!bibleContext.working.value">
+      <div
+        class="text-center"
+        v-if="bibleContext.errorMessage.value"
+      >
+        <v-alert
+          type="error"
+          class="ma-4"
+        >
+          {{ bibleContext.errorMessage.value }}
+        </v-alert>
+      </div>
+      <div v-if="!bibleContext.working.value && !bibleContext.errorMessage.value">
         <h2 class="">Old Testament</h2>
 
         <div
