@@ -2,6 +2,7 @@
 import {  inject } from 'vue'
 import { type NavigationProvider } from './NavigationProvider.vue'
 import { useAuth0 } from '@auth0/auth0-vue'
+import { featureFlags } from '@/config/featureFlags'
 
 const auth = useAuth0()
 
@@ -34,6 +35,7 @@ const logout = async () => {
         to="/read"
       />
       <v-list-item
+        v-if="featureFlags.enablePray"
         nav
         link
         prepend-icon="mdi-hands-pray"
@@ -41,6 +43,7 @@ const logout = async () => {
         to="/pray"
       />
       <v-list-item
+        v-if="featureFlags.enableMemorize"
         nav
         link
         prepend-icon="mdi-head-heart-outline"
@@ -48,6 +51,7 @@ const logout = async () => {
         to="/memorize"
       />
       <v-list-item
+        v-if="featureFlags.enableJournal"
         nav
         link
         prepend-icon="mdi-notebook-outline"
