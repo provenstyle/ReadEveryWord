@@ -1,3 +1,5 @@
+set -e
+
 source ../../../cicd/variables.sh
 source ./variables.sh
 

@@ -1,3 +1,5 @@
+set -e
+
 source ../../../cicd/variables.sh
 source ./variables.sh
 
@@ -6,7 +8,8 @@ cd ../terraform
 #export TF_LOG=DEBUG
 
 terraform destroy                                               \
-    -var-file="envs/$ENVIRONMENT/terraform.tfvars"               \
+    -auto-approve                                               \
+    -var-file="envs/$ENVIRONMENT/terraform.tfvars"              \
     -var=state_resource_group_name=$STATE_RESOURCE_GROUP_NAME   \
     -var=state_storage_account_name=$STATE_STORAGE_ACCOUNT_NAME \
     -var=state_container_name=$STATE_CONTAINER_NAME             \

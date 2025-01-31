@@ -3,14 +3,14 @@ set -e
 cd ../
 ROOT=$(pwd)
 
-echo "api            *********************************************"
+echo "deploy api            *********************************************"
 cd $ROOT/server/api/cicd
 ./functionPush.sh
 
-echo "bff            *********************************************"
+echo "deploy bff            *********************************************"
 cd $ROOT/server/frontEnd/cicd
 ./functionPush.sh
 
-echo "ui             *********************************************"
+echo "deploy ui             *********************************************"
 cd $ROOT/server/frontEnd/cicd
 ./publishFrontend.sh

@@ -1,5 +1,7 @@
+set -e
+
 source ../../../cicd/variables.sh
-source ./variables.sh
+source ./outputs.sh
 
 cd ../app
 

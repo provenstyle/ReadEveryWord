@@ -1,3 +1,4 @@
-cd ../../terraform
+set -e
 
+cd ../../terraform
 terraform validate

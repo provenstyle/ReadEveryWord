@@ -3,37 +3,37 @@ set -e
 cd ../
 ROOT=$(pwd)
 
-echo "infrastructure *********************************************"
+echo "build infrastructure *********************************************"
 cd $ROOT/server/infrastructure
 npm run build
 npm run test
 
-echo "domain         *********************************************"
+echo "build domain         *********************************************"
 cd $ROOT/server/domain
 npm run build
 npm run test
 
-echo "api            *********************************************"
+echo "build api            *********************************************"
 cd $ROOT/server/api/app
 npm run build
 npm run test
 
-echo "api client     *********************************************"
+echo "build api client     *********************************************"
 cd $ROOT/server/api/client
 npm run build
 npm run test
 
-echo "bff            *********************************************"
+echo "build bff            *********************************************"
 cd $ROOT/server/frontEnd/bff/app
 npm run build
 npm run test
 
-echo "bff client     *********************************************"
+echo "build bff client     *********************************************"
 cd $ROOT/server/frontEnd/bff/client
 npm run build
 npm run test
 
-echo "ui             *********************************************"
+echo "build ui             *********************************************"
 cd $ROOT/server/frontEnd/ui
 npm run build
 

@@ -1,15 +1,7 @@
-# Exit on error
 set -e
 
 source ../../../cicd/variables.sh
-source ./variables.sh
-
-cd ../terraform
-
-APP_NAME=$(terraform output -json names | jq -r '.static_web_app')
-echo $APP_NAME
-RESOURCE_GROUP=$(terraform output -json names | jq -r '.resource_group')
-echo $RESOURCE_GROUP
+source ./outputs.sh
 
 cd ../ui
 npm run build
