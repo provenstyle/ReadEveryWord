@@ -1,15 +1,17 @@
 SERVICE_NAME=read-every-word-api
-
-# Example state key
-# STATE_KEY="myEnvironment/myBranch/myPipeline/myName/default/myService/terraform.tfstate"
-
-# Dev Variables
-ENVIRONMENT=dev
 STATE_KEY="$ENVIRONMENT/main/default/$SERVICE_NAME/terraform.tfstate"
-FUNCTION_APP_NAME=fa-cmvkmwjkuwgxfhrelc
 
-# Prod Variables
-# ENVIRONMENT=prod
-# STATE_KEY="$ENVIRONMENT/main/default/$SERVICE_NAME/terraform.tfstate"
-# FUNCTION_APP_NAME=fa-oyckxrbdmprrhejrrq
+# Environment-specific Variables
+if [ "$ENVIRONMENT" = "dev" ]; then
+    echo "Deploying in Development Environment"
+    FUNCTION_APP_NAME=fa-cmvkmwjkuwgxfhrelc
+elif [ "$ENVIRONMENT" = "prod" ]; then
+    echo "Deploying in Production Environment"
+    FUNCTION_APP_NAME="fa-oyckxrbdmprrhejrrq"
+else
+    echo "Unknown environment: $ENVIRONMENT"
+    exit 1
+fi
 
+# State key format
+# STATE_KEY="myEnvironment/myBranch/myPipeline/myName/default/myService/terraform.tfstate"

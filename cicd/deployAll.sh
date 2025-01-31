@@ -4,16 +4,13 @@ cd ../
 ROOT=$(pwd)
 
 echo "api            *********************************************"
-cd $ROOT
-cd ./server/api/cicd
+cd $ROOT/server/api/cicd
 ./functionPush.sh
 
 echo "bff            *********************************************"
-cd $ROOT
-cd ./server/frontEnd/cicd
+cd $ROOT/server/frontEnd/cicd
 ./functionPush.sh
 
 echo "ui             *********************************************"
-cd $ROOT
-cd ./server/frontEnd/cicd
+cd $ROOT/server/frontEnd/cicd
 ./publishFrontend.sh
