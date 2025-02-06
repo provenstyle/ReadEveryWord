@@ -39,7 +39,7 @@ resource "azurerm_linux_function_app" "this" {
     FUNCTIONS_WORKER_RUNTIME              = "node",
     APPINSIGHTS_INSTRUMENTATIONKEY        = azurerm_application_insights.func.instrumentation_key
     APPLICATIONINSIGHTS_CONNECTION_STRING = azurerm_application_insights.func.connection_string
-    TABLE_STORAGE_CONNECTION_STRING       = azurerm_storage_account.table_storage.primary_connection_string
+    TABLE_STORAGE_CONNECTION_STRING       = local.table_storage_connection_string
   }
   identity {
     type = "SystemAssigned"
