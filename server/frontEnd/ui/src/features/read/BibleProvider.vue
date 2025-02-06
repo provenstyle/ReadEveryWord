@@ -29,6 +29,7 @@ const errorMessage = ref<string | undefined>()
 
 const fetch = async () => {
   working.value = true
+
   const readSummaryResult = await client.readSummary.get()
   if(isErr(readSummaryResult))
   {

@@ -4,7 +4,7 @@ import { Book } from '@read-every-word/domain'
 import { inject } from 'vue'
 import { chunk } from 'lodash'
 import { type NavigationProvider } from '@/features/navigation/NavigationProvider.vue'
-import { type BibleContext } from '@/features/bible/BibleProvider.vue'
+import { type BibleContext } from '@/features/read/BibleProvider.vue'
 
 const bibleContext = inject<BibleContext>('bible')
 if (!bibleContext) throw new Error('BibleContext is required')

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router'
-import Book from '@/features/bible/Book.vue'
+import Book from '@/features/read/Book.vue'
 
 const route = useRoute()
 </script>

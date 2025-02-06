@@ -4,7 +4,7 @@ import { inject } from 'vue'
 import { useRouter } from 'vue-router'
 import ChapterCard from './ChapterCard.vue'
 import { chunk } from 'lodash'
-import { type BibleContext } from '@/features/bible/BibleProvider.vue'
+import { type BibleContext } from '@/features/read/BibleProvider.vue'
 
 const router = useRouter()
 

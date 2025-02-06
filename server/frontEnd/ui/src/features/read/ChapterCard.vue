@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { inject } from 'vue'
-import { type BibleContext } from '@/features/bible/BibleProvider.vue'
+import { type BibleContext } from '@/features/read/BibleProvider.vue'
 
 const props = defineProps<{
   bookId: number,

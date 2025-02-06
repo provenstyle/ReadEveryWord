@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { inject, computed } from 'vue'
-import { type BibleContext } from '@/features/bible/BibleProvider.vue'
+import { type BibleContext } from '@/features/read/BibleProvider.vue'
 
 const props = defineProps<{
   id: number,

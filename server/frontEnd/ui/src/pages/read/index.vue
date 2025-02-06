@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import Bible from '@/features/bible/Bible.vue';
+import Read from '@/features/read/Read.vue';
 </script>
 
 <template>
-  <Bible />
+  <Read />
 </template>
