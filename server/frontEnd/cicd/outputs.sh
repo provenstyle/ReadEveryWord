@@ -1,5 +1,10 @@
 set -e
 
+# Get the organization outputs
+cd ../../../organization/terraform
+Foo=$(terraform output -json names | jq -r '.function_app')
+
+# Get service outputs
 cd ../terraform
 NAMES=$(terraform output -json names)
 
