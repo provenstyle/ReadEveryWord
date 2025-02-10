@@ -19,3 +19,4 @@ terraform plan                                                              \
     -var=service=$SERVICE_NAME                                              \
     -var=organization_resource_group_name=$ORGANIZATION_RESOURCE_GROUP_NAME \
     -var=organization_domain_name=$ORGANIZATION_DOMAIN_NAME                 \
+    -var=branch_name=$BRANCH

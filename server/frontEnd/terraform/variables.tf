@@ -78,4 +78,9 @@ variable "organization_domain_name" {
   description = "Organization domain name"
 }
 
+variable "branch_name" {
+  type        = string
+  description = "Git branch name"
+}
+
 

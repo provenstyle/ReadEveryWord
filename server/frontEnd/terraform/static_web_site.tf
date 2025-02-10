@@ -7,13 +7,20 @@ resource "azurerm_static_web_app" "app" {
   tags                = local.tags
 }
 
+locals {
+  subdomain = {
+    "dev" = var.branch_name == "main" ? "dev" : "dev-${var.branch_name}"
+    "prod" = var.branch_name == "main" ? "app" : "prod-${var.branch_name}"
+  }
+}
+
 resource "azurerm_static_web_app_function_app_registration" "example" {
   static_web_app_id = azurerm_static_web_app.app.id
   function_app_id   = azurerm_linux_function_app.this.id
 }
 
 resource "azurerm_dns_cname_record" "this" {
-  name                = "whatdoiwanthere"
+  name                = local.subdomain[var.environment]
   zone_name           = var.organization_domain_name
   resource_group_name = var.organization_resource_group_name
   ttl                 = 300
