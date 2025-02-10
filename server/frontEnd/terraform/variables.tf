@@ -67,3 +67,15 @@ variable "keep_warm" {
   description = "controls the health-check function timer"
   default     = false
 }
+
+variable "organization_resource_group_name" {
+  type        = string
+  description = "Organization resource group"
+}
+
+variable "organization_domain_name" {
+  type        = string
+  description = "Organization domain name"
+}
+
+
