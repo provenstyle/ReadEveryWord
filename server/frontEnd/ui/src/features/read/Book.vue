@@ -17,6 +17,20 @@ if (!bibleContext) throw new Error('BibleContext is required')
 
 const book = bibleContext.bible.books[props.id]
 
+const readAll = () => {
+  for (const chapter of book.chapters) {
+    if (!chapter.read) {
+      bibleContext
+        .readChapter(book.id, chapter.id)
+        .then((result) => {
+          if (result) {
+            chapter.read = true
+          }
+        })
+    }
+  }
+}
+
 </script>
 
 <template>
@@ -37,6 +51,24 @@ const book = bibleContext.bible.books[props.id]
         {{ book.longName }}
 
         <v-spacer />
+
+        <v-menu>
+          <template #activator="{ props: menuProps }">
+            <v-btn
+              icon
+              v-bind="menuProps"
+            >
+              <v-icon>mdi-dots-vertical</v-icon>
+            </v-btn>
+          </template>
+
+          <v-list>
+            <v-list-item
+              title="Mark All As Read"
+              @click.prevent="readAll()"
+            />
+          </v-list>
+        </v-menu>
       </v-toolbar>
     </div>
 
