@@ -21,7 +21,23 @@ export interface BibleContext {
   errorMessage: Ref<string | undefined>
 }
 
-const client = new Client(window.location.origin, auth.getAccessTokenSilently)
+// Wrap auth.getAccessTokenSilently with error handling
+// This will redirect to the login page when the refresh token expires
+const getAuthTokenWithErrorHandling = async (): Promise<string> => {
+  try {
+    return await auth.getAccessTokenSilently()
+  } catch (error) {
+    console.error('Authentication failed:', error)
+    await auth.loginWithRedirect({
+      appState: {
+        target: window.location.pathname
+      }
+    })
+    throw error
+  }
+}
+
+const client = new Client(window.location.origin, getAuthTokenWithErrorHandling)
 const bible = reactive(new Bible())
 const readingCycle = ref<ReadingCycle | undefined>(undefined)
 const working = ref(false)
