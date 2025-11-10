@@ -1,7 +1,9 @@
 import { router } from './lib/trpc.js';
 import { readingRecordRouter } from './lib/readingRecord/index.js';
+import { readingCycleRouter } from './lib/readingCycles/index.js';
 
 export const appRouter = router({
+  readingCycle: readingCycleRouter,
   readingRecord: readingRecordRouter
 });
 
