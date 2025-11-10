@@ -1,4 +1,4 @@
-import { Result, CreateFailed, DeleteFailed } from '@read-every-word/foundation'
+import { Result, CreateFailed, DeleteFailed, GetFailed } from '@read-every-word/foundation'
 
 export interface ReadingRecord {
   authId: string
@@ -35,7 +35,7 @@ export type GetReadingRecordSucceeded =
   | ReadingRecord[]
 
 export type GetReadingRecordFailed =
-  | CreateFailed
+  | GetFailed
 
 export type GetReadingRecordResult = Result<GetReadingRecordSucceeded, GetReadingRecordFailed>
 
@@ -48,7 +48,7 @@ export type CountReadingRecordSucceeded =
   | number
 
 export type CountReadingRecordFailed =
-  | CreateFailed
+  | GetFailed
 
 export type CountReadingRecordResult = Result<CountReadingRecordSucceeded, CountReadingRecordFailed>
 
