@@ -2,7 +2,7 @@ import { isErr, ok } from '@read-every-word/foundation'
 import { type SetDefaultReadingCycle, type SetDefaultReadingCycleResult } from '@read-every-word/domain'
 import { validate } from './validation.js'
 import { Persistence } from '../persistence.js'
-import { publicProcedure } from 'src/lib/trpc.js'
+import { publicProcedure } from '../../trpc.js'
 
 export const setDefaultReadingCycleProcedure = publicProcedure
   .input(r => r as SetDefaultReadingCycle)
