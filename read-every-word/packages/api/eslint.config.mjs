@@ -5,12 +5,7 @@ export default [
   {
     files: ['**/*.json'],
     rules: {
-      '@nx/dependency-checks': [
-        'error',
-        {
-          ignoredFiles: ['{projectRoot}/eslint.config.{js,cjs,mjs,ts,cts,mts}'],
-        },
-      ],
+      '@nx/dependency-checks': 'off',  // Disable for internal packages
     },
     languageOptions: {
       parser: await import('jsonc-eslint-parser'),
