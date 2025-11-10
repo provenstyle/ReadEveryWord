@@ -1,5 +1,5 @@
 import { Result, err } from '@read-every-word/foundation'
-import { BlobServiceClient, type LeaseOperationResponse, type BlobLeaseClient } from '@azure/storage-blob'
+import { BlobServiceClient, type LeaseOperationResponse, type BlobLeaseClient, RestError } from '@azure/storage-blob'
 
 export class FailedToAcquireDataLock {
   code = 'failed-to-acquire-data-lock' as const
@@ -34,13 +34,35 @@ export async function withLock<T, E> (
 
     const containerClient = blobServiceClient.getContainerClient(params.containerName)
     if (!(await containerClient.exists())) {
-      await containerClient.create()
+      try {
+        await containerClient.create()
+      } catch (e: unknown) {
+        // Handle race condition: if container was created by another concurrent request, ignore the error
+        // Error code 409 (Conflict) with message about container already existing
+        if (e instanceof RestError && e.statusCode === 409 && e.message?.includes('already exists')) {
+          // Container already exists, which is fine - another concurrent request created it
+        } else {
+          return err(new FailedToAcquireDataLock('Unexpected error creating storage container'))
+        }
+      }
     }
 
     const blobClient = containerClient.getBlockBlobClient(`${params.lockFileName}`)
     if (!(await blobClient.exists())) {
-      const content = 'lock file'
-      await blobClient.upload(content, Buffer.byteLength(content))
+      try {
+        const content = 'lock file'
+        await blobClient.upload(content, Buffer.byteLength(content))
+      } catch (e: unknown) {
+        // Handle race condition: if blob was created by another concurrent request, ignore the error
+        // Error code 409 (Conflict) means the blob already exists
+        // Error code 412 (PreconditionFailed/LeaseIdMissing) means the blob exists and has a lease
+        // Both are fine - the blob exists, and we'll try to acquire a lease in the next step
+        if (e instanceof RestError && (e.statusCode === 409 || e.statusCode === 412)) {
+          // Blob already exists (possibly with a lease), which is fine - another concurrent request created it
+        } else {
+          return err(new FailedToAcquireDataLock('Unexpected error creating lock file'))
+        }
+      }
     }
 
     blobLeaseClient = blobClient.getBlobLeaseClient()

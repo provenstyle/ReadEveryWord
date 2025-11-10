@@ -79,7 +79,7 @@ export class Persistence {
       if (resourceDoesNotExist(e)) {
         return ok([])
       }
-      console.error('Unexpected error creating readingCycle', e)
+      console.error('Unexpected error getting all readingCycles', e)
       return err(new PersistenceError())
     }
   }
@@ -120,7 +120,7 @@ export class Persistence {
       if (resourceDoesNotExist(e)) {
         return err(new NotFound())
       }
-      console.error('Unexpected error creating readingCycle', e)
+      console.error('Unexpected error setting default readingCycle', e)
       return err(new PersistenceError())
     }
   }
@@ -150,7 +150,7 @@ export class Persistence {
       if (resourceDoesNotExist(e)) {
         return err(new NotFound())
       }
-      console.error('Unexpected error creating readingCycle', e)
+      console.error('Unexpected error updating readingCycle', e)
       return err(new PersistenceError())
     }
   }

@@ -5,7 +5,7 @@ import { setDefaultReadingCycleProcedure } from './setDefault/handler.js'
 import { updateReadingCycleProcedure } from './update/handler.js'
 
 export const readingCycleRouter = router({
-  getAll: getAllReadingCyclesProcedure,
+  get: getAllReadingCyclesProcedure,
   create: createReadingCycleProcedure,
   setDefault: setDefaultReadingCycleProcedure,
   update: updateReadingCycleProcedure

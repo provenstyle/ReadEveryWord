@@ -5,8 +5,8 @@ import { validate } from './validation'
 import { handleGetReadingCycles } from '../../readingCycles/getAll/handler'
 import { handleCreateReadingCycle } from '../../readingCycles/create/handler'
 import { handleGetReadingRecord } from '../../readingRecord/get/handler'
-import { publicProcedure } from 'src/lib/trpc'
-import { Config } from 'src/lib/config'
+import { publicProcedure } from '../../trpc'
+import { Config } from '../../config'
 
 const LOCK_TIME_OUT = 30 * 1000 // 30 seconds
 
