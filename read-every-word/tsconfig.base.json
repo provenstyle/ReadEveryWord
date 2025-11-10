@@ -16,6 +16,7 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": ["@read-every-word/source"]
+    "customConditions": ["@read-every-word/source"],
+    "types": ["@jest/globals"]
   }
 }

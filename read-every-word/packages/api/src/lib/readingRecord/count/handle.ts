@@ -6,7 +6,7 @@ import { z } from 'zod'
 
 export const countReadingRecordProcedure = publicProcedure
   .input(z.object({
-    authId: z.uuid(),
+    authId: z.string(),
     readingCycleId: z.uuid()
   }))
   .query(async ({ input, ctx }): Promise<CountReadingRecordResult> => {

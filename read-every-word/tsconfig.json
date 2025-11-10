@@ -14,6 +14,9 @@
     },
     {
       "path": "./packages/table-storage"
+    },
+    {
+      "path": "./packages/api-integration-test"
     }
   ]
 }
