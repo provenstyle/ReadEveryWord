@@ -3,20 +3,26 @@ import { type GetReadingCycle, type GetReadingCycleResult } from '@read-every-wo
 import { validate } from './validation.js'
 import { Persistence } from '../persistence.js'
 import { publicProcedure } from '../../trpc.js'
+import { Config } from '../../config.js'
 
 export const getAllReadingCyclesProcedure = publicProcedure
   .input(r => r as GetReadingCycle)
   .mutation(async ({ input, ctx }): Promise<GetReadingCycleResult> => {
-    const validationResponse = await validate(input)
-    if(isErr(validationResponse)) {
-      return validationResponse
-    }
-
-    const persistence = new Persistence(ctx.config)
-    const getReadingCycleResponse = await persistence.getAllReadingCycles(input)
-    if (isErr(getReadingCycleResponse)) {
-      return getReadingCycleResponse
-    }
-    const readingCycle = getReadingCycleResponse.data
-    return ok(readingCycle)
+    return handleGetReadingCycles(input, ctx.config)
   })
+
+export const handleGetReadingCycles = async (request: GetReadingCycle, config: Config): Promise<GetReadingCycleResult> => {
+  const validationResponse = await validate(request)
+  if(isErr(validationResponse)) {
+    return validationResponse
+  }
+
+  const persistence = new Persistence(config)
+  const getReadingCycleResponse = await persistence.getAllReadingCycles(request)
+  if (isErr(getReadingCycleResponse)) {
+    return getReadingCycleResponse
+  }
+  const readingCycle = getReadingCycleResponse.data
+  return ok(readingCycle)
+}
+

@@ -1,10 +1,14 @@
 import { router } from './lib/trpc.js';
+import { healthCheckRouter } from './lib/healthCheck/index.js';
 import { readingRecordRouter } from './lib/readingRecord/index.js';
 import { readingCycleRouter } from './lib/readingCycles/index.js';
+import { readSummaryRouter } from './lib/readSummary/index.js';
 
 export const appRouter = router({
+  healthCheck: healthCheckRouter,
   readingCycle: readingCycleRouter,
-  readingRecord: readingRecordRouter
+  readingRecord: readingRecordRouter,
+  readSummary: readSummaryRouter
 });
 
 // Export type router type signature,
