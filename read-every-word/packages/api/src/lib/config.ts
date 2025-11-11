@@ -1,14 +1,24 @@
 import { err, ok, type Result, InvalidConfiguration } from '@read-every-word/foundation'
 
+export interface OpenIdConfig {
+  jwksUri: string
+  audience: string
+  issuer: string
+}
+
 export interface Config {
-    tableStorageConnectionString: string
+ tableStorageConnectionString: string
+  openId: OpenIdConfig
 }
 
 export function fromEnv (): Result<Config, InvalidConfiguration> {
   const vars: Record<string, string> = {}
 
   const requiredEnvVariables = [
-    'TABLE_STORAGE_CONNECTION_STRING'
+    'TABLE_STORAGE_CONNECTION_STRING',
+    'OPEN_ID_JWKS_URI',
+    'OPEN_ID_AUDIENCE',
+    'OPEN_ID_ISSUER'
   ]
 
   for (const name of requiredEnvVariables) {
@@ -21,6 +31,11 @@ export function fromEnv (): Result<Config, InvalidConfiguration> {
   }
 
   return ok({
-    tableStorageConnectionString: vars.TABLE_STORAGE_CONNECTION_STRING
+    tableStorageConnectionString: vars.TABLE_STORAGE_CONNECTION_STRING,
+    openId: {
+      jwksUri: vars.OPEN_ID_JWKS_URI,
+      audience: vars.OPEN_ID_AUDIENCE,
+      issuer: vars.OPEN_ID_ISSUER
+    }
   })
 }

@@ -5,7 +5,7 @@ import { Config } from '../../config.js'
 
 export const getHealthCheckProcedure = publicProcedure
   .input(r => r as GetHealthCheck)
-  .mutation(async ({ input, ctx }): Promise<GetHealthCheckResult> => {
+  .query(async ({ input, ctx }): Promise<GetHealthCheckResult> => {
     return handleGetHealthCheck(input, ctx.config)
   })
 

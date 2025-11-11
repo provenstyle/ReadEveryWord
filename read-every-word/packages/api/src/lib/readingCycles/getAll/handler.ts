@@ -7,7 +7,7 @@ import { Config } from '../../config.js'
 
 export const getAllReadingCyclesProcedure = publicProcedure
   .input(r => r as GetReadingCycle)
-  .mutation(async ({ input, ctx }): Promise<GetReadingCycleResult> => {
+  .query(async ({ input, ctx }): Promise<GetReadingCycleResult> => {
     return handleGetReadingCycles(input, ctx.config)
   })
 
