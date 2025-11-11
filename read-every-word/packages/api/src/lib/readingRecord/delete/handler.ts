@@ -2,9 +2,9 @@ import { isErr, ok } from '@read-every-word/foundation'
 import { type DeleteReadingRecord, type DeleteReadingRecordResult } from '@read-every-word/domain'
 import { validate } from './validation.js'
 import { Persistence } from './persistence.js'
-import { publicProcedure } from '../../trpc.js'
+import { authenticatedProcedure } from '../../trpc.js'
 
-export const deleteReadingRecordProcedure = publicProcedure
+export const deleteReadingRecordProcedure = authenticatedProcedure
   .input(r => r as DeleteReadingRecord)
   .mutation(async ({ input, ctx }): Promise<DeleteReadingRecordResult> => {
     const validationResponse = await validate(input)

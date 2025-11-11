@@ -1,8 +1,8 @@
-import jwt, { VerifyOptions, Jwt, type JwtPayload } from "jsonwebtoken"
+import jwt, { VerifyOptions, type JwtPayload } from "jsonwebtoken"
 import jwksClient from "jwks-rsa"
 import NodeCache from "node-cache"
-import { fromEnv, type OpenIdConfig } from "./config";
-import { isErr, Result, err, ok, assertNever } from '@read-every-word/foundation'
+import { type OpenIdConfig } from "./config";
+import { Result, err, ok } from '@read-every-word/foundation'
 
 export type { JwtPayload }
 
@@ -11,7 +11,6 @@ export type { JwtPayload }
 
 // 60 * 60 * 12 is 12 hours
 const keyCache: NodeCache = new NodeCache({ stdTTL: 60 * 60 * 12, checkperiod: 0 })
-let config: OpenIdConfig
 
 export class Authentication {
   constructor(private config: OpenIdConfig) {
@@ -63,39 +62,6 @@ export class Authentication {
   }
 }
 
-export const authenticate = (handler: AuthenticatedHandler): EndPointHandler => {
-  return async function (request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
-    if (!config) {
-      const configResult = fromEnv()
-      if (isErr(configResult)) {
-        console.error('Missing environment variable configuration.')
-        return ({ status: 500 })
-      }
-      config = configResult.data.openId
-    }
-
-    const authHeader = request.headers.get('Authorization') ?? ''
-    const token = authHeader.replace('Bearer ', '').trim()
-
-    const authn = new Authentication(config)
-    const validationResult = await authn.validateToken(token)
-    if (isErr(validationResult)) {
-      const err = validationResult.err
-      switch (err.code) {
-        case 'unexpected-authentication-exception': return ({ status: 500 })
-        case 'not-authenticated': return ({ status: 401 })
-        default: return assertNever(err)
-      }
-    }
-    const jwt = validationResult.data
-
-    // Call the original handler
-    const response = await handler(request, context, jwt);
-
-    return response;
-  };
-}
-
 export const sanitizeAuthId = (token: JwtPayload): string => {
   const auth0Id = token.sub ?? ''
   const sanitized = auth0Id.replace('|', '')
@@ -118,6 +84,3 @@ export class UnexpectedAuthenticationException {
   code = 'unexpected-authentication-exception' as const
   message = 'Unexpected authentication exception'
 }
-
-type EndPointHandler = (request: HttpRequest, context: InvocationContext) => Promise<HttpResponseInit>
-type AuthenticatedHandler = (request: HttpRequest, context: InvocationContext, token: JwtPayload) => Promise<HttpResponseInit>

@@ -1,10 +1,10 @@
 import { isErr, ok } from '@read-every-word/foundation'
 import {type CountReadingRecordResult} from '@read-every-word/domain'
 import { Persistence } from './persistence.js'
-import { publicProcedure } from '../../trpc.js'
+import { authenticatedProcedure } from '../../trpc.js'
 import { z } from 'zod'
 
-export const countReadingRecordProcedure = publicProcedure
+export const countReadingRecordProcedure = authenticatedProcedure
   .input(z.object({
     authId: z.string(),
     readingCycleId: z.uuid()

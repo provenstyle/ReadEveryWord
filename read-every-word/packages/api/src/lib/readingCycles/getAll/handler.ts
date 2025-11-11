@@ -2,10 +2,10 @@ import { isErr, ok } from '@read-every-word/foundation'
 import { type GetReadingCycle, type GetReadingCycleResult } from '@read-every-word/domain'
 import { validate } from './validation.js'
 import { Persistence } from '../persistence.js'
-import { publicProcedure } from '../../trpc.js'
+import { authenticatedProcedure } from '../../trpc.js'
 import { Config } from '../../config.js'
 
-export const getAllReadingCyclesProcedure = publicProcedure
+export const getAllReadingCyclesProcedure = authenticatedProcedure
   .input(r => r as GetReadingCycle)
   .query(async ({ input, ctx }): Promise<GetReadingCycleResult> => {
     return handleGetReadingCycles(input, ctx.config)

@@ -13,6 +13,55 @@ export interface AuthenticatedContext extends Context {
   authId: string
 }
 
+/**
+ * Options for creating context from HTTP headers
+ */
+export interface CreateContextFromHeadersOptions {
+  config: Config
+  headers: Headers | Record<string, string | string[] | undefined>
+}
+
+/**
+ * Options for creating context for server-side calls
+ */
+export interface CreateContextOptions {
+  config: Config
+  token?: string
+}
+
+/**
+ * Creates a tRPC context from HTTP headers (extracts Authorization header)
+ */
+export function createContextFromHeaders(options: CreateContextFromHeadersOptions): Context {
+  const { config, headers } = options
+  
+  // Handle both Headers object and plain object
+  let authHeader: string | undefined
+  if (headers instanceof Headers) {
+    authHeader = headers.get('Authorization') ?? undefined
+  } else {
+    const auth = headers['authorization'] || headers['Authorization']
+    authHeader = Array.isArray(auth) ? auth[0] : auth
+  }
+  
+  const token = authHeader?.replace(/^Bearer\s+/i, '').trim() || undefined
+  
+  return {
+    config,
+    token
+  }
+}
+
+/**
+ * Creates a tRPC context for server-side calls
+ */
+export function createContext(options: CreateContextOptions): Context {
+  return {
+    config: options.config,
+    token: options.token
+  }
+}
+
 // You can use any variable name you like.
 // We use t to keep things simple.
 const t = initTRPC.context<Context>().create();
@@ -53,15 +102,17 @@ const authMiddleware = t.middleware(async ({ input, next, ctx }) => {
   }
 
   const jwt = validationResult.data
+  const authId = sanitizeAuthId(jwt)
 
   if (input && typeof input === 'object' && 'authId' in input) {
-    input.authId = sanitizeAuthId(jwt)
+    input.authId = authId
   }
 
   return next({ 
     ctx: {
       ...ctx,
-      jwt
+      jwt,
+      authId
     } as AuthenticatedContext
   })
 })
