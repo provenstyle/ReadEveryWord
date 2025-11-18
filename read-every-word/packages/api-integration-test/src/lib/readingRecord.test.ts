@@ -1,16 +1,21 @@
+import { Caller } from '@read-every-word/api'
 import { withCaller, withUser, withReadingCycle, withReadingRecord } from './scenarios.js'
 import { expectOk } from '@read-every-word/foundation'
 
 describe('readingRecord', () => {
 
-    const readingRecordClient = withCaller().readingRecord
+    let caller: Caller
+
+    beforeEach(async () => {
+      caller = await withCaller()
+    })
 
     it('can create and get a reading record', async () => {
         const user = await withUser()
         const readingCycle = await withReadingCycle(user)
 
         // create
-        const readingRecordResult = await readingRecordClient.create({
+        const readingRecordResult = await caller.readingRecord.create({
           authId: user.authId,
           readingCycleId: readingCycle.id,
           bookId: 0,
@@ -20,7 +25,7 @@ describe('readingRecord', () => {
         expectOk(readingRecordResult)
 
         // get
-        const getReadingRecordsResult = await readingRecordClient.get({
+        const getReadingRecordsResult = await caller.readingRecord.get({
           authId: user.authId,
           readingCycleId: readingCycle.id
         })
@@ -41,14 +46,14 @@ describe('readingRecord', () => {
 
         let getReadingRecordsResult
         let readingRecords
-        getReadingRecordsResult = await readingRecordClient.get({
+        getReadingRecordsResult = await caller.readingRecord.get({
           authId: user.authId,
           readingCycleId: readingCycle.id
         })
         readingRecords = expectOk(getReadingRecordsResult)
         expect(readingRecords.length).toBe(1)
 
-        const deleteResult = await readingRecordClient.delete({
+        const deleteResult = await caller.readingRecord.delete({
           authId: user.authId,
           readingCycleId: readingCycle.id,
           bookId: readingRecord.bookId,
@@ -56,7 +61,7 @@ describe('readingRecord', () => {
         })
         expectOk(deleteResult)
 
-        getReadingRecordsResult = await readingRecordClient.get({
+        getReadingRecordsResult = await caller.readingRecord.get({
           authId: user.authId,
           readingCycleId: readingCycle.id
         })

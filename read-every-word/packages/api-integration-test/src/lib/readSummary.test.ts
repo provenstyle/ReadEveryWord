@@ -1,13 +1,18 @@
+import { Caller } from '@read-every-word/api'
 import { withCaller } from './scenarios'
 import { expectOk } from '@read-every-word/foundation'
 import { v4 as uuid } from 'uuid'
 
 describe('readingSummary', () => {
 
-  const readSummaryClient  = withCaller().readSummary
+  let caller: Caller
+
+  beforeEach(async () => {
+    caller = await withCaller()
+  })
 
   it('reading summary contains 1 default', async () => {
-    const readSummaryResult = await readSummaryClient.get({
+    const readSummaryResult = await caller.readSummary.get({
       authId: uuid()
     })
     const readSummary = expectOk(readSummaryResult)
@@ -20,7 +25,7 @@ describe('readingSummary', () => {
     const promises = []
     for (let i = 0; i < 5; i++) {
       promises.push(
-        readSummaryClient.get({
+        caller.readSummary.get({
           authId
         })
       )
@@ -28,7 +33,7 @@ describe('readingSummary', () => {
 
     await Promise.all(promises)
 
-    const readSummaryResult = await readSummaryClient.get({
+    const readSummaryResult = await caller.readSummary.get({
       authId
     })
     const readSummary = expectOk(readSummaryResult)

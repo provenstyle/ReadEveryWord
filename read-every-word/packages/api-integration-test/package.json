@@ -16,9 +16,5 @@
     }
   },
   "dependencies": {
-    "@read-every-word/api": "*",
-    "@read-every-word/domain": "*",
-    "@read-every-word/foundation": "*",
-    "tslib": "^2.3.0"
   }
 }

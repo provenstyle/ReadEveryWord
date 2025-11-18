@@ -3,7 +3,8 @@ import { withCaller } from './scenarios.js'
 
 describe('healthCheck', () => {
     it('healthCheckSucceeds', async () => {
-        const readingRecordResult = await withCaller().healthCheck.get({})
+        const caller = await withCaller()
+        const readingRecordResult = await caller.healthCheck.get({})
         const healthCheck = expectOk(readingRecordResult)
         expect(healthCheck.length).toEqual(1)
         expect(healthCheck[0].name).toEqual("Read Every Word Api")
