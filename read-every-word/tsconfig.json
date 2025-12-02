@@ -17,6 +17,12 @@
     },
     {
       "path": "./packages/api-integration-test"
+    },
+    {
+      "path": "./apps/api-host"
+    },
+    {
+      "path": "./packages/azure-function-adapter"
     }
   ]
 }
