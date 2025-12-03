@@ -1,5 +1,5 @@
 import { app, type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
-import { appRouter } from '@read-every-word/api'
+// import { appRouter } from '@read-every-word/api'
 
 app.http('get_health_check', {
     methods: ['GET'],
