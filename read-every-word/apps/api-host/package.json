@@ -2,6 +2,7 @@
   "name": "@read-every-word/api-host",
   "version": "0.0.1",
   "private": true,
+  "main": "dist/apps/api-host/src/main.js",
   "nx": {
     "targets": {
       "build": {

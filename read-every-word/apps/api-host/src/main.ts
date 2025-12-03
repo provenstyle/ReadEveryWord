@@ -1,1 +1,1 @@
-console.log('Hello World');
+import 'trpc/endpoint.js'
