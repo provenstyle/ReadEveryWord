@@ -69,10 +69,19 @@
           "buildTarget": "build"
         }
       },
+      "merge-deps": {
+        "dependsOn": ["prune-lockfile"],
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "node apps/api-host/scripts/merge-deps.js",
+          "cwd": "{workspaceRoot}"
+        }
+      },
       "prune": {
         "dependsOn": [
           "prune-lockfile",
-          "copy-workspace-modules"
+          "copy-workspace-modules",
+          "merge-deps"
         ],
         "executor": "nx:noop"
       },

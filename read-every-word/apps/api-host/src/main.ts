@@ -1,1 +1,1 @@
-import 'trpc/endpoint.js'
+import './trpc/endpoint.js'
