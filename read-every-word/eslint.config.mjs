@@ -26,6 +26,12 @@ export default [
     },
   },
   {
+    files: ['**/*.json'],
+    rules: {
+      '@nx/dependency-checks': 'off',  // Currently not planning to publish any packages
+    }
+  },
+  {
     files: [
       '**/*.ts',
       '**/*.tsx',

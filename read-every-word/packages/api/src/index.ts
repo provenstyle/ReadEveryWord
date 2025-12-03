@@ -19,3 +19,5 @@ export type AppRouter = typeof appRouter;
 
 // Export caller type for convenience
 export type Caller = Awaited<ReturnType<typeof appRouter.createCaller>>;
+
+export { createContextFromHeaders } from './lib/trpc.js';

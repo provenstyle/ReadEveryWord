@@ -21,7 +21,13 @@
   ],
   "references": [
     {
+      "path": "../../packages/azure-function-adapter/tsconfig.lib.json"
+    },
+    {
       "path": "../../packages/api/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/foundation/tsconfig.lib.json"
     }
   ]
 }

@@ -1,15 +1,25 @@
-import { app, type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
-// import { appRouter } from '@read-every-word/api'
+import { isErr } from '@read-every-word/foundation'
+import { app } from '@azure/functions'
+import { appRouter, createContextFromHeaders, fromEnv } from '@read-every-word/api'
+import { createAzureFunctionsHandler } from '@read-every-word/azure-function-adapter'
 
-app.http('get_health_check', {
-    methods: ['GET'],
-    authLevel: 'function',
-    handler: handleEndpoint,
-    route: 'healthCheck'
-})
-
-export async function handleEndpoint (request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
-    return {
-        status: 200
-    }
+const configResult = fromEnv()
+if (isErr(configResult)) {
+    throw new Error('Invalid configuration')
 }
+const config = configResult.data
+
+app.http('trpc', {
+    methods: ['GET', 'POST'],
+    authLevel: 'anonymous',
+    route: 'trpc/{*path}',
+    handler: createAzureFunctionsHandler({
+        router: appRouter,
+        createContext: async ({ httpRequest }) => {
+            return createContextFromHeaders({
+                config,
+                headers: httpRequest.headers
+            })
+        }
+    }),
+})
