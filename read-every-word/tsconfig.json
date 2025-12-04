@@ -23,6 +23,9 @@
     },
     {
       "path": "./packages/azure-function-adapter"
+    },
+    {
+      "path": "./packages/test-utils"
     }
   ]
 }

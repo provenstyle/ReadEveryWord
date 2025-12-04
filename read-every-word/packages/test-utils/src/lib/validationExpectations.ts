@@ -1,5 +1,5 @@
-import { Result, isErr, isOk } from './result.js'
-import { ValidationFailed } from './validation.js'
+import { Result, isErr, isOk } from '@read-every-word/foundation'
+import { ValidationFailed } from '@read-every-word/foundation'
 import { expect } from '@jest/globals'
 
 export function expectOk<T, E> (response: Result<T, E>): T {

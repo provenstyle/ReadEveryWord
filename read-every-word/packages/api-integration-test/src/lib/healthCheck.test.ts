@@ -1,4 +1,4 @@
-import { expectOk } from '@read-every-word/foundation'
+import { expectOk } from '@read-every-word/test-utils'
 import { withCaller } from './scenarios.js'
 
 describe('healthCheck', () => {

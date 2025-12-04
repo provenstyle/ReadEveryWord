@@ -1,6 +1,6 @@
 import { Caller } from '@read-every-word/api'
 import { withCaller } from './scenarios'
-import { expectOk } from '@read-every-word/foundation'
+import { expectOk } from '@read-every-word/test-utils'
 import { v4 as uuid } from 'uuid'
 
 describe('readingSummary', () => {

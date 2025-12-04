@@ -1,4 +1,4 @@
-import { expectOk, expectErrorMessage } from '@read-every-word/foundation'
+import { expectOk, expectErrorMessage } from '@read-every-word/test-utils'
 import { UpdateReadingCycle } from '@read-every-word/domain'
 import { validate } from './validation'
 import { v4 as uuid } from 'uuid'

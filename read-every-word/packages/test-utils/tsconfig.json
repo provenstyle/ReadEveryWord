@@ -4,13 +4,7 @@
   "include": [],
   "references": [
     {
-      "path": "../domain"
-    },
-    {
-      "path": "../api"
-    },
-    {
-      "path": "../test-utils"
+      "path": "../foundation"
     },
     {
       "path": "./tsconfig.lib.json"

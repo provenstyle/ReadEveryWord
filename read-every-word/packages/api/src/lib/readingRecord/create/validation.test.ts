@@ -1,5 +1,5 @@
 import * as Factory from 'factory.ts'
-import { expectOk, expectErrorMessage } from '@read-every-word/foundation'
+import { expectOk, expectErrorMessage } from '@read-every-word/test-utils'
 import { validate } from './validation'
 import { CreateReadingRecord } from '@read-every-word/domain'
 import { v4 as uuid } from 'uuid'

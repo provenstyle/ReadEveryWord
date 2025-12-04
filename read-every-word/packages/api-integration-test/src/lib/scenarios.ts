@@ -1,4 +1,4 @@
-import { expectOk } from '@read-every-word/foundation';
+import { expectOk } from '@read-every-word/test-utils';
 import { fromEnv, appRouter, Config, Caller } from '@read-every-word/api';
 import { v4 as uuid } from 'uuid';
 import { ReadingCycle, ReadingRecord } from '@read-every-word/domain';

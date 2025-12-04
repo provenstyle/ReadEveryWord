@@ -1,4 +1,4 @@
-import { expectOk, expectErrorMessage } from '@read-every-word/foundation'
+import { expectOk, expectErrorMessage } from '@read-every-word/test-utils'
 import { type GetReadingRecord } from '@read-every-word/domain'
 import * as Factory from 'factory.ts'
 import { validate } from './validation.js'

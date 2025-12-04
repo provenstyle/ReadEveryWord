@@ -1,6 +1,6 @@
 import { Caller } from '@read-every-word/api'
 import { withCaller, withUser, withReadingCycle, withReadingRecord } from './scenarios.js'
-import { expectOk } from '@read-every-word/foundation'
+import { expectOk } from '@read-every-word/test-utils'
 
 describe('readingRecord', () => {
 

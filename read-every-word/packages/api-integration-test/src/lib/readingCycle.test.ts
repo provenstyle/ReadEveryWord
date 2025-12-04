@@ -1,4 +1,4 @@
-import { expectOk } from '@read-every-word/foundation'
+import { expectOk } from '@read-every-word/test-utils'
 import { withCaller, withUser } from './scenarios.js'
 import { v4 as uuid } from 'uuid'
 import { type Caller } from '@read-every-word/api'

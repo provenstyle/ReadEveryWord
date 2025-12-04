@@ -1,5 +1,4 @@
-/* eslint-disable */
-import { readFileSync } from 'fs';
+const { readFileSync } = require('fs');
 
 // Reading the SWC compilation config for the spec files
 const swcJestConfig = JSON.parse(
@@ -9,8 +8,8 @@ const swcJestConfig = JSON.parse(
 // Disable .swcrc look-up by SWC core because we're passing in swcJestConfig ourselves
 swcJestConfig.swcrc = false;
 
-export default {
-  displayName: '@read-every-word/domain',
+module.exports = {
+  displayName: '@read-every-word/table-storage',
   preset: '../../jest.preset.js',
   testEnvironment: 'node',
   transform: {
