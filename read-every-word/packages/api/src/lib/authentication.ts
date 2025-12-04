@@ -1,7 +1,7 @@
 import jwt, { VerifyOptions, type JwtPayload } from "jsonwebtoken"
 import jwksClient from "jwks-rsa"
 import NodeCache from "node-cache"
-import { type OpenIdConfig } from "./config";
+import { type OpenIdConfig } from "./config.js";
 import { Result, err, ok } from '@read-every-word/foundation'
 
 export type { JwtPayload }

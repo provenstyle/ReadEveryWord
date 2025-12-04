@@ -2,7 +2,7 @@ import { err, ok, PersistenceError } from '@read-every-word/foundation'
 import { cacheTableClient } from '@read-every-word/table-storage'
 import { type DeleteReadingRecord, type DeleteReadingRecordResult } from '@read-every-word/domain'
 import { TableClient } from '@azure/data-tables'
-import { Config } from '../../config'
+import { Config } from '../../config.js'
 
 export class Persistence {
   private tableClient: TableClient

@@ -4,7 +4,7 @@ import { TableClient, TableTransaction } from '@azure/data-tables'
 import { Config } from '../config.js'
 import { type ReadingCycleRow, map } from './domain.js'
 import { v4 as uuid } from 'uuid'
-import { chunk } from 'lodash'
+import * as _ from 'lodash'
 import { type ReadingCycle, type GetReadingCycle, type CreateReadingCycle, type CreateReadingCycleResult, type SetDefaultReadingCycle, type UpdateReadingCycle } from '@read-every-word/domain'
 
 const LOCK_TIME_OUT = 30 * 1000 // 30 seconds
@@ -110,7 +110,7 @@ export class Persistence {
         return err(new NotFound())
       }
 
-      const batches = chunk(transaction.actions, 100)
+      const batches = _.chunk(transaction.actions, 100)
       for (const batch of batches) {
         await this.tableClient.submitTransaction(batch)
       }

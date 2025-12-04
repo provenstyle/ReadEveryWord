@@ -1,12 +1,12 @@
 import { isErr, ok, err, NotFound } from '@read-every-word/foundation'
 import { withLock } from '@read-every-word/table-storage'
 import { GetReadSummary, GetReadSummaryResult } from '@read-every-word/domain'
-import { validate } from './validation'
-import { handleGetReadingCycles } from '../../readingCycles/getAll/handler'
-import { handleCreateReadingCycle } from '../../readingCycles/create/handler'
-import { handleGetReadingRecord } from '../../readingRecord/get/handler'
-import { publicProcedure } from '../../trpc'
-import { Config } from '../../config'
+import { validate } from './validation.js'
+import { handleGetReadingCycles } from '../../readingCycles/getAll/handler.js'
+import { handleCreateReadingCycle } from '../../readingCycles/create/handler.js'
+import { handleGetReadingRecord } from '../../readingRecord/get/handler.js'
+import { publicProcedure } from '../../trpc.js'
+import { Config } from '../../config.js'
 
 const LOCK_TIME_OUT = 30 * 1000 // 30 seconds
 
