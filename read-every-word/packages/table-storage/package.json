@@ -14,5 +14,10 @@
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     }
+  },
+  "dependencies": {
+    "@azure/storage-blob": "^12.26.0",
+    "@azure/data-tables": "^13.3.0",
+    "tslib": "^2.3.0"
   }
 }

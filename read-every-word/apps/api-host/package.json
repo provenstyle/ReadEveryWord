@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "main": "dist/apps/api-host/src/main.js",
+  "dependencies": {
+    "@azure/functions": "^4.5.1"
+  },
   "nx": {
     "targets": {
       "build": {
@@ -80,8 +83,7 @@
       "prune": {
         "dependsOn": [
           "prune-lockfile",
-          "copy-workspace-modules",
-          "merge-deps"
+          "copy-workspace-modules"
         ],
         "executor": "nx:noop"
       },
@@ -111,6 +113,5 @@
         }
       }
     }
-  },
-  "dependencies": {}
+  }
 }

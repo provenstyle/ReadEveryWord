@@ -14,5 +14,10 @@
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     }
+  },
+  "dependencies": {
+    "@azure/functions": "^4.5.1",
+    "@trpc/server": "^11.6.0",
+    "tslib": "^2.3.0"
   }
 }
