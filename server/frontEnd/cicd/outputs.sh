@@ -15,3 +15,6 @@ echo "STATIC_APP_NAME: $STATIC_APP_NAME"
 
 RESOURCE_GROUP=$(terraform output -json names | jq -r '.resource_group')
 echo "RESOURCE_GROUP: $RESOURCE_GROUP"
+
+# deliberately not echoed
+DEPLOYMENT_TOKEN=$(terraform output -raw static_web_app_api_key)
