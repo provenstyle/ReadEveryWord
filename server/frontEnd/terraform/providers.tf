@@ -8,6 +8,14 @@ terraform {
       source  = "aztfmod/azurecaf"
       version = "= 1.2.28"
     }
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "= 5.22.0"
+    }
+    null = {
+      source  = "hashicorp/null"
+      version = "= 3.3.0"
+    }
   }
 }
 

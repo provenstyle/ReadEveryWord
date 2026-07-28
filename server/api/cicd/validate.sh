@@ -1,4 +1,4 @@
 set -e
 
-cd ../../terraform
+cd ../terraform
 terraform validate

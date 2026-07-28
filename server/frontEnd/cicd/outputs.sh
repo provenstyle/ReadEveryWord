@@ -3,16 +3,6 @@ set -e
 cd ../../../
 ROOT=$(pwd)
 
-# Get the organization outputs
-cd $ROOT/organization/terraform
-ORGANIZATION_OUTPUTS=$(terraform output -json)
-
-ORGANIZATION_DOMAIN_NAME=$(echo $ORGANIZATION_OUTPUTS | jq -r '.organization_domain_name.value')
-echo "ORGANIZATION_DOMAIN_NAME: $ORGANIZATION_DOMAIN_NAME"
-
-ORGANIZATION_RESOURCE_GROUP_NAME=$(echo $ORGANIZATION_OUTPUTS | jq -r '.organization_resource_group_name.value')
-echo "ORGANIZATION_RESOURCE_GROUP_NAME: $ORGANIZATION_RESOURCE_GROUP_NAME"
-
 # Get service outputs
 cd $ROOT/server/frontEnd/terraform
 NAMES=$(terraform output -json names)

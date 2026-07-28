@@ -7,11 +7,24 @@ resource "azurerm_storage_account" "func" {
   tags                     = local.tags
 }
 
+resource "azurerm_log_analytics_workspace" "func" {
+  name                = local.names.log_analytics_workspace
+  resource_group_name = resource.azurerm_resource_group.this.name
+  location            = var.location
+  sku                 = "PerGB2018"
+  retention_in_days   = var.log_retention_in_days
+  tags                = local.tags
+}
+
+# Classic application insights is retired, so azure auto-creates a managed
+# workspace and sets workspace_id. The provider refuses to remove it once set,
+# so we own the workspace ourselves rather than leaving it implicit.
 resource "azurerm_application_insights" "func" {
   name                = local.names.application_insights
   resource_group_name = resource.azurerm_resource_group.this.name
   location            = var.location
   application_type    = "web"
+  workspace_id        = azurerm_log_analytics_workspace.func.id
   tags                = local.tags
 }
 

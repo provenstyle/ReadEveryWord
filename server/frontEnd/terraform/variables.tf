@@ -31,6 +31,11 @@ variable "random_length" {
   description = "Amount of random characters to append to resource names"
   default     = 18
 }
+variable "log_retention_in_days" {
+  type        = number
+  description = "How long application insights telemetry is kept in the log analytics workspace"
+  default     = 30
+}
 variable "storage_account_replication_type" {
   description = "Defines the type of replication to use for this storage account"
   type        = string
@@ -68,14 +73,14 @@ variable "keep_warm" {
   default     = false
 }
 
-variable "organization_resource_group_name" {
+variable "dns_zone_name" {
   type        = string
-  description = "Organization resource group"
+  description = "Cloudflare DNS zone name, e.g. readeveryword.com"
 }
 
-variable "organization_domain_name" {
+variable "cloudflare_zone_id" {
   type        = string
-  description = "Organization domain name"
+  description = "Cloudflare zone id for dns_zone_name"
 }
 
 variable "branch_name" {

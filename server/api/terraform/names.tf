@@ -37,6 +37,14 @@ variable "resource_names" {
       name   = "function_app"
       type   = "azurerm_function_app"
       prefix = ""
+    },
+    # azurecaf_name.names is for_each'd by list index, so new entries must be
+    # appended. Inserting above renames every later resource and forces the
+    # function app and service plan to be replaced.
+    {
+      name   = "log_analytics_workspace"
+      type   = "azurerm_log_analytics_workspace"
+      prefix = ""
     }
   ]
 }

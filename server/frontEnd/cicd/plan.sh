@@ -2,7 +2,6 @@ set -e
 
 source ../../../cicd/variables.sh
 source ./variables.sh
-source ./outputs.sh
 
 cd ../terraform
 
@@ -17,6 +16,6 @@ terraform plan                                                              \
     -var=location=$LOCATION                                                 \
     -var=environment=$ENVIRONMENT                                           \
     -var=service=$SERVICE_NAME                                              \
-    -var=organization_resource_group_name=$ORGANIZATION_RESOURCE_GROUP_NAME \
-    -var=organization_domain_name=$ORGANIZATION_DOMAIN_NAME                 \
+    -var=dns_zone_name=$DNS_ZONE_NAME                                       \
+    -var=cloudflare_zone_id=$CLOUDFLARE_ZONE_ID                             \
     -var=branch_name=$BRANCH
