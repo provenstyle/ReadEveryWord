@@ -46,13 +46,14 @@ resource "azurerm_linux_function_app" "this" {
   storage_account_access_key = azurerm_storage_account.func.primary_access_key
   # Runtime settings and things available in function environment
   # Merge allows users to pass in additional info
+  # Application insights belongs in site_config below, not here. The provider
+  # owns those two app settings and strips them back out on refresh, so setting
+  # them here produces a diff that never converges.
   app_settings = {
-    WEBSITE_MOUNT_ENABLED                 = 1,
-    SCM_DO_BUILD_DURING_DEPLOYMENT        = true,
-    FUNCTIONS_WORKER_RUNTIME              = "node",
-    APPINSIGHTS_INSTRUMENTATIONKEY        = azurerm_application_insights.func.instrumentation_key
-    APPLICATIONINSIGHTS_CONNECTION_STRING = azurerm_application_insights.func.connection_string
-    TABLE_STORAGE_CONNECTION_STRING       = local.table_storage_connection_string
+    WEBSITE_MOUNT_ENABLED           = 1,
+    SCM_DO_BUILD_DURING_DEPLOYMENT  = true,
+    FUNCTIONS_WORKER_RUNTIME        = "node",
+    TABLE_STORAGE_CONNECTION_STRING = local.table_storage_connection_string
   }
   identity {
     type = "SystemAssigned"
@@ -67,6 +68,9 @@ resource "azurerm_linux_function_app" "this" {
   site_config {
     use_32_bit_worker = false
     app_scale_limit   = var.app_scale_limit
+
+    application_insights_key               = azurerm_application_insights.func.instrumentation_key
+    application_insights_connection_string = azurerm_application_insights.func.connection_string
 
     application_stack {
       node_version = "20"
