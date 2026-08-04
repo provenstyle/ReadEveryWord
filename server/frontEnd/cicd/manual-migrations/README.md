@@ -30,4 +30,4 @@ Expect `platform` and `requireAuthentication` to go `true` -> `false`, and
 reports `false`/`null` both times.
 
 - dev: done 2026-08-04
-- prod: pending
+- prod: done 2026-08-04
