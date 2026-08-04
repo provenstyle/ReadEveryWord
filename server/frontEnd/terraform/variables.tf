@@ -83,6 +83,12 @@ variable "cloudflare_zone_id" {
   description = "Cloudflare zone id for dns_zone_name"
 }
 
+# Worker scripts are account scoped, worker routes are zone scoped
+variable "cloudflare_account_id" {
+  type        = string
+  description = "Cloudflare account id that owns the edge worker script"
+}
+
 variable "branch_name" {
   type        = string
   description = "Git branch name"

@@ -33,6 +33,9 @@ variable "resource_names" {
       type   = "azurerm_function_app"
       prefix = ""
     },
+    # Dead entry. The static web app was replaced by frontend_storage below,
+    # but removing this would shift every later index and force those
+    # resources to be replaced, so it stays.
     {
       name   = "static_web_app"
       type   = "azurerm_static_site"
@@ -45,6 +48,13 @@ variable "resource_names" {
       name   = "log_analytics_workspace"
       type   = "azurerm_log_analytics_workspace"
       prefix = ""
+    },
+    # Serves the built ui out of its $web container. The fa prefix is already
+    # taken by the function app's storage, so this one gets web.
+    {
+      name   = "frontend_storage"
+      type   = "azurerm_storage_account"
+      prefix = "web"
     }
   ]
 }

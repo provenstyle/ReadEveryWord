@@ -69,11 +69,11 @@ resource "azurerm_linux_function_app" "this" {
   lifecycle {
     ignore_changes = [
       app_settings["WEBSITE_RUN_FROM_PACKAGE"],
-      # Registering this function app as a static web app backend makes azure
-      # enable easy auth here and add an azureStaticWebApps identity provider.
       # We don't declare auth settings, so terraform would try to reconcile by
       # writing an empty object, which the api rejects with
       # "siteAuthSettingsV2 object is not present in the request body".
+      # Environments that predate the move off static web apps have easy auth
+      # left enabled here; cicd/manual-migrations/disableEasyAuth.sh clears it.
       auth_settings_v2
     ]
   }

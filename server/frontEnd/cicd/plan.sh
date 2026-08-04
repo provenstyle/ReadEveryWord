@@ -18,4 +18,5 @@ terraform plan                                                              \
     -var=service=$SERVICE_NAME                                              \
     -var=dns_zone_name=$DNS_ZONE_NAME                                       \
     -var=cloudflare_zone_id=$CLOUDFLARE_ZONE_ID                             \
+    -var=cloudflare_account_id=$CLOUDFLARE_ACCOUNT_ID                       \
     -var=branch_name=$BRANCH
