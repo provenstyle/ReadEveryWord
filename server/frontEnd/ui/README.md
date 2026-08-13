@@ -2,17 +2,26 @@
 
 ## Developers
 
-npm run dev
+    npm run dev
 
-### serving over https
-swa seems to have a bug when using --ssl.  You can use --ssl and  also use the `appDevserverUrl` proxy. However, removing the proxy and serving the built files from the dist folder works.
+That is the plain vite dev server on port 3000. `/api` is proxied to
+`http://localhost:7778`, so start the bff alongside it:
 
-    npx swa start --host 0.0.0.0 --ssl
+    cd ../bff/app && npm start
 
-Using this you can reach the app from outside the computer from the network at the computer ip address
+In the deployed environments cloudflare's worker does the same split, which is
+why the app can just call `window.location.origin`.
 
-    https://192.168.?.?:4280
+### serving over the network
+
+    npm run dev -- --host 0.0.0.0
+
+Then reach the app from another machine at the computer's ip address
+
+    http://192.168.?.?:3000
 
 ### custom dev certificate
+
+For https, point `server.https` in `vite.config.mts` at a self signed pair
 
   openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365 -nodes

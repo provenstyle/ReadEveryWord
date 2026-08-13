@@ -6,13 +6,28 @@ source ./outputs.sh
 cd ../ui
 npm run build
 
-npx swa login
+# The storage key identifies the account on its own, so there is no entra sign
+# in to get wrong and no resource group to pass.
+#
+# Two passes because upload-batch has --pattern to include but no way to
+# exclude. Everything lands as no-cache first so a new index.html is picked up
+# immediately, then the hashed assets are re-uploaded to win the cache header.
+az storage blob upload-batch                        \
+    --account-name "$FRONTEND_STORAGE_NAME"         \
+    --account-key  "$FRONTEND_STORAGE_KEY"          \
+    --destination '$web'                            \
+    --source ./dist                                 \
+    --overwrite                                     \
+    --content-cache-control "no-cache"              \
+    --output none
 
-# workaround to keep the cli from modifying the config file
-chmod 444 swa-cli.config.json
-npx swa deploy                       \
-    --resource-group $RESOURCE_GROUP \
-    --app-name $STATIC_APP_NAME      \
-    --app-location ./dist            \
-    --env production
-chmod 644 swa-cli.config.json
+# vite hashes these filenames, so they can never go stale
+az storage blob upload-batch                        \
+    --account-name "$FRONTEND_STORAGE_NAME"         \
+    --account-key  "$FRONTEND_STORAGE_KEY"          \
+    --destination '$web'                            \
+    --source ./dist                                 \
+    --pattern "assets/*"                            \
+    --overwrite                                     \
+    --content-cache-control "public, max-age=31536000, immutable" \
+    --output none

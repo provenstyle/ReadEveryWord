@@ -31,6 +31,11 @@ variable "random_length" {
   description = "Amount of random characters to append to resource names"
   default     = 18
 }
+variable "log_retention_in_days" {
+  type        = number
+  description = "How long application insights telemetry is kept in the log analytics workspace"
+  default     = 30
+}
 variable "storage_account_replication_type" {
   description = "Defines the type of replication to use for this storage account"
   type        = string
