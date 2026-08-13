@@ -39,9 +39,12 @@ cd .. && func start --port 7074 --typescript
 
 There is also a VS Code launch config, "Debug @read-every-word/api-host with Nx", which runs `nx serve` with `--inspect=9229`.
 
-### Known-broken: the Nx project graph currently fails
+### Gotchas
 
-`apps/api-host/jest.config.cjs` reads `apps/api-host/.spec.swcrc`, and that file does not exist. The `@nx/jest` plugin fails while building the project graph, so **every** `nx` command errors out. Copy any `packages/*/.spec.swcrc` (all seven are byte-identical) into `apps/api-host/` to unblock. Similarly, the `merge-deps` target in [apps/api-host/package.json](read-every-word/apps/api-host/package.json) points at `apps/api-host/scripts/merge-deps.js`, which also doesn't exist — `prune` doesn't depend on it, so it only bites if invoked directly.
+- **Every project needs its own `.spec.swcrc`.** Each `jest.config.cjs` does `readFileSync(`${__dirname}/.spec.swcrc`)` at module load, and the `@nx/jest` plugin loads those configs while building the project graph — so one missing file makes *every* `nx` command fail with `ENOENT`, not just `nx test`. All eight are byte-identical; copy one when scaffolding a project.
+- **`@swc/core` is pinned to an exact `1.13.20`.** The `1.13.21` darwin-arm64 binary ships a malformed code signature and fails `dlopen` with `code signature invalid` on Apple Silicon, which breaks all Jest runs. Don't loosen the pin back to a range without checking that the resolved version's native binding actually loads.
+- The `merge-deps` target in [apps/api-host/package.json](read-every-word/apps/api-host/package.json) points at `apps/api-host/scripts/merge-deps.js`, which doesn't exist. `prune` doesn't depend on it, so it only bites if invoked directly.
+- Two pre-existing `lint` errors block the CI command: the empty `GetHealthCheck` interface in [packages/domain/src/lib/healthCheck.ts:8](read-every-word/packages/domain/src/lib/healthCheck.ts#L8), and `@nx/dependency-checks` reporting `@read-every-word/foundation`, `@jest/globals`, and `tslib` missing from `packages/test-utils/package.json`.
 
 ## Architecture (Nx workspace)
 
