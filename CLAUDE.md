@@ -24,6 +24,8 @@ npx nx run-many -t lint test build typecheck    # what CI runs
 npx nx test @read-every-word/api                 # one project (use the full scoped name)
 npx nx test @read-every-word/api -- validation   # one test file / pattern
 npx nx build @read-every-word/api
+
+npx nx integration-test @read-every-word/api-integration-test   # needs a real environment
 npx nx sync                          # regenerate TS project references after changing cross-package imports
 npx nx sync:check                    # verify references are current
 npx nx graph
@@ -62,7 +64,7 @@ azure-function-adapter  table-storage  foundation
 - **`packages/table-storage`** — Azure Table/Blob helpers: `cacheTableClient` (memoized `TableClient` per table name), the `resourceDoesNotExist`/`entityAlreadyExist` error predicates, and `withLock`.
 - **`packages/azure-function-adapter`** — a hand-rolled tRPC↔Azure Functions v4 bridge (tRPC ships no official Azure adapter). Converts `HttpRequest` → fetch `Request`, calls `resolveResponse`, converts back.
 - **`apps/api-host`** — thin. `main.ts` imports `trpc/endpoint.ts`, which reads config from env at module load (throwing on invalid config), then registers one `app.http('trpc', { route: 'trpc/{*path}' })` catch-all.
-- **`packages/api-integration-test`** — tests that hit real Azure Table Storage and a real Auth0 token, via tRPC's direct-call API (`appRouter.createCaller`) rather than HTTP.
+- **`packages/api-integration-test`** — tests that hit real Azure Table Storage and a real Auth0 token, via tRPC's direct-call API (`appRouter.createCaller`) rather than HTTP. Because these need a live environment they are **not** part of `test`: [nx.json](read-every-word/nx.json) registers `@nx/jest` twice against the glob `**/*integration-test*/**` — `exclude`d from the `test` target, `include`d in an `integration-test` target. So `nx run-many -t test` (and therefore CI) skips them, and they run explicitly via `nx integration-test`. This is by **naming convention**: any new project with `integration-test` in its directory name is automatically routed to the `integration-test` target and kept out of `test`.
 
 ### Errors are values, not exceptions
 

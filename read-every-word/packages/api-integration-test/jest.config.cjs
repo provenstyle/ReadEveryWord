@@ -23,7 +23,9 @@ module.exports = {
     '/node_modules/',
     '/dist/'
   ],
+  // uuid and lodash-es are ESM-only, so they must be transformed rather than
+  // ignored like the rest of node_modules.
   transformIgnorePatterns: [
-    'node_modules/(?!(uuid)/)'
+    'node_modules/(?!(uuid|lodash-es)/)'
   ]
 };

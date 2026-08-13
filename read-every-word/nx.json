@@ -37,13 +37,24 @@
     },
     {
       "plugin": "@nx/jest/plugin",
+      "exclude": ["**/*integration-test*/**"],
       "options": {
         "targetName": "test"
+      }
+    },
+    {
+      "plugin": "@nx/jest/plugin",
+      "include": ["**/*integration-test*/**"],
+      "options": {
+        "targetName": "integration-test"
       }
     }
   ],
   "targetDefaults": {
     "test": {
+      "dependsOn": ["^build"]
+    },
+    "integration-test": {
       "dependsOn": ["^build"]
     },
     "@nx/esbuild:esbuild": {
