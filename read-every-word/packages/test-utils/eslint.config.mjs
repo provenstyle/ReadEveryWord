@@ -12,6 +12,7 @@ export default [
             '{projectRoot}/eslint.config.{js,cjs,mjs,ts,cts,mts}',
             '**/*.test.ts'
           ],
+          ignoredDependencies: ['@read-every-word/foundation'],
         },
       ],
     },

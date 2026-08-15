@@ -1,17 +1,11 @@
-import { Caller } from '@read-every-word/api'
 import { withCaller, withUser, withReadingCycle, withReadingRecord } from './scenarios.js'
 import { expectOk } from '@read-every-word/test-utils'
 
 describe('readingRecord', () => {
 
-    let caller: Caller
-
-    beforeEach(async () => {
-      caller = await withCaller()
-    })
-
     it('can create and get a reading record', async () => {
         const user = await withUser()
+        const caller = await withCaller(user)
         const readingCycle = await withReadingCycle(user)
 
         // create
@@ -41,6 +35,7 @@ describe('readingRecord', () => {
 
     it('can delete reading record', async () => {
         const user = await withUser()
+        const caller = await withCaller(user)
         const readingCycle = await withReadingCycle(user)
         const readingRecord = await withReadingRecord(user, readingCycle)
 
@@ -69,4 +64,3 @@ describe('readingRecord', () => {
         expect(readingRecords.length).toBe(0)
     }, 10 * 1000)
 })
-

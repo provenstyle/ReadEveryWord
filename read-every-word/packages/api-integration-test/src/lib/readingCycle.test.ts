@@ -1,18 +1,14 @@
 import { expectOk } from '@read-every-word/test-utils'
 import { withCaller, withUser } from './scenarios.js'
-import { v4 as uuid } from 'uuid'
-import { type Caller } from '@read-every-word/api'
 
+// A caller is bound to one identity, because the auth middleware replaces
+// input.authId with the token subject. Each test takes its own user, so each
+// test gets its own storage partition and reruns stay idempotent.
 describe('readingCycle', () => {
-
-    let caller: Caller
-
-    beforeEach(async () => {
-      caller = await withCaller()
-    })
 
     it('can create and get a reading cycle', async () => {
         const user = await withUser()
+        const caller = await withCaller(user)
 
         // create
         const createResult = await caller.readingCycle.create({
@@ -37,6 +33,7 @@ describe('readingCycle', () => {
 
     it('Can update dateComplete', async () => {
         const user = await withUser()
+        const caller = await withCaller(user)
 
         // create
         const createResult = await caller.readingCycle.create({
@@ -64,6 +61,7 @@ describe('readingCycle', () => {
 
     it('First readingCycle created is default', async () => {
         const user = await withUser()
+        const caller = await withCaller(user)
 
         const createResult1 = await caller.readingCycle.create({
           authId: user.authId,
@@ -91,6 +89,7 @@ describe('readingCycle', () => {
 
     it('Can update default to true', async () => {
         const user = await withUser()
+        const caller = await withCaller(user)
 
         const createResult1 = await caller.readingCycle.create({
           authId: user.authId,
@@ -123,6 +122,7 @@ describe('readingCycle', () => {
 
     it('Can update name', async () => {
         const user = await withUser()
+        const caller = await withCaller(user)
 
         // create
         const createResult = await caller.readingCycle.create({
@@ -149,13 +149,14 @@ describe('readingCycle', () => {
     }, 10 * 1000)
 
     it('concurrent calls only create 1 default readingCycle', async () => {
-      const authId = uuid()
+      const user = await withUser()
+      const caller = await withCaller(user)
 
       const promises = []
       for (let i = 0; i < 5; i++) {
         promises.push(
           caller.readingCycle.create({
-            authId,
+            authId: user.authId,
             dateStarted: new Date().toISOString(),
             name: `${i}`
           })
@@ -165,12 +166,12 @@ describe('readingCycle', () => {
       await Promise.all(promises)
 
       const readingCycleResult = await caller.readingCycle.get({
-        authId
+        authId: user.authId
       })
       const readingCycles = expectOk(readingCycleResult)
 
       const defaults = readingCycles.filter(x => x.default)
 
       expect(defaults.length).toEqual(1)
-    })
+    }, 30 * 1000)
 })

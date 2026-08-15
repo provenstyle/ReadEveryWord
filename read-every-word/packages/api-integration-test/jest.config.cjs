@@ -14,6 +14,8 @@ module.exports = {
   displayName: '@read-every-word/api-integration-test',
   preset: '../../jest.preset.js',
   testEnvironment: 'node',
+  // Loads .env before any test module is imported.
+  setupFiles: ['<rootDir>/jest.setup.cjs'],
   transform: {
     '^.+\\.[tj]s$': ['@swc/jest', swcJestConfig],
   },
