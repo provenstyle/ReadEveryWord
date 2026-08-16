@@ -30,6 +30,11 @@ const REQUIRED_ENVIRONMENT = [
   'TABLE_STORAGE_CONNECTION_STRING'
 ]
 
+// Nothing verifies these two, they are only echoed back by clientConfig.get, so
+// fixed values are enough. Exported so the test can assert on what it supplied.
+export const TEST_OPEN_ID_DOMAIN = 'local-test-idp.readeveryword.test'
+export const TEST_OPEN_ID_CLIENT_ID = 'test-client-id'
+
 export async function withConfig(): Promise<Config> {
   const missing = REQUIRED_ENVIRONMENT.filter(name => !process.env[name])
   if (missing.length > 0) {
@@ -47,7 +52,9 @@ export async function withConfig(): Promise<Config> {
     openId: {
       jwksUri: identity.jwksUri,
       audience: identity.audience,
-      issuer: identity.issuer
+      issuer: identity.issuer,
+      domain: TEST_OPEN_ID_DOMAIN,
+      clientId: TEST_OPEN_ID_CLIENT_ID
     }
   }
 }
@@ -70,7 +77,7 @@ export async function withUser(): Promise<User> {
 
 /**
  * A caller for the given user. Omit the user for the endpoints that are public,
- * such as healthCheck and readSummary.
+ * which are healthCheck and clientConfig.
  */
 export async function withCaller(user?: User): Promise<Caller> {
   const config = await withConfig()

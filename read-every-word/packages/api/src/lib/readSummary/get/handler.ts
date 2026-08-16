@@ -5,12 +5,12 @@ import { validate } from './validation.js'
 import { handleGetReadingCycles } from '../../readingCycles/getAll/handler.js'
 import { handleCreateReadingCycle } from '../../readingCycles/create/handler.js'
 import { handleGetReadingRecord } from '../../readingRecord/get/handler.js'
-import { publicProcedure } from '../../trpc.js'
+import { authenticatedProcedure } from '../../trpc.js'
 import { Config } from '../../config.js'
 
 const LOCK_TIME_OUT = 30 * 1000 // 30 seconds
 
-export const getReadSummaryProcedure = publicProcedure
+export const getReadSummaryProcedure = authenticatedProcedure
   .input(r => r as GetReadSummary)
   .mutation(async ({ input, ctx }): Promise<GetReadSummaryResult> => {
     return handleGetReadSummary(input, ctx.config)

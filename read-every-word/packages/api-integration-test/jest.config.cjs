@@ -14,6 +14,12 @@ module.exports = {
   displayName: '@read-every-word/api-integration-test',
   preset: '../../jest.preset.js',
   testEnvironment: 'node',
+  // Every suite talks to the same storage account, and the ones exercising
+  // withLock hold blob leases with a 30s ceiling. Run against Azurite, which is
+  // single threaded, parallel workers starve each other badly enough that those
+  // lock tests time out, even though each test uses its own container. Serial
+  // is both reliable and faster here: ~8s versus ~38s with two failures.
+  maxWorkers: 1,
   // Loads .env before any test module is imported.
   setupFiles: ['<rootDir>/jest.setup.cjs'],
   transform: {

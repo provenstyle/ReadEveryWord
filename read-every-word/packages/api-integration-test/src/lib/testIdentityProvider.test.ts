@@ -1,5 +1,6 @@
 import { appRouter, type Config } from '@read-every-word/api'
 import { createTestIdentityProvider, testSubjectFor, type TestIdentityProvider } from '@read-every-word/test-utils'
+import { TEST_OPEN_ID_DOMAIN, TEST_OPEN_ID_CLIENT_ID } from './scenarios.js'
 
 // Exercises the auth middleware through the router, with no Auth0 tenant and
 // no storage account. A rejected token throws a TRPCError from the middleware;
@@ -23,6 +24,8 @@ describe('test identity provider', () => {
       jwksUri: provider.jwksUri,
       audience: provider.audience,
       issuer: provider.issuer,
+      domain: TEST_OPEN_ID_DOMAIN,
+      clientId: TEST_OPEN_ID_CLIENT_ID,
     },
   })
 

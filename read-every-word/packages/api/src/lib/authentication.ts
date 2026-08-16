@@ -1,6 +1,6 @@
 import jwt, { VerifyOptions, type JwtPayload } from "jsonwebtoken"
 import jwksClient from "jwks-rsa"
-import { type OpenIdConfig } from "./config.js";
+import { type TokenVerificationConfig } from "./config.js";
 import { Result, err, ok } from '@read-every-word/foundation'
 
 export type { JwtPayload }
@@ -93,7 +93,7 @@ const refreshIfDue = (jwksUri: string): Promise<JwksDocument | undefined> => {
 }
 
 export class Authentication {
-  constructor(private config: OpenIdConfig) {
+  constructor(private config: TokenVerificationConfig) {
   }
 
   private getKey = async (header: jwt.JwtHeader, callback: jwt.SigningKeyCallback) => {
