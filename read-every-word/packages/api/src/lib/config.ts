@@ -18,7 +18,7 @@ export interface OpenIdConfig extends TokenVerificationConfig {
 }
 
 export interface Config {
- tableStorageConnectionString: string
+  tableStorageConnectionString: string
   openId: OpenIdConfig
 }
 

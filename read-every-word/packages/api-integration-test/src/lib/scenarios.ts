@@ -26,6 +26,23 @@ function identityProvider(): Promise<TestIdentityProvider> {
   return provider
 }
 
+/**
+ * Shuts the shared provider down and forgets it.
+ *
+ * The server is unref'd, but the connections jwks-rsa opens against it are not,
+ * so a suite that authenticates leaves a live socket behind and jest reports
+ * that it could not exit. jest.teardown.cjs calls this after every suite, so no
+ * individual test file has to remember to.
+ */
+export async function closeIdentityProvider(): Promise<void> {
+  if (!provider) {
+    return
+  }
+  const pending = provider
+  provider = undefined
+  await (await pending).close()
+}
+
 const REQUIRED_ENVIRONMENT = [
   'TABLE_STORAGE_CONNECTION_STRING'
 ]
@@ -34,6 +51,38 @@ const REQUIRED_ENVIRONMENT = [
 // fixed values are enough. Exported so the test can assert on what it supplied.
 export const TEST_OPEN_ID_DOMAIN = 'local-test-idp.readeveryword.test'
 export const TEST_OPEN_ID_CLIENT_ID = 'test-client-id'
+
+// Well formed but unreachable, so a call that gets past auth fails in
+// persistence rather than while constructing the client. Suites that only care
+// whether the auth middleware admits a caller use this and never reach storage.
+export const UNREACHABLE_STORAGE =
+  'DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;' +
+  'AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;' +
+  'TableEndpoint=http://127.0.0.1:10002/devstoreaccount1;' +
+  'BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;'
+
+/**
+ * A Config that can authenticate and nothing else.
+ *
+ * It trusts the given provider, and its storage is deliberately unreachable, so
+ * a test that gets past auth and then touches persistence fails rather than
+ * quietly succeeding against a real account. Unlike withConfig it needs no
+ * environment at all, so auth focused suites run without Azurite.
+ *
+ * Sync, unlike the other withX fixtures here, because there is nothing to await.
+ */
+export function withAuthOnlyConfig(provider: TestIdentityProvider): Config {
+  return {
+    tableStorageConnectionString: UNREACHABLE_STORAGE,
+    openId: {
+      jwksUri: provider.jwksUri,
+      audience: provider.audience,
+      issuer: provider.issuer,
+      domain: TEST_OPEN_ID_DOMAIN,
+      clientId: TEST_OPEN_ID_CLIENT_ID
+    }
+  }
+}
 
 export async function withConfig(): Promise<Config> {
   const missing = REQUIRED_ENVIRONMENT.filter(name => !process.env[name])

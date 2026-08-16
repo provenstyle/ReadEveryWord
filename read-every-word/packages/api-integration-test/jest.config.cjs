@@ -22,6 +22,8 @@ module.exports = {
   maxWorkers: 1,
   // Loads .env before any test module is imported.
   setupFiles: ['<rootDir>/jest.setup.cjs'],
+  // Registers the afterAll that closes the shared identity provider.
+  setupFilesAfterEnv: ['<rootDir>/jest.teardown.ts'],
   transform: {
     '^.+\\.[tj]s$': ['@swc/jest', swcJestConfig],
   },
