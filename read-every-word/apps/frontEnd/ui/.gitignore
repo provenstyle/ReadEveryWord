@@ -1,0 +1,5 @@
+dist
+storybook-static
+out-tsc
+.vite
+*storybook.log

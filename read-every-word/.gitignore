@@ -4,6 +4,7 @@
 dist
 tmp
 out-tsc
+storybook-static
 
 # dependencies
 node_modules
@@ -43,6 +44,13 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+
+# Written by apps/api-host/cicd/functionFetchAppSettings.sh; contains the real
+# TABLE_STORAGE_CONNECTION_STRING.
+local.settings.json
+
+# Local azurite state
+.azurite/
 
 .nx/cache
 .nx/workspace-data

@@ -1,0 +1,51 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
+  "exclude": ["src/**/__tests__/*"],
+  "compilerOptions": {
+    "composite": true,
+    "tsBuildInfoFile": "./out-tsc/tsconfig.app.tsbuildinfo",
+
+    // The one key we need from tsconfig.base.json. Extending that file instead
+    // would drag in emitDeclarationOnly (which collides with noEmit),
+    // declarationMap, importHelpers and noUnusedLocals.
+    "customConditions": ["@read-every-word/source"],
+
+    // The source condition puts packages/{domain,foundation,api}/src into this
+    // program, so our options have to tolerate server authored source.
+    // packages/domain imports types without a `type` modifier, which is TS1484
+    // under verbatimModuleSyntax. isolatedModules keeps the guarantee vue needs.
+    "verbatimModuleSyntax": false,
+    "isolatedModules": true,
+    // @vue/tsconfig sets types to [], but packages/api/src/lib/config.ts reads
+    // process.env.
+    "types": ["node"],
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "references": [
+    {
+      "path": "../../../packages/api/tsconfig.lib.json"
+    },
+    {
+      "path": "../../../packages/domain/tsconfig.lib.json"
+    },
+    {
+      "path": "../../../packages/foundation/tsconfig.lib.json"
+    }
+  ],
+  "nx": {
+    "sync": {
+      // The imports that justify these references live in .vue files, which nx
+      // does not parse, so sync would otherwise delete them and break typecheck
+      // with TS6307.
+      "ignoredReferences": [
+        "../../../packages/domain/tsconfig.lib.json",
+        "../../../packages/foundation/tsconfig.lib.json"
+      ]
+    }
+  }
+}

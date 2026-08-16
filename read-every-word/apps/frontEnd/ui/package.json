@@ -1,0 +1,120 @@
+{
+  "name": "@read-every-word/ui",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@auth0/auth0-vue": "^2.3.3",
+    "@mdi/font": "7.4.47",
+    "@read-every-word/api": "0.0.1",
+    "@read-every-word/domain": "0.0.1",
+    "@read-every-word/foundation": "0.0.1",
+    "@trpc/client": "^11.6.0",
+    "lodash-es": "^4.17.21",
+    "pinia": "^2.1.7",
+    "roboto-fontface": "*",
+    "vue": "^3.4.31",
+    "vue-router": "~4.4.5",
+    "vuetify": "^3.6.14"
+  },
+  "devDependencies": {
+    "@chromatic-com/storybook": "^3.2.2",
+    "@storybook/addon-essentials": "^8.4.5",
+    "@storybook/addon-interactions": "^8.4.5",
+    "@storybook/addon-onboarding": "^8.4.5",
+    "@storybook/blocks": "^8.4.5",
+    "@storybook/test": "^8.4.5",
+    "@storybook/vue3": "^8.4.5",
+    "@storybook/vue3-vite": "^8.4.5",
+    "@types/lodash-es": "^4.17.12",
+    "@vitejs/plugin-vue": "^5.1.4",
+    "@vue/tsconfig": "^0.5.1",
+    "eslint-plugin-vue": "^9.30.0",
+    "sass": "1.77.8",
+    "sass-embedded": "^1.77.8",
+    "storybook": "^8.4.5",
+    "unplugin-auto-import": "^0.17.6",
+    "unplugin-fonts": "^1.1.1",
+    "unplugin-vue-components": "^0.27.2",
+    "unplugin-vue-router": "~0.10.8",
+    "vite": "^5.4.10",
+    "vite-plugin-vue-layouts": "^0.11.0",
+    "vite-plugin-vuetify": "^2.0.3",
+    "vue-eslint-parser": "^9.4.3",
+    "vue-tsc": "~2.1.10"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "executor": "nx:run-commands",
+        "cache": true,
+        "dependsOn": [
+          "^build"
+        ],
+        "inputs": [
+          "production",
+          "^production"
+        ],
+        "outputs": [
+          "{projectRoot}/dist"
+        ],
+        "options": {
+          "command": "vite build",
+          "cwd": "{projectRoot}"
+        }
+      },
+      "typecheck": {
+        "executor": "nx:run-commands",
+        "cache": true,
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": [
+          "{projectRoot}/out-tsc"
+        ],
+        "options": {
+          "command": "vue-tsc --build tsconfig.json",
+          "cwd": "{projectRoot}"
+        }
+      },
+      "serve": {
+        "continuous": true,
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "vite",
+          "cwd": "{projectRoot}"
+        }
+      },
+      "preview": {
+        "continuous": true,
+        "executor": "nx:run-commands",
+        "dependsOn": [
+          "build"
+        ],
+        "options": {
+          "command": "vite preview",
+          "cwd": "{projectRoot}"
+        }
+      },
+      "storybook": {
+        "continuous": true,
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "storybook dev -p 6006",
+          "cwd": "{projectRoot}"
+        }
+      },
+      "build-storybook": {
+        "executor": "nx:run-commands",
+        "cache": true,
+        "outputs": [
+          "{projectRoot}/storybook-static"
+        ],
+        "options": {
+          "command": "storybook build",
+          "cwd": "{projectRoot}"
+        }
+      }
+    }
+  }
+}
