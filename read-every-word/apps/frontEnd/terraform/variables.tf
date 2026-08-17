@@ -31,48 +31,30 @@ variable "random_length" {
   description = "Amount of random characters to append to resource names"
   default     = 18
 }
-variable "log_retention_in_days" {
-  type        = number
-  description = "How long application insights telemetry is kept in the log analytics workspace"
-  default     = 30
-}
 variable "storage_account_replication_type" {
   description = "Defines the type of replication to use for this storage account"
   type        = string
-  default     = "LRS" 
-  # default     = "GRS" 
+  default     = "LRS"
+  # default     = "GRS"
 }
-variable "app_scale_limit" {
+variable "dns_zone_name" {
   type        = string
-  description = "Number of workers this function app can scale out to"
-  default     = 1
+  description = "Cloudflare DNS zone name, e.g. readeveryword.com"
 }
 
-# Auth0. These moved here from the front end stack when the bff was deleted:
-# packages/api now verifies tokens itself, and clientConfig.get serves the
-# browser facing subset to the spa.
-variable "open_id_jwks_uri" {
+variable "cloudflare_zone_id" {
   type        = string
-  description = "openId jwks uri"
+  description = "Cloudflare zone id for dns_zone_name"
 }
-variable "open_id_audience" {
+
+# Worker scripts are account scoped, worker routes are zone scoped
+variable "cloudflare_account_id" {
   type        = string
-  description = "openId api audience"
+  description = "Cloudflare account id that owns the edge worker script"
 }
-variable "open_id_issuer" {
+
+variable "branch_name" {
   type        = string
-  description = "openId server address"
+  description = "Git branch name"
 }
-variable "open_id_domain" {
-  type        = string
-  description = "oauth domain name no https protocol"
-}
-variable "open_id_client_id" {
-  type        = string
-  description = "oauth client id from the configured application"
-}
-variable "keep_warm" {
-  type        = bool
-  description = "controls the health-check function timer"
-  default     = false
-}
+

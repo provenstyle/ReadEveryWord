@@ -1,12 +1,13 @@
+#!/usr/bin/env bash
 set -e
 
-cd ../
-ROOT=$(pwd)
+# Anchored to this script rather than to the caller's cwd, so these no longer
+# have to be run from the cicd directory.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
 
 echo "destroy api *********************************************"
-cd $ROOT/server/api/cicd
-./destroy.sh
+"$ROOT/server/api/cicd/destroy.sh"
 
 echo "destroy front end *********************************************"
-cd $ROOT/server/frontEnd/cicd
-./destroy.sh
+"$ROOT/read-every-word/apps/frontEnd/cicd/destroy.sh"

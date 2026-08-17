@@ -50,10 +50,26 @@ resource "azurerm_linux_function_app" "this" {
   # owns those two app settings and strips them back out on refresh, so setting
   # them here produces a diff that never converges.
   app_settings = {
-    WEBSITE_MOUNT_ENABLED           = 1,
-    SCM_DO_BUILD_DURING_DEPLOYMENT  = true,
+    WEBSITE_MOUNT_ENABLED = 1,
+    # The nx build produces a self contained dist folder that functionPush.sh
+    # publishes with --no-build, so there is nothing for oryx to do.
+    SCM_DO_BUILD_DURING_DEPLOYMENT  = false,
     FUNCTIONS_WORKER_RUNTIME        = "node",
     TABLE_STORAGE_CONNECTION_STRING = local.table_storage_connection_string
+    # fromEnv() reads all five of these at module load and throws on any that
+    # is missing, so a partial set is a cold start crash of the whole app
+    # rather than one broken endpoint. They moved here from the bff, which
+    # used to own token verification.
+    OPEN_ID_JWKS_URI = var.open_id_jwks_uri
+    OPEN_ID_AUDIENCE = var.open_id_audience
+    OPEN_ID_ISSUER   = var.open_id_issuer
+    # Not used to verify anything. clientConfig.get hands these to the browser
+    # so the spa can configure auth0 before it has a token.
+    OPEN_ID_DOMAIN    = var.open_id_domain
+    OPEN_ID_CLIENT_ID = var.open_id_client_id
+    # Drives the once a minute timer in apps/api-host that keeps this
+    # consumption plan warm.
+    KEEP_WARM = var.keep_warm
   }
   identity {
     type = "SystemAssigned"

@@ -1,10 +1,13 @@
+#!/usr/bin/env bash
 set -e
 
-source ../../../cicd/variables.sh
-source ./outputs.sh
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
 
-cd ../app
+source "$REPO_ROOT/cicd/variables.sh"
+source "$SCRIPT_DIR/outputs.sh"
+
+cd "$SCRIPT_DIR/../app"
 
 func azure functionapp fetch-app-settings $FUNCTION_APP_NAME --no-encrypt
 func settings decrypt
-

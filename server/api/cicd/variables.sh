@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 set -e
 
 SERVICE_NAME=read-every-word-api

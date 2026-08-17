@@ -9,3 +9,5 @@ dist
 coverage
 .env*
 cicd/variables.sh
+# Local azurite state
+.azurite/

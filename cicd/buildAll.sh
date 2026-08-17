@@ -1,46 +1,14 @@
+#!/usr/bin/env bash
 set -e
 
-cd ../
-ROOT=$(pwd)
+# Anchored to this script rather than to the caller's cwd, so these no longer
+# have to be run from the cicd directory.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
 
-echo "build infrastructure *********************************************"
-cd $ROOT/server/infrastructure
+echo "build nx workspace   *********************************************"
+cd "$ROOT/read-every-word"
 npm ci
-npm run build
-npm run test
-
-echo "build domain         *********************************************"
-cd $ROOT/server/domain
-npm ci
-npm run build
-npm run test
-
-echo "build api            *********************************************"
-cd $ROOT/server/api/app
-npm ci
-npm run build
-npm run test
-
-echo "build api client     *********************************************"
-cd $ROOT/server/api/client
-npm ci
-npm run build
-npm run test
-
-echo "build bff            *********************************************"
-cd $ROOT/server/frontEnd/bff/app
-npm ci
-npm run build
-npm run test
-
-echo "build bff client     *********************************************"
-cd $ROOT/server/frontEnd/bff/client
-npm ci
-npm run build
-npm run test
-
-echo "build ui             *********************************************"
-cd $ROOT/server/frontEnd/ui
-npm ci
-npm run build
-
+# lint is deliberately absent: two pre-existing failures would abort the
+# standup under set -e. CI covers it.
+npx nx run-many -t build test typecheck
