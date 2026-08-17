@@ -12,10 +12,10 @@ import { v4 as uuid } from 'uuid'
 // exercises the real jsonwebtoken + jwks-rsa RS256 path with no Auth0 tenant,
 // no m2m application, and no client secret.
 //
-// The win over a real m2m token is control of `sub`: the auth middleware
-// overwrites input.authId with the token subject, so a single fixed token
-// would force every test onto one shared identity. Here each test can mint its
-// own user and stay isolated.
+// The win over a real m2m token is control of `sub`: the api derives authId from
+// the token subject and requests cannot name one, so a single fixed token would
+// force every test onto one shared identity and one shared storage partition.
+// Here each test can mint its own user and stay isolated.
 
 export const TEST_ISSUER = 'https://local-test-idp.readeveryword.test/'
 export const TEST_AUDIENCE = 'https://api.readeveryword.test'

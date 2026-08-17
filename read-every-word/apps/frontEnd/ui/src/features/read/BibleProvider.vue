@@ -47,9 +47,7 @@ const errorMessage = ref<string | undefined>()
 const fetch = async () => {
   working.value = true
 
-  // authId is required by the schema but is overwritten server side with the
-  // token's subject, so the value sent here is ignored.
-  const readSummaryResult = await fromTrpc(() => client.readSummary.get.mutate({ authId: '' }))
+  const readSummaryResult = await fromTrpc(() => client.readSummary.get.mutate())
   if(isErr(readSummaryResult))
   {
     errorMessage.value = 'Failed to get Read Summary'
@@ -71,7 +69,6 @@ const readChapter = async (bookId: number, chapterId: number): Promise<boolean> 
   if (!readingCycle.value) return false
 
   const createResult = await fromTrpc(() => client.readingRecord.create.mutate({
-    authId: '',
     bookId,
     chapterId,
     dateRead: new Date().toISOString(),
@@ -84,7 +81,6 @@ const unreadChapter = async (bookId: number, chapterId: number): Promise<boolean
   if (!readingCycle.value) return false
 
   const deleteResult = await fromTrpc(() => client.readingRecord.delete.mutate({
-    authId: '',
     bookId,
     chapterId,
     readingCycleId: readingCycle.value!.id

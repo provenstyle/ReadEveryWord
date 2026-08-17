@@ -2,10 +2,6 @@ import { Result, GetFailed, CreateFailed, FailedToAcquireDataLock } from '@read-
 import { ReadingCycle } from './readingCycle.js'
 import { ReadingRecord } from './readingRecord.js'
 
-export interface GetReadSummary {
-  authId: string
-}
-
 export interface ReadingSummary {
   readingCycles: ReadingCycle[]
   readingRecords: ReadingRecord[]

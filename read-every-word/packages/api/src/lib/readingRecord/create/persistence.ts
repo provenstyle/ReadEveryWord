@@ -3,6 +3,7 @@ import { cacheTableClient, entityAlreadyExist } from '@read-every-word/table-sto
 import { TableClient } from '@azure/data-tables'
 import { Config } from '../../config.js'
 import { ReadingRecord, CreateReadingRecord } from '@read-every-word/domain'
+import { type Authenticated } from '../../trpc.js'
 
 export class Persistence {
   private tableClient: TableClient
@@ -11,15 +12,16 @@ export class Persistence {
     this.tableClient = cacheTableClient(config.tableStorageConnectionString, 'readingRecord')
   }
 
-  async createReadingRecord(request: CreateReadingRecord): Promise<Result<ReadingRecord, CreateFailed>> {
-    const partitionKey = `${request.authId}-${request.readingCycleId}`
+  async createReadingRecord(authenticated: Authenticated<CreateReadingRecord>): Promise<Result<ReadingRecord, CreateFailed>> {
+    const { request, principal } = authenticated
+    const partitionKey = `${principal.authId}-${request.readingCycleId}`
     const rowKey = `${request.bookId}-${request.chapterId}`
 
     try {
       await this.tableClient.createEntity({
         partitionKey,
         rowKey,
-        authId: request.authId,
+        authId: principal.authId,
         readingCycleId: request.readingCycleId,
         dateRead: request.dateRead,
         bookId: request.bookId,
@@ -27,7 +29,6 @@ export class Persistence {
       })
 
       return ok({
-        authId: request.authId,
         readingCycleId: request.readingCycleId,
         id: rowKey,
         lastModified: '',
@@ -38,7 +39,6 @@ export class Persistence {
     } catch (e) {
       if (entityAlreadyExist(e)) {
         return ok({
-          authId: request.authId,
           readingCycleId: request.readingCycleId,
           id: rowKey,
           lastModified: '',

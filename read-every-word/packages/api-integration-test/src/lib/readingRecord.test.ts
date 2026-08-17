@@ -10,7 +10,6 @@ describe('readingRecord', () => {
 
         // create
         const readingRecordResult = await caller.readingRecord.create({
-          authId: user.authId,
           readingCycleId: readingCycle.id,
           bookId: 0,
           chapterId: 0,
@@ -20,7 +19,6 @@ describe('readingRecord', () => {
 
         // get
         const getReadingRecordsResult = await caller.readingRecord.get({
-          authId: user.authId,
           readingCycleId: readingCycle.id
         })
         const readingRecords = expectOk(getReadingRecordsResult)
@@ -42,14 +40,12 @@ describe('readingRecord', () => {
         let getReadingRecordsResult
         let readingRecords
         getReadingRecordsResult = await caller.readingRecord.get({
-          authId: user.authId,
           readingCycleId: readingCycle.id
         })
         readingRecords = expectOk(getReadingRecordsResult)
         expect(readingRecords.length).toBe(1)
 
         const deleteResult = await caller.readingRecord.delete({
-          authId: user.authId,
           readingCycleId: readingCycle.id,
           bookId: readingRecord.bookId,
           chapterId: readingRecord.chapterId
@@ -57,7 +53,6 @@ describe('readingRecord', () => {
         expectOk(deleteResult)
 
         getReadingRecordsResult = await caller.readingRecord.get({
-          authId: user.authId,
           readingCycleId: readingCycle.id
         })
         readingRecords = expectOk(getReadingRecordsResult)

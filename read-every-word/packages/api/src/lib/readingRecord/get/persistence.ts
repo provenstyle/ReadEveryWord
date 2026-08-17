@@ -4,6 +4,7 @@ import { type GetReadingRecord, type ReadingRecord } from '@read-every-word/doma
 import { TableClient } from '@azure/data-tables'
 import { type ReadingRecordRow, map } from '../domain.js'
 import { Config } from '../../config.js'
+import { type Authenticated } from '../../trpc.js'
 
 export class Persistence {
   private tableClient: TableClient
@@ -12,9 +13,10 @@ export class Persistence {
     this.tableClient = cacheTableClient(config.tableStorageConnectionString, 'readingRecord')
   }
 
-  async getReadingRecord(request: GetReadingRecord): Promise<Result<ReadingRecord[], CreateFailed>> {
+  async getReadingRecord(authenticated: Authenticated<GetReadingRecord>): Promise<Result<ReadingRecord[], CreateFailed>> {
+    const { request, principal } = authenticated
     try {
-      const partitionKey = `${request.authId}-${request.readingCycleId}`
+      const partitionKey = `${principal.authId}-${request.readingCycleId}`
       const allRows: ReadingRecordRow[] = []
       const allRowsResult = this.tableClient.listEntities<ReadingRecordRow>({
         queryOptions: {

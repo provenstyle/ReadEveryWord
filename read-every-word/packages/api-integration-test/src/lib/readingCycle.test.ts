@@ -1,8 +1,8 @@
 import { expectOk } from '@read-every-word/test-utils'
 import { withCaller, withUser } from './scenarios.js'
 
-// A caller is bound to one identity, because the auth middleware replaces
-// input.authId with the token subject. Each test takes its own user, so each
+// A caller is bound to one identity: authId comes from the token, and requests
+// have no way to name a different one. Each test takes its own user, so each
 // test gets its own storage partition and reruns stay idempotent.
 describe('readingCycle', () => {
 
@@ -12,19 +12,19 @@ describe('readingCycle', () => {
 
         // create
         const createResult = await caller.readingCycle.create({
-          authId: user.authId,
           dateStarted: new Date().toISOString(),
           name: 'name'
         })
         expectOk(createResult)
 
         // get
-        const readingCycleResult = await caller.readingCycle.get({authId: user.authId})
+        const readingCycleResult = await caller.readingCycle.get()
         const readingCycles = expectOk(readingCycleResult)
         expect(readingCycles.length).toEqual(1)
 
         const readingCycle = readingCycles[0]
-        expect(readingCycle.authId).toEqual(user.authId)
+        // The partition key is server side only and must not come back out.
+        expect(readingCycle).not.toHaveProperty('authId')
         expect(readingCycle.name).toEqual('name')
         expect(readingCycle.dateStarted).toBeDefined()
         expect(readingCycle.dateCompleted).toBeUndefined()
@@ -37,7 +37,6 @@ describe('readingCycle', () => {
 
         // create
         const createResult = await caller.readingCycle.create({
-          authId: user.authId,
           dateStarted: new Date().toISOString(),
           name: 'name'
         })
@@ -45,14 +44,13 @@ describe('readingCycle', () => {
 
         // update
         const updateResult = await caller.readingCycle.update({
-          authId: user.authId,
           id: created.id,
           dateCompleted: new Date().toISOString()
         })
         expectOk(updateResult)
 
         // get
-        const readingCycleResult = await caller.readingCycle.get({authId: user.authId})
+        const readingCycleResult = await caller.readingCycle.get()
         const readingCycles = expectOk(readingCycleResult)
         expect(readingCycles.length).toEqual(1)
         const readingCycle = readingCycles[0]
@@ -64,21 +62,19 @@ describe('readingCycle', () => {
         const caller = await withCaller(user)
 
         const createResult1 = await caller.readingCycle.create({
-          authId: user.authId,
           dateStarted: new Date().toISOString(),
           name: 'name'
         })
         const created1 = expectOk(createResult1)
 
         const createResult2 = await caller.readingCycle.create({
-          authId: user.authId,
           dateStarted: new Date().toISOString(),
           name: 'name'
         })
         const created2 = expectOk(createResult2)
 
         // get
-        const readingCycleResult = await caller.readingCycle.get({authId: user.authId})
+        const readingCycleResult = await caller.readingCycle.get()
         const readingCycles = expectOk(readingCycleResult)
         expect(readingCycles.length).toEqual(2)
 
@@ -92,27 +88,24 @@ describe('readingCycle', () => {
         const caller = await withCaller(user)
 
         const createResult1 = await caller.readingCycle.create({
-          authId: user.authId,
           dateStarted: new Date().toISOString(),
           name: 'name'
         })
         const created1 = expectOk(createResult1)
 
         const createResult2 = await caller.readingCycle.create({
-          authId: user.authId,
           dateStarted: new Date().toISOString(),
           name: 'name'
         })
         const created2 = expectOk(createResult2)
 
         const updated = await caller.readingCycle.setDefault({
-          authId: user.authId,
           id: created2.id
         })
         expectOk(updated)
 
         // get
-        const readingCycleResult = await caller.readingCycle.get({authId: user.authId})
+        const readingCycleResult = await caller.readingCycle.get()
         const readingCycles = expectOk(readingCycleResult)
         expect(readingCycles.length).toEqual(2)
 
@@ -126,7 +119,6 @@ describe('readingCycle', () => {
 
         // create
         const createResult = await caller.readingCycle.create({
-          authId: user.authId,
           dateStarted: new Date().toISOString(),
           name: 'name'
         })
@@ -134,14 +126,13 @@ describe('readingCycle', () => {
 
         // update
         const updateResult = await caller.readingCycle.update({
-          authId: user.authId,
           id: created.id,
           name: 'a new name'
         })
         expectOk(updateResult)
 
         // get
-        const readingCycleResult = await caller.readingCycle.get({authId: user.authId})
+        const readingCycleResult = await caller.readingCycle.get()
         const readingCycles = expectOk(readingCycleResult)
         expect(readingCycles.length).toEqual(1)
         const readingCycle = readingCycles[0]
@@ -156,7 +147,6 @@ describe('readingCycle', () => {
       for (let i = 0; i < 5; i++) {
         promises.push(
           caller.readingCycle.create({
-            authId: user.authId,
             dateStarted: new Date().toISOString(),
             name: `${i}`
           })
@@ -165,9 +155,7 @@ describe('readingCycle', () => {
 
       await Promise.all(promises)
 
-      const readingCycleResult = await caller.readingCycle.get({
-        authId: user.authId
-      })
+      const readingCycleResult = await caller.readingCycle.get()
       const readingCycles = expectOk(readingCycleResult)
 
       const defaults = readingCycles.filter(x => x.default)

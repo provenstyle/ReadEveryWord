@@ -116,15 +116,28 @@ Tests use `factory.ts` factories plus `expectOk`/`expectErrorMessage` from `@rea
 
 Auth0 JWTs, RS256, verified against JWKS with a 12-hour in-process key cache ([packages/api/src/lib/authentication.ts](read-every-word/packages/api/src/lib/authentication.ts)). `authenticatedProcedure` runs a middleware that validates the bearer token, derives the sanitized `sub`, and puts it on the **context** as `ctx.authId`. `publicProcedure` skips this; `healthCheck` and `clientConfig` are the only public procedures.
 
-> 🚨 **Every authenticated resolver must call `authenticatedRequest(input, ctx)`** ([packages/api/src/lib/trpc.ts](read-every-word/packages/api/src/lib/trpc.ts)) and hand *that* to its handler, never the raw `input`. `authId` decides whose partition a request touches, and a resolver that forgets lets any authenticated caller read and write another user's data by naming their `authId`.
+> 🚨 **`authId` never appears in a request type.** It is the Azure Table Storage `PartitionKey` and the blob container name used for locking, so it decides whose data a request touches. It is derived from the verified token and reaches handlers on a separate slot:
 >
-> The middleware deliberately does **not** mutate `input`. It used to try, and it silently did nothing: a middleware only sees input from parsers registered before it, and `authenticatedProcedure` is `t.procedure.use(authMiddleware)` with every `.input()` added afterwards, so `input` was always `undefined` there. Don't reintroduce that — it reads as if it works. `authIdIsTakenFromTheToken.test.ts` guards the behaviour by passing a deliberately mismatched `authId`; every other test passes one that already matches its token and so cannot see the difference. `clientConfig` is public by necessity — it serves the Auth0 `domain`/`clientId`/`audience` the SPA needs *before* it can obtain a token, so it must return only those three fields and never spread `config.openId` (which holds `jwksUri`/`issuer`) or `config` (which holds the storage connection string).
+> ```ts
+> export interface Principal { authId: string }
+> export interface Authenticated<TRequest> { request: TRequest; principal: Principal }
+> ```
+>
+> Build authenticated procedures with `authenticatedQuery` / `authenticatedMutation` (client input) or `principalQuery` / `principalMutation` (identity is the whole input) from [packages/api/src/lib/trpc.ts](read-every-word/packages/api/src/lib/trpc.ts). Those four builders are the **only** places identity is attached to a request, so there is no per-slice step to forget. Read `principal.authId`, never `request.authId` — the request types have no such field, so an attempt is a compile error.
+>
+> An earlier version merged the two with `{ ...input, authId: ctx.authId }`, which was safe only because `authId` came last in the spread. Before that, a middleware tried to mutate `input` and silently did nothing, because a middleware only sees input from parsers registered before it and `authenticatedProcedure` is built before any `.input()`. Don't reintroduce either shape.
+>
+> The property is defended twice over, which is worth knowing when changing either layer: `additionalProperties: false` on every schema means a client that sends `authId` is **rejected** with `must NOT have additional properties`, and separately nothing reads `authId` off a request. `authIdIsTakenFromTheToken.test.ts` covers both, going around the types with `as any` since a typed client cannot express the attack.
+>
+> `authId` is server-only in both directions: the entities (`ReadingCycle`, `ReadingRecord`, `DeletedReadingRecord`) do not carry it either, so responses never echo the partition key.
 
-`authId` is the Azure Table Storage `PartitionKey` throughout, and also the blob container name used for locking.
+`clientConfig` is public by necessity — it serves the Auth0 `domain`/`clientId`/`audience` the SPA needs *before* it can obtain a token, so it must return only those three fields and never spread `config.openId` (which holds `jwksUri`/`issuer`) or `config` (which holds the storage connection string).
+
+`sanitizeAuthId` strips pipes from the `sub`, and `isUsableAuthId` rejects anything that would not be a legal Azure container name — token validation fails such a token rather than letting it reach storage. That predicate is a **reject, never transform** guard on purpose: `authId` is the live PartitionKey for existing data, so normalizing it would repartition those users and orphan what they have written.
 
 ### Data model and locking
 
-Azure Table Storage. Row types (`ReadingCycleRow`) live next to their `map(row) → DomainType` function in the aggregate's `domain.ts`; `partitionKey`/`rowKey`/`timestamp` are translated to `authId`/`id`/`lastModified` at that boundary — the domain types never leak storage field names.
+Azure Table Storage. Row types (`ReadingCycleRow`) live next to their `map(row) → DomainType` function in the aggregate's `domain.ts`; `rowKey`/`timestamp` are translated to `id`/`lastModified` at that boundary, and `partitionKey` is deliberately *not* projected back out — the domain types never leak storage field names.
 
 `withLock` in [packages/table-storage/src/lib/storageLock.ts](read-every-word/packages/table-storage/src/lib/storageLock.ts) implements mutual exclusion via **blob lease acquisition** (60s lease, 100ms retry poll, caller-supplied timeout). It's needed because Table Storage has no cross-entity transactions: without it, concurrent requests create duplicate default reading cycles. Table transactions are batched in chunks of 100 (`submitTransaction` limit).
 
@@ -156,7 +169,7 @@ Things that will bite:
 
 Procedures return `Result` values as their *payload* rather than throwing, and `isOk`/`isErr` discriminate on a plain `__result` string while the error classes carry `code`/`message` as instance fields — so all of that survives JSON and the UI's error branching works unchanged. Class prototypes do **not** survive; never use `instanceof` on the err side. `src/api/result.ts` (`fromTrpc`) exists only to map transport and middleware failures — which tRPC *does* throw — back onto the same error classes.
 
-Every authenticated call passes a placeholder `authId: ''`. The schema requires the field and the auth middleware only overwrites it when already present, replacing it with the token subject before the handler runs.
+Authenticated calls send no identity at all — `authId` is not part of any request type. `readSummary.get` and `readingCycle.get` take no argument whatsoever.
 
 ## Deployment
 

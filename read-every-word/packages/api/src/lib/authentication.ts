@@ -164,6 +164,16 @@ export class Authentication {
             return
           }
 
+          // A sub that cannot produce a legal container name would otherwise
+          // fail deep inside Azure on the first write, or slip through the
+          // unescaped OData filters. Reject it here instead, where the caller
+          // gets a 401 rather than a 500.
+          if (!isUsableAuthId(sanitizeAuthId(payload))) {
+            console.log('Token verified but its sub does not yield a usable authId')
+            resolve(err(new NotAuthenticated()))
+            return
+          }
+
           resolve(ok(payload))
         })
       } catch (e) {
@@ -188,6 +198,24 @@ export const sanitizeAuthId = (token: JwtPayload): string => {
   const sanitized = auth0Id.replace(/\|/g, '')
   return sanitized
 }
+
+/**
+ * Whether an authId is usable as an Azure blob container name.
+ *
+ * This is the real contract on authId and it was previously only asserted in
+ * tests. It matters in two places: withLock passes authId straight to
+ * getContainerClient, and the persistence filters interpolate it into OData
+ * filter strings without escaping. Enforcing the shape is what makes that
+ * interpolation safe by construction rather than by assuming well formed
+ * subjects.
+ *
+ * Deliberately a predicate rather than a normalizer. authId is the live
+ * PartitionKey for existing data, so lowercasing or trimming it here would
+ * repartition those users and orphan everything they have written. A subject
+ * that cannot produce a legal authId is rejected, never rewritten.
+ */
+export const isUsableAuthId = (authId: string): boolean =>
+  /^[a-z0-9][a-z0-9-]{1,61}[a-z0-9]$/.test(authId) && !authId.includes('--')
 
 type ValidateTokenSucceeded =
   | JwtPayload

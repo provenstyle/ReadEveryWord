@@ -42,12 +42,12 @@ describe('test identity provider', () => {
 
     // Reaching the handler is the assertion. Storage is unreachable, so this
     // resolves to an Err rather than throwing UNAUTHORIZED.
-    await expect(caller.readingCycle.get({ authId: 'ignored' })).resolves.toBeDefined()
+    await expect(caller.readingCycle.get()).resolves.toBeDefined()
   }, 30 * 1000)
 
   it('rejects a request with no token', async () => {
     const caller = appRouter.createCaller({ config: withAuthOnlyConfig(idp) })
-    await expect(caller.readingCycle.get({ authId: 'ignored' })).rejects.toThrow('No token provided')
+    await expect(caller.readingCycle.get()).rejects.toThrow('No token provided')
   })
 
   it('rejects a token for a different audience', async () => {
@@ -56,7 +56,7 @@ describe('test identity provider', () => {
       config: withAuthOnlyConfig(idp),
       token: idp.signToken({ subject, audience: 'https://some-other-api.test' }),
     })
-    await expect(caller.readingCycle.get({ authId: 'ignored' })).rejects.toThrow('Invalid or expired token')
+    await expect(caller.readingCycle.get()).rejects.toThrow('Invalid or expired token')
   })
 
   it('rejects a token from a different issuer', async () => {
@@ -65,7 +65,7 @@ describe('test identity provider', () => {
       config: withAuthOnlyConfig(idp),
       token: idp.signToken({ subject, issuer: 'https://some-other-idp.test/' }),
     })
-    await expect(caller.readingCycle.get({ authId: 'ignored' })).rejects.toThrow('Invalid or expired token')
+    await expect(caller.readingCycle.get()).rejects.toThrow('Invalid or expired token')
   })
 
   it('rejects an expired token', async () => {
@@ -74,7 +74,7 @@ describe('test identity provider', () => {
       config: withAuthOnlyConfig(idp),
       token: idp.signToken({ subject, expiresIn: -60 }),
     })
-    await expect(caller.readingCycle.get({ authId: 'ignored' })).rejects.toThrow('Invalid or expired token')
+    await expect(caller.readingCycle.get()).rejects.toThrow('Invalid or expired token')
   })
 
   it('mints a subject whose authId is a legal blob container name', () => {

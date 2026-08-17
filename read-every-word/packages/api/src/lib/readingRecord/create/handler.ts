@@ -1,24 +1,27 @@
 import { isErr, ok } from '@read-every-word/foundation'
+import { type CreateReadingRecord, type CreateReadingRecordResult } from '@read-every-word/domain'
 import { validate } from './validation.js'
 import { Persistence } from './persistence.js'
-import { CreateReadingRecord, CreateReadingRecordResult } from '@read-every-word/domain'
-import { authenticatedProcedure, authenticatedRequest } from '../../trpc.js'
+import { authenticatedMutation, type Authenticated } from '../../trpc.js'
+import { Config } from '../../config.js'
 
-export const createReadingRecordProcedure = authenticatedProcedure
-  .input(r => r as CreateReadingRecord)
-  .mutation(async ({ input, ctx }): Promise<CreateReadingRecordResult> => {
-    const request = authenticatedRequest(input, ctx)
+export const createReadingRecordProcedure = authenticatedMutation(handleCreateReadingRecord)
 
-    const validationResponse = await validate(request)
-    if(isErr(validationResponse)) {
-      return validationResponse
-    }
-    const persistence = new Persistence(ctx.config)
-    const createReadingRecordResponse = await persistence.createReadingRecord(request)
-    if (isErr(createReadingRecordResponse)) {
-      return createReadingRecordResponse
-    }
-    const readingRecord = createReadingRecordResponse.data
+export async function handleCreateReadingRecord (
+  authenticated: Authenticated<CreateReadingRecord>,
+  config: Config
+): Promise<CreateReadingRecordResult> {
+  const validationResponse = await validate(authenticated.request)
+  if(isErr(validationResponse)) {
+    return validationResponse
+  }
 
-    return ok(readingRecord)
-  })
+  const persistence = new Persistence(config)
+  const createReadingRecordResponse = await persistence.createReadingRecord(authenticated)
+  if (isErr(createReadingRecordResponse)) {
+    return createReadingRecordResponse
+  }
+  const readingRecord = createReadingRecordResponse.data
+
+  return ok(readingRecord)
+}

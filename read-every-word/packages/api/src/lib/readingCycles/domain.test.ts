@@ -14,7 +14,9 @@ describe('mapping ReadingCycleRow to ReadingCycleData', () => {
     })
 
     expect(data.id).toEqual('rowKey')
-    expect(data.authId).toEqual('partitionKey')
+    // The partition key is a storage detail and must not be projected back out
+    // onto the entity, which is a response payload.
+    expect(data).not.toHaveProperty('authId')
     expect(data.lastModified).toEqual('timestamp')
     expect(data.name).toEqual('name')
     expect(data.dateStarted).toEqual('dateStarted')

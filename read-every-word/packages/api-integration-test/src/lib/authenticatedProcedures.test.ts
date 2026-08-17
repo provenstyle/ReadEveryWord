@@ -38,9 +38,10 @@ const invoke = (caller: Caller, path: string) => {
   return (input: unknown) => parent[name](input)
 }
 
-// Auth runs before the handler, so the input only has to be an object carrying
-// authId. It is never read by anything these tests reach.
-const ANY_INPUT = { authId: 'ignored' }
+// Auth runs before the handler, so the input is irrelevant here - these tests
+// only ever get as far as the token check. Procedures that take no input ignore
+// it entirely.
+const ANY_INPUT = {}
 
 describe('authenticated procedures reject invalid tokens', () => {
   let idp: TestIdentityProvider

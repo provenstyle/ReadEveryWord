@@ -12,7 +12,6 @@ export interface ReadingCycleRow {
 
 export const map = (row: ReadingCycleRow): ReadingCycle => {
   return {
-    authId: row.partitionKey,
     id: row.rowKey,
     lastModified: row.timestamp,
     name: row.name,

@@ -5,7 +5,8 @@ import { Config } from '../config.js'
 import { type ReadingCycleRow, map } from './domain.js'
 import { v4 as uuid } from 'uuid'
 import { chunk } from 'lodash-es'
-import { type ReadingCycle, type GetReadingCycle, type CreateReadingCycle, type CreateReadingCycleResult, type SetDefaultReadingCycle, type UpdateReadingCycle } from '@read-every-word/domain'
+import { type ReadingCycle, type CreateReadingCycle, type CreateReadingCycleResult, type SetDefaultReadingCycle, type UpdateReadingCycle } from '@read-every-word/domain'
+import { type Authenticated, type Principal } from '../trpc.js'
 
 const LOCK_TIME_OUT = 30 * 1000 // 30 seconds
 
@@ -18,22 +19,23 @@ export class Persistence {
       this.tableClient = cacheTableClient(config.tableStorageConnectionString, 'readingCycle')
   }
 
-  async createReadingCycle(request: CreateReadingCycle): Promise<CreateReadingCycleResult> {
+  async createReadingCycle(authenticated: Authenticated<CreateReadingCycle>): Promise<CreateReadingCycleResult> {
+    const { request, principal } = authenticated
     try {
       return await withLock({
         storageConnectionString: this.config.tableStorageConnectionString,
-        containerName: request.authId,
+        containerName: principal.authId,
         lockFileName: 'readingCycle_create.lock',
         wait: LOCK_TIME_OUT,
         func: async () => {
-          const getAllReadingCyclesResult = await this.getAllReadingCycles({authId: request.authId})
+          const getAllReadingCyclesResult = await this.getAllReadingCycles(principal)
           if (isErr(getAllReadingCyclesResult)) {
             return getAllReadingCyclesResult
           }
           const allReadingCycles = getAllReadingCyclesResult.data
 
           const readingCycle = {
-            partitionKey: request.authId,
+            partitionKey: principal.authId,
             rowKey: uuid(),
             name: request.name,
             dateStarted: request.dateStarted,
@@ -45,7 +47,6 @@ export class Persistence {
           await this.tableClient.createEntity(readingCycle)
 
           return ok({
-            authId: request.authId,
             id: readingCycle.rowKey,
             lastModified: '',
             name: readingCycle.name,
@@ -63,12 +64,12 @@ export class Persistence {
     }
   }
 
-  async getAllReadingCycles(request: GetReadingCycle): Promise<Result<ReadingCycle[], GetFailed>> {
+  async getAllReadingCycles(principal: Principal): Promise<Result<ReadingCycle[], GetFailed>> {
     try {
       const allRows: ReadingCycleRow[] = []
       const allRowsResult = this.tableClient.listEntities<ReadingCycleRow>({
         queryOptions: {
-          filter: `PartitionKey eq '${request.authId}'`
+          filter: `PartitionKey eq '${principal.authId}'`
         }
       })
       for await (const row of allRowsResult) {
@@ -84,12 +85,13 @@ export class Persistence {
     }
   }
 
-  async setDefaultReadingCycle(request: SetDefaultReadingCycle): Promise<Result<ReadingCycle, UpdateFailed>> {
+  async setDefaultReadingCycle(authenticated: Authenticated<SetDefaultReadingCycle>): Promise<Result<ReadingCycle, UpdateFailed>> {
+    const { request, principal } = authenticated
     try {
       // get rows
       const allRowsResult = this.tableClient.listEntities<ReadingCycleRow>({
         queryOptions: {
-          filter: `PartitionKey eq '${request.authId}'`
+          filter: `PartitionKey eq '${principal.authId}'`
         }
       })
 
@@ -125,10 +127,11 @@ export class Persistence {
     }
   }
 
-  async updateReadingCycle(request: UpdateReadingCycle): Promise<Result<ReadingCycle, UpdateFailed>> {
+  async updateReadingCycle(authenticated: Authenticated<UpdateReadingCycle>): Promise<Result<ReadingCycle, UpdateFailed>> {
+    const { request, principal } = authenticated
     try {
       const readingCycleRow = await this.tableClient
-        .getEntity<ReadingCycleRow>(request.authId, request.id)
+        .getEntity<ReadingCycleRow>(principal.authId, request.id)
 
       if (!readingCycleRow) {
         return err(new NotFound())

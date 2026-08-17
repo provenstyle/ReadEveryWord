@@ -1,6 +1,6 @@
 import { isErr, isOk } from '@read-every-word/foundation'
 import { createTestIdentityProvider, type TestIdentityProvider } from '@read-every-word/test-utils'
-import { Authentication, sanitizeAuthId } from './authentication.js'
+import { Authentication, sanitizeAuthId, isUsableAuthId } from './authentication.js'
 
 describe('Authentication', () => {
   let idp: TestIdentityProvider
@@ -209,10 +209,9 @@ describe('Authentication', () => {
 })
 
 describe('sanitizeAuthId', () => {
-  // The authId doubles as an Azure blob container name: 3 to 63 characters of
-  // lowercase alphanumerics and non-consecutive hyphens.
-  const isLegalContainerName = (value: string) =>
-    /^[a-z0-9][a-z0-9-]{1,61}[a-z0-9]$/.test(value) && !value.includes('--')
+  // Imported rather than redeclared: the container name rule is enforced in
+  // production now, so the test and the api cannot drift apart.
+  const isLegalContainerName = isUsableAuthId
 
   it('strips the pipe from a single segment subject', () => {
     expect(sanitizeAuthId({ sub: 'auth0|507f1f77bcf86cd799439011' })).toEqual('auth0507f1f77bcf86cd799439011')

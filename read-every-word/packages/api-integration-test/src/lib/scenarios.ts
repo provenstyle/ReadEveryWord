@@ -12,7 +12,7 @@ import { ReadingCycle, ReadingRecord } from '@read-every-word/domain';
 // a loopback server we control.
 //
 // The reason is test isolation rather than convenience. The auth middleware
-// overwrites input.authId with the token subject, so every test sharing one
+// derives authId from the token subject, so every test sharing one
 // token would share one identity, one storage partition, and one accumulating
 // pile of data. Signing our own tokens lets each test own a subject.
 let provider: Promise<TestIdentityProvider> | undefined
@@ -111,9 +111,9 @@ export async function withConfig(): Promise<Config> {
 /**
  * A fresh identity, with a token whose subject sanitizes to its authId.
  *
- * Keeping the two in step matters: the middleware derives authId from the
- * token, so a test that passes one authId and authenticates as another would
- * silently read and write a different partition than it asserts against.
+ * Requests cannot name an authId at all, so the token is the only thing that
+ * decides which partition a test touches. authId is kept here so a test can
+ * still say which partition it expects to be talking to.
  */
 export async function withUser(): Promise<User> {
   const identity = await identityProvider()
@@ -139,7 +139,6 @@ export async function withCaller(user?: User): Promise<Caller> {
 export async function withReadingCycle(user: User): Promise<ReadingCycle> {
   const caller = await withCaller(user)
   const readingCycleResult = await caller.readingCycle.create({
-    authId: user.authId,
     dateStarted: new Date().toISOString(),
     name: 'name'
   })
@@ -149,7 +148,6 @@ export async function withReadingCycle(user: User): Promise<ReadingCycle> {
 export async function withReadingRecord(user: User, readingCycle: ReadingCycle): Promise<ReadingRecord> {
   const caller = await withCaller(user)
   const readingRecordResult = await caller.readingRecord.create({
-    authId: user.authId,
     readingCycleId: readingCycle.id,
     bookId: 0,
     chapterId: 0,

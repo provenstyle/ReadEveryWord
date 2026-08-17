@@ -7,7 +7,6 @@ import * as Factory from 'factory.ts'
 describe('UpdateReadingCycle validation', () => {
   const requestFactory = Factory.Sync.makeFactory<UpdateReadingCycle>({
     id: uuid(),
-    authId: 'authId',
     name: 'name',
     dateCompleted: '2024-11-04T23:30:00Z',
   });
@@ -22,13 +21,6 @@ describe('UpdateReadingCycle validation', () => {
       id: undefined
     }))
     expectErrorMessage(response, "must have required property 'id'")
-  })
-
-  it('authId is required', async () => {
-    const response = await validate(requestFactory.build({
-      authId: undefined
-    }))
-    expectErrorMessage(response, "must have required property 'authId'")
   })
 
   it('name is optional', async () => {

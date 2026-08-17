@@ -13,7 +13,6 @@ export interface ReadingRecordRow {
 
 export const map = (row: ReadingRecordRow): ReadingRecord => {
   return {
-    authId: row.authId,
     readingCycleId: row.readingCycleId,
     id: row.rowKey,
     lastModified: row.timestamp,

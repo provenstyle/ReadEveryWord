@@ -1,7 +1,6 @@
 import { Result, CreateFailed, GetFailed, UpdateFailed, FailedToAcquireDataLock } from '@read-every-word/foundation'
 
 export interface ReadingCycle {
-  authId: string
   id: string
   lastModified: string
   name: string
@@ -11,7 +10,6 @@ export interface ReadingCycle {
 }
 
 export interface CreateReadingCycle {
-  authId: string
   name: string
   dateStarted: string
 }
@@ -25,10 +23,6 @@ export type CreateReadingCycleFailed =
 
 export type CreateReadingCycleResult = Result<CreateReadingCycleSucceeded, CreateReadingCycleFailed>
 
-export interface GetReadingCycle {
-  authId: string
-}
-
 export type GetReadingCycleSucceeded =
   | ReadingCycle[]
 
@@ -38,7 +32,6 @@ export type GetReadingCycleFailed =
 export type GetReadingCycleResult = Result<GetReadingCycleSucceeded, GetReadingCycleFailed>
 
 export interface SetDefaultReadingCycle {
-  authId: string
   id: string
 }
 
@@ -51,7 +44,6 @@ export type SetDefaultReadingCycleFailed =
 export type SetDefaultReadingCycleResult = Result<SetDefaultReadingCycleSucceeded, SetDefaultReadingCycleFailed>
 
 export interface UpdateReadingCycle {
-  authId: string
   id: string
   name?: string
   dateCompleted?: string

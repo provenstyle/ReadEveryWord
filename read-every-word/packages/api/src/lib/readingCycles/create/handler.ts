@@ -2,28 +2,26 @@ import { isErr, ok } from '@read-every-word/foundation'
 import { type CreateReadingCycle, type CreateReadingCycleResult } from '@read-every-word/domain'
 import { validate } from './validation.js'
 import { Persistence } from '../persistence.js'
-import { authenticatedProcedure, authenticatedRequest } from '../../trpc.js'
+import { authenticatedMutation, type Authenticated } from '../../trpc.js'
 import { Config } from '../../config.js'
 
-export const createReadingCycleProcedure = authenticatedProcedure
-  .input(r => r as CreateReadingCycle)
-  .mutation(async ({ input, ctx }): Promise<CreateReadingCycleResult> => {
-    return handleCreateReadingCycle(authenticatedRequest(input, ctx), ctx.config)
-  })
+export const createReadingCycleProcedure = authenticatedMutation(handleCreateReadingCycle)
 
-export const handleCreateReadingCycle = async (request: CreateReadingCycle, config: Config): Promise<CreateReadingCycleResult> => {
-    const validationResponse = await validate(request)
-    if(isErr(validationResponse)) {
-      return validationResponse
-    }
+export async function handleCreateReadingCycle (
+  authenticated: Authenticated<CreateReadingCycle>,
+  config: Config
+): Promise<CreateReadingCycleResult> {
+  const validationResponse = await validate(authenticated.request)
+  if(isErr(validationResponse)) {
+    return validationResponse
+  }
 
-    const persistence = new Persistence(config)
-    const createReadingCycleResponse = await persistence.createReadingCycle(request)
-    if (isErr(createReadingCycleResponse)) {
-      return createReadingCycleResponse
-    }
-    const readingCycle = createReadingCycleResponse.data
+  const persistence = new Persistence(config)
+  const createReadingCycleResponse = await persistence.createReadingCycle(authenticated)
+  if (isErr(createReadingCycleResponse)) {
+    return createReadingCycleResponse
+  }
+  const readingCycle = createReadingCycleResponse.data
 
-    return ok(readingCycle)
-
+  return ok(readingCycle)
 }
