@@ -2,7 +2,7 @@
   "name": "@read-every-word/api-host",
   "version": "0.0.1",
   "private": true,
-  "main": "dist/apps/api-host/src/main.js",
+  "main": "dist/main.js",
   "dependencies": {
     "@azure/functions": "^4.5.1"
   },
@@ -16,22 +16,22 @@
         "defaultConfiguration": "production",
         "options": {
           "platform": "node",
-          "outputPath": "apps/api-host/dist",
+          "outputPath": "apps/api-host/app/dist",
           "format": [
             "esm"
           ],
           "bundle": true,
           "thirdParty": false,
-          "main": "apps/api-host/src/main.ts",
-          "tsConfig": "apps/api-host/tsconfig.app.json",
+          "main": "apps/api-host/app/src/main.ts",
+          "tsConfig": "apps/api-host/app/tsconfig.app.json",
           "assets": [
             {
-              "input": "apps/api-host",
+              "input": "apps/api-host/app",
               "glob": "host.json",
               "output": "."
             },
             {
-              "input": "apps/api-host",
+              "input": "apps/api-host/app",
               "glob": ".funcignore",
               "output": "."
             }
@@ -61,11 +61,11 @@
         ],
         "cache": true,
         "outputs": [
-          "{workspaceRoot}/apps/api-host/dist/package.json"
+          "{workspaceRoot}/apps/api-host/app/dist/package.json"
         ],
         "executor": "nx:run-commands",
         "options": {
-          "command": "node apps/api-host/scripts/generate-deploy-manifest.mjs",
+          "command": "node apps/api-host/app/scripts/generate-deploy-manifest.mjs",
           "cwd": "{workspaceRoot}"
         }
       },

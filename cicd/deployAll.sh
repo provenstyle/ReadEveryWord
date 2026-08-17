@@ -6,9 +6,6 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
 
-# The legacy server/api/cicd/functionPush.sh is not called here any more.
-# apps/api-host deploys to the same function app, so running both would mean
-# whichever went last wins.
 echo "deploy api            *********************************************"
 "$ROOT/read-every-word/apps/api-host/cicd/functionPush.sh"
 

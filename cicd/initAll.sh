@@ -7,7 +7,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
 
 echo "init api            *********************************************"
-"$ROOT/server/api/cicd/init.sh"
+"$ROOT/read-every-word/apps/api-host/cicd/init.sh"
 
 echo "init front end      *********************************************"
 "$ROOT/read-every-word/apps/frontEnd/cicd/init.sh"

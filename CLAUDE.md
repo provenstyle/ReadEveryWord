@@ -6,18 +6,22 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Read Every Word is a Bible reading tracker. The repo currently holds **two implementations side by side**:
 
-- [read-every-word/](read-every-word/) — the **current** implementation. An Nx monorepo (npm workspaces), tRPC over Azure Functions, plus the Vue 3 + Vuetify SPA and the front end's Terraform. Active work happens here (branch `nx2`).
-- [server/](server/) — what is left of the **legacy** implementation: the REST api (`server/api/app`), its client, `server/domain`, `server/infrastructure`, and the api's Terraform.
+- [read-every-word/](read-every-word/) — the **current** implementation. An Nx monorepo (npm workspaces), tRPC over Azure Functions, the Vue 3 + Vuetify SPA, and all of the Terraform. Active work happens here (branch `nx2`).
+- [server/](server/) — the remains of the **legacy** implementation: the REST api and the two packages it still imports.
 
 The BFF is **gone**. It only verified the Auth0 JWT and forwarded to the REST api, and `packages/api` verifies tokens itself. The SPA calls the tRPC router directly, and Cloudflare's edge worker routes `/api/*` to the api function app.
 
-Split of ownership today:
+**All infrastructure now lives in the Nx tree.** Both apps follow the same three-sibling shape — the deployable code, its Terraform, and its cicd scripts together:
 
-- **Front end infrastructure** lives in the Nx tree — [apps/frontEnd/terraform/](read-every-word/apps/frontEnd/terraform/) and [apps/frontEnd/cicd/](read-every-word/apps/frontEnd/cicd/).
-- **The api function app and table storage** are still owned by [server/api/terraform/](server/api/terraform/) even though the code deployed onto it is now `apps/api-host`. Moving that stack into the Nx tree is a separate migration.
-- Orchestration is still [cicd/](cicd/) at the repo root.
+```
+read-every-word/apps/
+├── api-host/{app,cicd,terraform}     # function app, table storage
+└── frontEnd/{ui,cicd,terraform}      # blob storage, cloudflare dns + worker
+```
 
-`server/domain` and `server/infrastructure` are near-duplicates of `packages/domain` and `packages/foundation`; they survive only because `server/api/{app,client,seed}` still depend on them. Check which tree you're in before editing.
+The Nx project root is the first folder in each (`api-host/app`, `frontEnd/ui`); `cicd` and `terraform` are plain directories, not workspace packages. Orchestration is still [cicd/](cicd/) at the repo root.
+
+What is left in [server/](server/) is legacy code with **no deploy path of its own**: `api/app` (the old REST endpoints), `api/client`, `api/seed`, `api/_template`, `domain`, and `infrastructure`. `server/domain` and `server/infrastructure` are near-duplicates of `packages/domain` and `packages/foundation` and survive only because `server/api/*` still imports them. Rolling back to the REST api means checking out the commit that still had its scripts and paths, not running anything in `server/`. Check which tree you're in before editing.
 
 `android/`, `iphone/`, and `design/` are notes/placeholders, not code.
 
@@ -50,7 +54,7 @@ self-contained function app, and takes no `--typescript` flag:
 
 ```sh
 npx nx deploy-manifest api-host      # build, then write dist/package.json
-cd apps/api-host/dist && npm install --omit=dev
+cd apps/api-host/app/dist && npm install --omit=dev
 func start --port 7074
 ```
 
@@ -61,8 +65,8 @@ There is also a VS Code launch config, "Debug @read-every-word/api-host with Nx"
 - **Every project needs its own `.spec.swcrc`.** Each `jest.config.cjs` does `readFileSync(`${__dirname}/.spec.swcrc`)` at module load, and the `@nx/jest` plugin loads those configs while building the project graph — so one missing file makes *every* `nx` command fail with `ENOENT`, not just `nx test`. They are byte-identical; copy one when scaffolding a project. This only applies to projects that *have* a `jest.config.cjs` — `apps/frontEnd/ui` has none, so it has no `test` target and needs no `.spec.swcrc`.
 - **`@swc/core` is pinned to an exact `1.13.20`.** The `1.13.21` darwin-arm64 binary ships a malformed code signature and fails `dlopen` with `code signature invalid` on Apple Silicon, which breaks all Jest runs. Don't loosen the pin back to a range without checking that the resolved version's native binding actually loads.
 - **`vue-router` is pinned to `~4.4.5` and declared at the workspace root.** 4.5 ships its own `vue-router-auto.d.ts`, which collides with the `vue-router/auto` module `unplugin-vue-router` declares. It sits at the root because `unplugin-vue-router` does `export * from 'vue-router'` from its own location — if npm nests `vue-router` under the ui project instead, that re-export resolves to nothing and `createRouter` appears to not exist.
-- **`nx build api-host` wipes `apps/api-host/dist`**, including the generated `package.json` and the `node_modules` you installed into it. Anything that builds — `nx run-many -t build`, and therefore the CI command — leaves a half-populated `dist` behind, and `func start` there reports "Worker failed to load package.json" and registers no functions. Re-run `nx deploy-manifest api-host` (it restores `package.json` from cache) and `npm install --omit=dev`. `functionPush.sh` already does both in that order.
-- One pre-existing `lint` error blocks the CI command: the empty `GetHealthCheck` interface in [packages/domain/src/lib/healthCheck.ts:8](read-every-word/packages/domain/src/lib/healthCheck.ts#L8).
+- **`nx build api-host` wipes `apps/api-host/app/dist`**, including the generated `package.json` and the `node_modules` you installed into it. Anything that builds — `nx run-many -t build`, and therefore the CI command — leaves a half-populated `dist` behind, and `func start` there reports "Worker failed to load package.json" and registers no functions. Re-run `nx deploy-manifest api-host` (it restores `package.json` from cache) and `npm install --omit=dev`. `functionPush.sh` already does both in that order.
+- Two pre-existing `lint` errors block the CI command: the empty `GetHealthCheck` interface in [packages/domain/src/lib/healthCheck.ts:8](read-every-word/packages/domain/src/lib/healthCheck.ts#L8), and `@nx/dependency-checks` reporting `dotenv` declared but unused in `packages/api-integration-test/package.json` (the import went away in `64f4a8b`; the fix is deleting the dependency). The second only surfaces after `nx reset` — a stale cache entry reports the task as passing, so a green local `run-many` is not proof.
 - `apps/frontEnd/ui` reports ~200 `eslint` **warnings** (vue formatting). They do not fail CI. The legacy project hid them by running `eslint . --fix` as its lint script.
 
 ## Architecture (Nx workspace)
@@ -72,7 +76,7 @@ Dependency direction, strictly one-way:
 ```
 apps/frontEnd/ui ─┐
                   ├→  packages/api  →  packages/domain
-apps/api-host  ───┘         ↓                ↓
+apps/api-host/app ─┘         ↓                ↓
       ↓            table-storage         foundation
 azure-function-adapter
 ```
@@ -84,7 +88,7 @@ azure-function-adapter
 - **`packages/api`** — the tRPC `appRouter` and all business logic. Exports `AppRouter` (type only), `Caller`, `createContextFromHeaders`, and `fromEnv`.
 - **`packages/table-storage`** — Azure Table/Blob helpers: `cacheTableClient` (memoized `TableClient` per table name), the `resourceDoesNotExist`/`entityAlreadyExist` error predicates, and `withLock`.
 - **`packages/azure-function-adapter`** — a hand-rolled tRPC↔Azure Functions v4 bridge (tRPC ships no official Azure adapter). Converts `HttpRequest` → fetch `Request`, calls `resolveResponse`, converts back.
-- **`apps/api-host`** — thin. `src/config.ts` reads config from env at module load (throwing on invalid config); `trpc/endpoint.ts` registers one `app.http('trpc', { route: 'trpc/{*path}' })` catch-all; `keepWarm.ts` optionally registers a timer. See "Deploying api-host" below — the build is unusual.
+- **`apps/api-host/app`** — thin. `src/config.ts` reads config from env at module load (throwing on invalid config); `trpc/endpoint.ts` registers one `app.http('trpc', { route: 'trpc/{*path}' })` catch-all; `keepWarm.ts` optionally registers a timer. See "Deploying api-host" below — the build is unusual.
 - **`apps/frontEnd/ui`** — the Vue 3 + Vuetify SPA. See "The UI" below.
 - **`packages/api-integration-test`** — tests that hit real Azure Table Storage and a real Auth0 token, via tRPC's direct-call API (`appRouter.createCaller`) rather than HTTP. Because these need a live environment they are **not** part of `test`: [nx.json](read-every-word/nx.json) registers `@nx/jest` twice against the glob `**/*integration-test*/**` — `exclude`d from the `test` target, `include`d in an `integration-test` target. So `nx run-many -t test` (and therefore CI) skips them, and they run explicitly via `nx integration-test`. This is by **naming convention**: any new project with `integration-test` in its directory name is automatically routed to the `integration-test` target and kept out of `test`.
 
@@ -163,8 +167,10 @@ Two stacks:
 
 | Stack | Terraform | cicd | Deploys |
 |---|---|---|---|
-| api | [server/api/terraform/](server/api/terraform/) | [server/api/cicd/](server/api/cicd/) | `apps/api-host` via [apps/api-host/cicd/functionPush.sh](read-every-word/apps/api-host/cicd/functionPush.sh) |
+| api | [apps/api-host/terraform/](read-every-word/apps/api-host/terraform/) | [apps/api-host/cicd/](read-every-word/apps/api-host/cicd/) | `apps/api-host/app` to the function app |
 | front end | [apps/frontEnd/terraform/](read-every-word/apps/frontEnd/terraform/) | [apps/frontEnd/cicd/](read-every-word/apps/frontEnd/cicd/) | `apps/frontEnd/ui` to blob storage `$web` |
+
+Both cicd folders hold the same script set — `init/plan/apply/destroy/validate/outputs/variables.sh` — and each resolves its Terraform as `$SCRIPT_DIR/../terraform`, which is why the sibling layout matters.
 
 `cicd/variables.sh` selects the environment by commenting/uncommenting a block and derives a DNS-safe subdomain from the current git branch. **It holds live Azure and Cloudflare credentials in plaintext.** It is gitignored and untracked (CLAUDE.md previously claimed otherwise), but treat the values as compromised and don't copy them into new files. `local.settings.json` is gitignored for the same reason.
 
@@ -194,13 +200,13 @@ The build **bundles every workspace library into a single ESM `dist/main.js`** a
 - CJS output `require`-ing packages that are all `"type": "module"`.
 - `file:` deps install as symlinks, which may not survive Core Tools' zip packer.
 
-`dist/package.json` is written by [scripts/generate-deploy-manifest.mjs](read-every-word/apps/api-host/scripts/generate-deploy-manifest.mjs), which derives the dependency list from the specifiers `main.js` still imports — so a new dependency anywhere under `packages/` cannot reach Azure as a cold-start crash. (Nx's own `generatePackageJson` refuses to run against this workspace's TS solution setup.)
+`dist/package.json` is written by [scripts/generate-deploy-manifest.mjs](read-every-word/apps/api-host/app/scripts/generate-deploy-manifest.mjs), which derives the dependency list from the specifiers `main.js` still imports — so a new dependency anywhere under `packages/` cannot reach Azure as a cold-start crash. (Nx's own `generatePackageJson` refuses to run against this workspace's TS solution setup.)
 
 Deploys are **local build, `--no-build` publish** — no Oryx. `SCM_DO_BUILD_DURING_DEPLOYMENT` is `false` accordingly.
 
 ### App settings
 
-Required: `TABLE_STORAGE_CONNECTION_STRING`, `OPEN_ID_JWKS_URI`, `OPEN_ID_AUDIENCE`, `OPEN_ID_ISSUER`, `OPEN_ID_DOMAIN`, `OPEN_ID_CLIENT_ID`. All six are read by `fromEnv` at module load and `apps/api-host` throws on any missing one, so an incomplete block is a **startup failure of the whole app**, not a degraded endpoint. The last two are consumed only by `clientConfig.get`. They live in [server/api/terraform/envs/{dev,prod}/terraform.tfvars](server/api/terraform/envs/).
+Required: `TABLE_STORAGE_CONNECTION_STRING`, `OPEN_ID_JWKS_URI`, `OPEN_ID_AUDIENCE`, `OPEN_ID_ISSUER`, `OPEN_ID_DOMAIN`, `OPEN_ID_CLIENT_ID`. All six are read by `fromEnv` at module load and `apps/api-host` throws on any missing one, so an incomplete block is a **startup failure of the whole app**, not a degraded endpoint. The last two are consumed only by `clientConfig.get`. They live in [apps/api-host/terraform/envs/{dev,prod}/terraform.tfvars](read-every-word/apps/api-host/terraform/envs/).
 
 `KEEP_WARM` is optional and deliberately **not** in `fromEnv`'s list — a missing flag should mean off, not a dead app. When true, `apps/api-host` registers a once-a-minute timer that makes a real HTTP request to its own `healthCheck.get`. It must stay an HTTP call: a timer firing keeps an instance alive but never exercises the HTTP path, which is what callers hit and what the consumption plan's scale controller watches. Each firing should log a `keep_warm_timer` invocation *and* a separate inbound `Functions.trpc` one.
 

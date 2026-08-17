@@ -1,4 +1,4 @@
-// Writes the package.json that ships inside apps/api-host/dist.
+// Writes the package.json that ships inside apps/api-host/app/dist.
 //
 // The build bundles every workspace library into main.js and leaves npm
 // packages external, so the deployed app needs a manifest listing exactly
@@ -16,7 +16,8 @@ import { fileURLToPath } from 'node:url'
 
 const scriptDir = dirname(fileURLToPath(import.meta.url))
 const projectRoot = join(scriptDir, '..')
-const workspaceRoot = join(projectRoot, '..', '..')
+// apps/api-host/app -> the workspace root
+const workspaceRoot = join(projectRoot, '..', '..', '..')
 const distDir = join(projectRoot, 'dist')
 
 const readJson = (path) => JSON.parse(readFileSync(path, 'utf8'))

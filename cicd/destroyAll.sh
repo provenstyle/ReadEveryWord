@@ -7,7 +7,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
 
 echo "destroy api *********************************************"
-"$ROOT/server/api/cicd/destroy.sh"
+"$ROOT/read-every-word/apps/api-host/cicd/destroy.sh"
 
 echo "destroy front end *********************************************"
 "$ROOT/read-every-word/apps/frontEnd/cicd/destroy.sh"

@@ -9,7 +9,7 @@ ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
 # api first: the front end stack reads the api's remote state for the edge
 # worker's API_HOST binding.
 echo "apply api *********************************************"
-"$ROOT/server/api/cicd/apply.sh"
+"$ROOT/read-every-word/apps/api-host/cicd/apply.sh"
 
 echo "apply front end *********************************************"
 "$ROOT/read-every-word/apps/frontEnd/cicd/apply.sh"

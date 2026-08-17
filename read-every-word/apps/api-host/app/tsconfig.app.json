@@ -1,5 +1,5 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "dist",
     "module": "ES2022",
@@ -21,13 +21,13 @@
   ],
   "references": [
     {
-      "path": "../../packages/azure-function-adapter/tsconfig.lib.json"
+      "path": "../../../packages/azure-function-adapter/tsconfig.lib.json"
     },
     {
-      "path": "../../packages/api/tsconfig.lib.json"
+      "path": "../../../packages/api/tsconfig.lib.json"
     },
     {
-      "path": "../../packages/foundation/tsconfig.lib.json"
+      "path": "../../../packages/foundation/tsconfig.lib.json"
     }
   ]
 }

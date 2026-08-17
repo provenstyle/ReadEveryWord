@@ -1,6 +1,14 @@
 # api-host
 
-Azure Function Host for `api`.
+Azure Function Host for `api`. This is the Nx project; its Terraform and deploy
+scripts are siblings one level up:
+
+```
+apps/api-host/
+├── app/         <- here
+├── cicd/        <- init/plan/apply/destroy/validate/outputs, functionPush
+└── terraform/   <- function app, table storage
+```
 
 The build bundles every `@read-every-word/*` library into a single ESM
 `dist/main.js` and leaves npm packages external, so `dist` is a self contained
@@ -12,7 +20,7 @@ only the real runtime dependencies. That is what runs locally and what ships.
 ```sh
 # from the mono repo root
 npx nx deploy-manifest api-host     # build, then write dist/package.json
-cd apps/api-host/dist
+cd apps/api-host/app/dist
 npm install --omit=dev
 func start --port 7074
 ```

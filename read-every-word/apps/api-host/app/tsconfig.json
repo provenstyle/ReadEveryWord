@@ -1,16 +1,16 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../../tsconfig.base.json",
   "files": [],
   "include": [],
   "references": [
     {
-      "path": "../../packages/azure-function-adapter"
+      "path": "../../../packages/azure-function-adapter"
     },
     {
-      "path": "../../packages/api"
+      "path": "../../../packages/api"
     },
     {
-      "path": "../../packages/foundation"
+      "path": "../../../packages/foundation"
     },
     {
       "path": "./tsconfig.app.json"

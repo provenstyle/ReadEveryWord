@@ -11,7 +11,7 @@ swcJestConfig.swcrc = false;
 
 module.exports = {
   displayName: '@read-every-word/api-host',
-  preset: '../../jest.preset.js',
+  preset: '../../../jest.preset.js',
   testEnvironment: 'node',
   transform: {
     '^.+\\.[tj]s$': ['@swc/jest', swcJestConfig],
