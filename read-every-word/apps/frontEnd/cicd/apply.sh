@@ -10,8 +10,6 @@ source "$SCRIPT_DIR/variables.sh"
 
 #export TF_LOG=DEBUG
 
-# The auth0 settings moved to the api stack with the bff, so there is no
-# envs/ var-file here any more.
 terraform -chdir="$TF_DIR" apply \
     -auto-approve \
     -var=state_resource_group_name=$STATE_RESOURCE_GROUP_NAME               \

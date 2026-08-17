@@ -32,4 +32,4 @@ npm install --omit=dev
 
 # --no-build because the artifact is already javascript. No --typescript for
 # the same reason.
-func azure functionapp publish "$FUNCTION_APP_NAME" --no-build
+func azure functionapp publish "$FUNCTION_APP_NAME" --no-build --javascript
