@@ -73,11 +73,18 @@ const authMiddleware = t.middleware(async ({ input, next, ctx }) => {
   const jwt = validationResult.data
   const authId = sanitizeAuthId(jwt)
 
-  if (input && typeof input === 'object' && 'authId' in input) {
-    input.authId = authId
-  }
-
-  return next({ 
+  // This middleware deliberately does not touch the input.
+  //
+  // It used to try, and it silently did nothing. Middlewares only see input
+  // from parsers registered before them in the chain, and authenticatedProcedure
+  // is built as t.procedure.use(authMiddleware) - every .input() comes after.
+  // So `input` was always undefined here, the guard was always false, and
+  // whatever authId the client sent went through to the handler untouched.
+  //
+  // authId now travels on the context, and resolvers bind it onto their request
+  // with authenticatedRequest below. That is wordier at each call site but it
+  // cannot fail quietly.
+  return next({
     ctx: {
       ...ctx,
       jwt,
@@ -87,3 +94,18 @@ const authMiddleware = t.middleware(async ({ input, next, ctx }) => {
 })
 
 export const authenticatedProcedure = t.procedure.use(authMiddleware);
+
+/**
+ * The request a handler should act on, with authId taken from the verified
+ * token rather than from whatever the caller sent.
+ *
+ * Every authenticated resolver must pass its input through this. Skipping it
+ * lets a caller act on another user's data by supplying their authId, because
+ * authId is the table storage PartitionKey and the lock container name.
+ */
+export function authenticatedRequest<T extends { authId: string }>(
+  input: T,
+  ctx: AuthenticatedContext
+): T {
+  return { ...input, authId: ctx.authId }
+}

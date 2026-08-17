@@ -2,13 +2,13 @@ import { isErr, ok } from '@read-every-word/foundation'
 import { type CreateReadingCycle, type CreateReadingCycleResult } from '@read-every-word/domain'
 import { validate } from './validation.js'
 import { Persistence } from '../persistence.js'
-import { authenticatedProcedure } from '../../trpc.js'
+import { authenticatedProcedure, authenticatedRequest } from '../../trpc.js'
 import { Config } from '../../config.js'
 
 export const createReadingCycleProcedure = authenticatedProcedure
   .input(r => r as CreateReadingCycle)
   .mutation(async ({ input, ctx }): Promise<CreateReadingCycleResult> => {
-    return handleCreateReadingCycle(input, ctx.config)
+    return handleCreateReadingCycle(authenticatedRequest(input, ctx), ctx.config)
   })
 
 export const handleCreateReadingCycle = async (request: CreateReadingCycle, config: Config): Promise<CreateReadingCycleResult> => {
