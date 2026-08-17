@@ -1,13 +1,7 @@
-import { isErr } from '@read-every-word/foundation'
 import { app } from '@azure/functions'
-import { appRouter, createContextFromHeaders, fromEnv } from '@read-every-word/api'
+import { appRouter, createContextFromHeaders } from '@read-every-word/api'
 import { createAzureFunctionsHandler } from '@read-every-word/azure-function-adapter'
-
-const configResult = fromEnv()
-if (isErr(configResult)) {
-    throw new Error('Invalid configuration')
-}
-const config = configResult.data
+import { config } from '../config.js'
 
 app.http('trpc', {
     methods: ['GET', 'POST'],

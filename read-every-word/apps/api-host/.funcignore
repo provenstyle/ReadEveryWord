@@ -10,3 +10,8 @@ test
 tsconfig.json
 
 node_modules/azure-functions-core-tools
+
+# Typecheck emit that lands in dist alongside the bundle. Dead weight in the
+# published package; the function host only needs main.js and host.json.
+apps
+*.tsbuildinfo
