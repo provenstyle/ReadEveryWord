@@ -2,14 +2,11 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Repository layout — two generations of the same app
+## Repository layout
 
-Read Every Word is a Bible reading tracker. The repo currently holds **two implementations side by side**:
+Read Every Word is a Bible reading tracker. Everything lives in [read-every-word/](read-every-word/) — an Nx monorepo (npm workspaces), tRPC over Azure Functions, the Vue 3 + Vuetify SPA, and all of the Terraform. Active work happens on branch `nx2`.
 
-- [read-every-word/](read-every-word/) — the **current** implementation. An Nx monorepo (npm workspaces), tRPC over Azure Functions, the Vue 3 + Vuetify SPA, and all of the Terraform. Active work happens here (branch `nx2`).
-- [server/](server/) — the remains of the **legacy** implementation: the REST api and the two packages it still imports.
-
-The BFF is **gone**. It only verified the Auth0 JWT and forwarded to the REST api, and `packages/api` verifies tokens itself. The SPA calls the tRPC router directly, and Cloudflare's edge worker routes `/api/*` to the api function app.
+The legacy `server/` tree is **gone**, along with the BFF. It only verified the Auth0 JWT and forwarded to the REST api, and `packages/api` verifies tokens itself. The SPA calls the tRPC router directly, and Cloudflare's edge worker routes `/api/*` to the api function app.
 
 **All infrastructure now lives in the Nx tree.** Both apps follow the same three-sibling shape — the deployable code, its Terraform, and its cicd scripts together:
 
@@ -20,8 +17,6 @@ read-every-word/apps/
 ```
 
 The Nx project root is the first folder in each (`api-host/app`, `frontEnd/ui`); `cicd` and `terraform` are plain directories, not workspace packages. Orchestration is still [cicd/](cicd/) at the repo root.
-
-What is left in [server/](server/) is legacy code with **no deploy path of its own**: `api/app` (the old REST endpoints), `api/client`, `api/seed`, `api/_template`, `domain`, and `infrastructure`. `server/domain` and `server/infrastructure` are near-duplicates of `packages/domain` and `packages/foundation` and survive only because `server/api/*` still imports them. Rolling back to the REST api means checking out the commit that still had its scripts and paths, not running anything in `server/`. Check which tree you're in before editing.
 
 `android/`, `iphone/`, and `design/` are notes/placeholders, not code.
 
@@ -101,11 +96,11 @@ const validationResponse = await validate(request)
 if (isErr(validationResponse)) return validationResponse
 ```
 
-`assertNever` in exhaustive `switch` statements over `err.code` is how failure unions get mapped to transport concerns — see the legacy [server/api/app/src/readingCycles/create/endpoint.ts](server/api/app/src/readingCycles/create/endpoint.ts) for the fully worked HTTP-status version. Exceptions are caught at the persistence boundary and converted (`resourceDoesNotExist(e) → err(new NotFound())`, everything else → `err(new PersistenceError())`).
+`assertNever` in exhaustive `switch` statements over `err.code` is how failure unions get mapped to transport concerns. Exceptions are caught at the persistence boundary and converted (`resourceDoesNotExist(e) → err(new NotFound())`, everything else → `err(new PersistenceError())`).
 
 ### Vertical slice per operation
 
-`packages/api/src/lib/<aggregate>/<operation>/` holds `handler.ts`, `validation.ts`, `validation.test.ts`, and sometimes `persistence.ts`. Each aggregate's `index.ts` assembles its procedures into a sub-router, and [packages/api/src/index.ts](read-every-word/packages/api/src/index.ts) composes those into `appRouter`. [server/api/_template/](server/api/_template/) is the original scaffold for a slice.
+`packages/api/src/lib/<aggregate>/<operation>/` holds `handler.ts`, `validation.ts`, `validation.test.ts`, and sometimes `persistence.ts`. Each aggregate's `index.ts` assembles its procedures into a sub-router, and [packages/api/src/index.ts](read-every-word/packages/api/src/index.ts) composes those into `appRouter`.
 
 Each handler exports **two** things: the tRPC procedure and a plain `handle…(request, config)` function. Cross-aggregate calls go through the plain function, not the router — `readSummary/get/handler.ts` calls `handleGetReadingCycles` and `handleCreateReadingCycle` directly.
 
@@ -119,7 +114,11 @@ Tests use `factory.ts` factories plus `expectOk`/`expectErrorMessage` from `@rea
 
 ### Auth
 
-Auth0 JWTs, RS256, verified against JWKS with a 12-hour in-process key cache ([packages/api/src/lib/authentication.ts](read-every-word/packages/api/src/lib/authentication.ts)). `authenticatedProcedure` runs a middleware that validates the bearer token and **overwrites `input.authId` with the token's sanitized `sub`** — clients cannot act on another user's data by supplying a different `authId`. `publicProcedure` skips this; `healthCheck` and `clientConfig` are the only public procedures. `clientConfig` is public by necessity — it serves the Auth0 `domain`/`clientId`/`audience` the SPA needs *before* it can obtain a token, so it must return only those three fields and never spread `config.openId` (which holds `jwksUri`/`issuer`) or `config` (which holds the storage connection string).
+Auth0 JWTs, RS256, verified against JWKS with a 12-hour in-process key cache ([packages/api/src/lib/authentication.ts](read-every-word/packages/api/src/lib/authentication.ts)). `authenticatedProcedure` runs a middleware that validates the bearer token, derives the sanitized `sub`, and puts it on the **context** as `ctx.authId`. `publicProcedure` skips this; `healthCheck` and `clientConfig` are the only public procedures.
+
+> 🚨 **Every authenticated resolver must call `authenticatedRequest(input, ctx)`** ([packages/api/src/lib/trpc.ts](read-every-word/packages/api/src/lib/trpc.ts)) and hand *that* to its handler, never the raw `input`. `authId` decides whose partition a request touches, and a resolver that forgets lets any authenticated caller read and write another user's data by naming their `authId`.
+>
+> The middleware deliberately does **not** mutate `input`. It used to try, and it silently did nothing: a middleware only sees input from parsers registered before it, and `authenticatedProcedure` is `t.procedure.use(authMiddleware)` with every `.input()` added afterwards, so `input` was always `undefined` there. Don't reintroduce that — it reads as if it works. `authIdIsTakenFromTheToken.test.ts` guards the behaviour by passing a deliberately mismatched `authId`; every other test passes one that already matches its token and so cannot see the difference. `clientConfig` is public by necessity — it serves the Auth0 `domain`/`clientId`/`audience` the SPA needs *before* it can obtain a token, so it must return only those three fields and never spread `config.openId` (which holds `jwksUri`/`issuer`) or `config` (which holds the storage connection string).
 
 `authId` is the Azure Table Storage `PartitionKey` throughout, and also the blob container name used for locking.
 
