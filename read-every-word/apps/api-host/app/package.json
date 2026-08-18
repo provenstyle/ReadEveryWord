@@ -22,6 +22,7 @@
           ],
           "bundle": true,
           "thirdParty": false,
+          "declaration": false,
           "main": "apps/api-host/app/src/main.ts",
           "tsConfig": "apps/api-host/app/tsconfig.app.json",
           "assets": [

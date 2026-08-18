@@ -11,7 +11,10 @@ tsconfig.json
 
 node_modules/azure-functions-core-tools
 
-# Typecheck emit that lands in dist alongside the bundle. Dead weight in the
-# published package; the function host only needs main.js and host.json.
+# Typecheck emit. It no longer lands in dist - tsconfig.app.json sends the
+# declarations to out-tsc/app so dist holds only what esbuild produces - but a
+# dist left over from an older checkout can still carry it. The declarations
+# themselves are already covered by *.ts above; these two catch the rest.
+*.d.ts.map
 apps
 *.tsbuildinfo
