@@ -10,6 +10,7 @@ source "$SCRIPT_DIR/variables.sh"
 
 terraform -chdir="$TF_DIR" init                                      \
     -reconfigure                                                     \
+    -upgrade                                                         \
     -input=false                                                     \
     -backend-config=resource_group_name=$STATE_RESOURCE_GROUP_NAME   \
     -backend-config=storage_account_name=$STATE_STORAGE_ACCOUNT_NAME \

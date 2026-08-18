@@ -89,7 +89,21 @@ resource "azurerm_linux_function_app" "this" {
     application_insights_connection_string = azurerm_application_insights.func.connection_string
 
     application_stack {
-      node_version = "20"
+      # 22, not 24. Node 24 exists for functions, but only on Dedicated,
+      # ElasticPremium and Flex Consumption - the y1 linux consumption image
+      # was never published. Setting NODE|24 on this plan leaves the site
+      # "Running" while the container fails to start, so the host 503s, scm is
+      # unavailable, and func publish fails at "Syncing triggers" with a
+      # BadRequest. Confirmed against the arm stacks api:
+      #   az rest --method get --url "https://management.azure.com/providers\
+      #     /Microsoft.Web/functionAppStacks?api-version=2023-12-01&stackOsType=Linux"
+      # whose sku list for node 24 has no Y1 entry. Note that
+      # `az functionapp list-runtimes --os linux` does list 24 - it does not
+      # filter by plan sku, so it cannot answer this question.
+      #
+      # Node 20 hit end of life 2026-04-30, which is the warning that started
+      # this. 22 runs to 2027-04-30. Getting to 24 means leaving y1.
+      node_version = "22"
     }
   }
 

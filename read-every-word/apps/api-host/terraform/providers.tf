@@ -1,8 +1,13 @@
 terraform {
   required_providers {
     azurerm = {
+      # The bump off 4.7.0 is required to move off node 20 at all: 4.7.0
+      # validated node_version against ["12" "14" "16" "18" "20"] and rejected
+      # anything newer at plan time. "22" landed in 4.20.0 and "24" in 4.58.0.
+      # 4.58.0 is what this stack has actually been applied with, so it stays
+      # even though see function_app.tf - y1 cannot run 24 regardless.
       source  = "hashicorp/azurerm"
-      version = "= 4.7.0"
+      version = "= 4.58.0"
     }
     azurecaf = {
       source  = "aztfmod/azurecaf"
