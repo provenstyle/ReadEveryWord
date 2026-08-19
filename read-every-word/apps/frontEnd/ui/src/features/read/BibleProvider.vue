@@ -1,17 +1,21 @@
 <script setup lang="ts">
 import { isErr } from '@read-every-word/foundation'
 import { Bible, type ReadingCycle } from '@read-every-word/domain'
-import { createApiClient } from '@/api/client'
+import { createAuthenticatedApiClient } from '@/api/client'
 import { fromTrpc } from '@/api/result'
+import { type ReadingCycleContext } from '@/features/readingCycle/ReadingCycleProvider.vue'
 import { useAuth0 } from '@auth0/auth0-vue'
 
 import {
-  onMounted, provide,
+  inject, onMounted, provide,
   ref, type Ref,
-  reactive, type Reactive,
+  reactive, type Reactive, watch,
 } from 'vue'
 
 const auth = useAuth0()
+
+const readingCycles = inject<ReadingCycleContext>('readingCycles')
+if (!readingCycles) throw new Error('ReadingCycleContext is required')
 
 export interface BibleContext {
   bible: Reactive<Bible>
@@ -22,30 +26,25 @@ export interface BibleContext {
   errorMessage: Ref<string | undefined>
 }
 
-// Wrap auth.getAccessTokenSilently with error handling
-// This will redirect to the login page when the refresh token expires
-const getAuthTokenWithErrorHandling = async (): Promise<string> => {
-  try {
-    return await auth.getAccessTokenSilently()
-  } catch (error) {
-    console.error('Authentication failed:', error)
-    await auth.loginWithRedirect({
-      appState: {
-        target: window.location.pathname
-      }
-    })
-    throw error
-  }
-}
-
-const client = createApiClient(getAuthTokenWithErrorHandling)
+const client = createAuthenticatedApiClient(auth)
 const bible = reactive(new Bible())
 const readingCycle = ref<ReadingCycle | undefined>(undefined)
 const working = ref(false)
 const errorMessage = ref<string | undefined>()
 
+// Mutated in place. BookCard and ChapterCard capture their book/chapter object
+// at setup time, so replacing bible or its arrays would detach the whole grid.
+const clearReadChapters = () => {
+  for (const book of bible.books) {
+    for (const chapter of book.chapters) {
+      chapter.read = false
+    }
+  }
+}
+
 const fetch = async () => {
   working.value = true
+  errorMessage.value = undefined
 
   const readSummaryResult = await fromTrpc(() => client.readSummary.get.mutate())
   if(isErr(readSummaryResult))
@@ -58,6 +57,14 @@ const fetch = async () => {
       errorMessage.value = 'No default Reading Cycle'
     }
     readingCycle.value = defaultReadingCycle
+
+    // readSummary.get lazily creates the first cycle, so its list is more
+    // current than anything readingCycle.get returned. Share it.
+    readingCycles.setAll(readSummary.readingCycles)
+
+    // readSummary only returns records for the default cycle, so a switch means
+    // everything previously marked has to come off first.
+    clearReadChapters()
     for(const record of readSummary.readingRecords) {
       bible.books[record.bookId].chapters[record.chapterId].read = true
     }
@@ -98,6 +105,15 @@ provide('bible', {
 } satisfies BibleContext)
 
 onMounted(async () => {
+  await fetch()
+})
+
+// Switching cycles changes which records readSummary returns, so the grid has to
+// be reloaded. Comparing against the cycle fetch() actually loaded is what stops
+// fetch's own setAll from bouncing straight back through here.
+watch(() => readingCycles.activeCycle.value?.id, async (activeCycleId) => {
+  if (!activeCycleId) return
+  if (activeCycleId === readingCycle.value?.id) return
   await fetch()
 })
 

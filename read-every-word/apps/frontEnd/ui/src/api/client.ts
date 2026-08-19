@@ -1,4 +1,5 @@
 import { createTRPCClient, httpBatchLink, type TRPCClient } from '@trpc/client'
+import type { Auth0VueClient } from '@auth0/auth0-vue'
 // Type only. packages/api exports the router type and runtime values from the
 // same module, so a value import here would pull @azure/data-tables,
 // jsonwebtoken and jwks-rsa into the browser bundle.
@@ -28,5 +29,29 @@ export function createApiClient (getAccessToken?: () => Promise<string>): ApiCli
         },
       }),
     ],
+  })
+}
+
+/**
+ * An api client for the signed-in user, for use from a provider component.
+ *
+ * getAccessTokenSilently rejects once the refresh token expires, which would
+ * otherwise surface as an opaque failure on whichever call happened to be next.
+ * Redirecting to login is the only useful response, so it is handled here once
+ * rather than at every call site.
+ */
+export function createAuthenticatedApiClient (auth: Auth0VueClient): ApiClient {
+  return createApiClient(async () => {
+    try {
+      return await auth.getAccessTokenSilently()
+    } catch (error) {
+      console.error('Authentication failed:', error)
+      await auth.loginWithRedirect({
+        appState: {
+          target: window.location.pathname
+        }
+      })
+      throw error
+    }
   })
 }

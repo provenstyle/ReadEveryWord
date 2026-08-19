@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import {  inject } from 'vue'
+import {  inject, ref } from 'vue'
 import { type NavigationProvider } from './NavigationProvider.vue'
+import { type ReadingCycleContext } from '@/features/readingCycle/ReadingCycleProvider.vue'
 import { useAuth0 } from '@auth0/auth0-vue'
 import { featureFlags } from '@/config/featureFlags'
 
@@ -8,6 +9,12 @@ const auth = useAuth0()
 
 const navigation = inject<NavigationProvider>('navigation')
 if (!navigation) throw new Error('NavigationProvider is required')
+
+const readingCycles = inject<ReadingCycleContext>('readingCycles')
+if (!readingCycles) throw new Error('ReadingCycleContext is required')
+
+// The group starts open so the active cycle is visible without a click.
+const openGroups = ref(['ReadingCycles'])
 
 const logout = async () => {
   await auth.logout({
@@ -24,6 +31,7 @@ const logout = async () => {
     location="left"
   >
     <v-list
+      v-model:opened="openGroups"
       nav
       density="comfortable"
     >
@@ -34,6 +42,33 @@ const logout = async () => {
         title="Read"
         to="/read"
       />
+      <v-list-group value="ReadingCycles">
+        <template #activator="{ props: groupProps }">
+          <v-list-item
+            v-bind="groupProps"
+            nav
+            prepend-icon="mdi-book-multiple-outline"
+            title="Reading Cycles"
+          />
+        </template>
+        <v-list-item
+          v-for="cycle in readingCycles.cycles.value"
+          :key="cycle.id"
+          nav
+          link
+          :active="cycle.default"
+          :prepend-icon="cycle.default ? 'mdi-check-circle' : 'mdi-circle-outline'"
+          :title="cycle.name"
+          @click.prevent="readingCycles.setActive(cycle.id)"
+        />
+        <v-list-item
+          nav
+          link
+          prepend-icon="mdi-pencil"
+          title="Manage"
+          to="/reading-cycles"
+        />
+      </v-list-group>
       <v-list-item
         v-if="featureFlags.enablePray"
         nav

@@ -28,5 +28,6 @@ declare module 'vue-router/auto-routes' {
     '/read/': RouteRecordInfo<'/read/', '/read', Record<never, never>, Record<never, never>>,
     '/read/book/[id]/': RouteRecordInfo<'/read/book/[id]/', '/read/book/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     '/read/book/[id]/text/': RouteRecordInfo<'/read/book/[id]/text/', '/read/book/:id/text', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    '/reading-cycles/': RouteRecordInfo<'/reading-cycles/', '/reading-cycles', Record<never, never>, Record<never, never>>,
   }
 }

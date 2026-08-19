@@ -13,6 +13,7 @@ import { authGuard } from '@auth0/auth0-vue'
 // Handle Authenticated Routes
 const authenticatedRoutes = [
   '/read',
+  '/reading-cycles',
   '/pray',
   '/memorize',
   '/journal',

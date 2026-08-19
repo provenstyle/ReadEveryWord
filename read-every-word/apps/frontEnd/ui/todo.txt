@@ -1,0 +1,2 @@
+read-every-word/apps/frontEnd/ui/src/router/index.ts
+  is there a better way to define authenticated routes?
