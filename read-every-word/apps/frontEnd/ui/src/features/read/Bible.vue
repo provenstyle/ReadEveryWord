@@ -29,16 +29,23 @@ if (!readingCycles) throw new Error('ReadingCycleContext is required')
       <v-app-bar-nav-icon
         @click.prevent="navigation.toggleLeftDrawer()"
       />
-      <v-toolbar-title>
-        {{ readingCycles.activeCycle.value?.name }}
+      <!--
+        Hand rolled rather than v-toolbar-title, which ellipsises everything it
+        contains as one blob. Only the name should shorten; the star has to
+        survive, because a long name is exactly when it would be cut.
+      -->
+      <div class="cycle">
+        <span class="cycle-name">
+          {{ readingCycles.activeCycle.value?.name }}
+        </span>
         <!-- Marks the default: the cycle the ui starts on next time. -->
         <v-icon
           v-if="readingCycles.activeCycle.value?.default"
           icon="mdi-star"
           size="x-small"
+          class="cycle-star"
         />
-      </v-toolbar-title>
-      <v-spacer />
+      </div>
       <ReadingCycleMenu />
     </v-toolbar>
 
@@ -111,5 +118,32 @@ if (!readingCycles) throw new Error('ReadingCycleContext is required')
 .book {
   flex: 0 0 calc((100% / 9) - 4px);
   margin: 2px 2px;
+}
+
+/*
+  Takes every pixel the nav icon and the menu are not using. There is no v-spacer
+  next to it on purpose: v-spacer also grows, so the two would split the free
+  space and the name would shorten at half the width it needs to.
+*/
+.cycle {
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-inline-start: 4px;
+  font-size: 1.1rem;
+}
+
+/* min-width:0 is what lets a flex item shrink below its content and ellipsise. */
+.cycle-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cycle-star {
+  flex: 0 0 auto;
+  margin-inline-start: 6px;
 }
 </style>
