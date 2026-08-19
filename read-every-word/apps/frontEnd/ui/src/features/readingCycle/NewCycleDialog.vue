@@ -24,9 +24,12 @@ const submit = async () => {
 }
 
 // Cleared as the dialog opens rather than after it closes, so a cancelled or
-// previously created name never flashes on screen.
+// previously created name never flashes on screen. The error goes with it, since
+// it is provider level and could be left over from an earlier action.
 watch(open, (isOpen) => {
-  if (isOpen) name.value = ''
+  if (!isOpen) return
+  name.value = ''
+  readingCycles.errorMessage.value = undefined
 })
 </script>
 
@@ -44,6 +47,13 @@ watch(open, (isOpen) => {
           placeholder="2nd Time Through"
           @keyup.enter="submit()"
         />
+        <v-alert
+          v-if="readingCycles.errorMessage.value"
+          type="error"
+          density="compact"
+        >
+          {{ readingCycles.errorMessage.value }}
+        </v-alert>
       </v-card-text>
       <v-card-actions>
         <v-spacer />

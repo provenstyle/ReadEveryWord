@@ -52,43 +52,48 @@ const paintReadChapters = (records: ReadingRecord[]) => {
 }
 
 /**
- * The first load of the session. readSummary.get is the only call that lazily
- * creates a cycle for a brand new user, so it has to run before there is
- * anything to be active, and it returns the default cycle's records for free.
+ * The default cycle, painted from the session's shared readSummary rather than a
+ * request of our own. readSummary already carries the default's records, so on a
+ * first load of /read this costs nothing beyond the call the drawer was making
+ * anyway.
  */
-const bootstrap = async () => {
-  const readSummaryResult = await fromTrpc(() => client.readSummary.get.mutate())
-  if(isErr(readSummaryResult))
+const paintFromSummary = async () => {
+  const summaryResult = await readingCycles.loadSummary()
+  if(isErr(summaryResult))
   {
     errorMessage.value = 'Failed to get Read Summary'
     return
   }
 
-  const readSummary = readSummaryResult.data
-  const defaultReadingCycle = readSummary.readingCycles.find(x => x.default)
+  const summary = summaryResult.data
+  const defaultReadingCycle = summary.readingCycles.find(x => x.default)
   if (!defaultReadingCycle) {
     errorMessage.value = 'No default Reading Cycle'
     return
   }
 
-  // Claim the cycle before seeding, because seeding is what lets activeCycleId
-  // resolve and the watcher below would otherwise see a switch to reload for.
   loadedCycleId.value = defaultReadingCycle.id
-
-  // readSummary.get is more current than anything readingCycle.get returned, so
-  // share its list.
-  readingCycles.setAll(readSummary.readingCycles)
-  paintReadChapters(readSummary.readingRecords)
+  paintReadChapters(summary.readingRecords)
 }
 
 /** Any cycle other than the one readSummary would have handed us. */
 const loadRecordsFor = async (readingCycleId: string) => {
+  // Claimed before awaiting, not after. The cycle list arriving is what lets
+  // activeCycleId resolve, and if that happens while this request is still in
+  // flight an unclaimed cycle looks to the watcher like a switch to load again.
+  loadedCycleId.value = readingCycleId
+
   const result = await fromTrpc(() => client.readingRecord.get.query({ readingCycleId }))
+
+  // Something newer was asked for while this was in flight, so this answer is no
+  // longer the one on screen. Dropping it also keeps out-of-order responses from
+  // painting stale progress.
+  if (loadedCycleId.value !== readingCycleId) return
+
   if (isErr(result)) {
     errorMessage.value = 'Failed to get Reading Records'
     return
   }
-  loadedCycleId.value = readingCycleId
   paintReadChapters(result.data)
 }
 
@@ -100,19 +105,28 @@ const fetch = async () => {
   // already checked the url against what the user actually has, and falls back to
   // the default when the url names something stale.
   //
-  // Before then, on a pinned refresh, take the url at face value. Bootstrapping to
-  // the default and correcting a moment later would cost a second round trip and
-  // show the wrong progress in between. If that optimism is wrong the watcher
-  // below repairs it as soon as the list lands.
+  // Before then, on a pinned refresh, take the url at face value. Waiting for the
+  // list would show the wrong progress in the meantime. If that optimism is wrong
+  // the watcher below repairs it as soon as the list lands.
   const cyclesAreKnown = readingCycles.cycles.value.length > 0
-  const cycleId = cyclesAreKnown
+  const requestedCycleId = cyclesAreKnown
     ? readingCycles.activeCycleId.value
     : cycleIdFromQuery(route.query)
 
-  if (cycleId) {
-    await loadRecordsFor(cycleId)
-  } else {
-    await bootstrap()
+  // The url names a cycle only when it is not the default, so nothing requested
+  // means the default -- exactly what the shared summary already holds. Take it
+  // from there on the first paint and spend no request at all.
+  //
+  // Only the first paint, though: the summary is fetched once and would be stale
+  // for anything later, so a return trip to the default reloads for real.
+  const isFirstPaint = loadedCycleId.value === undefined
+  const wantsDefault = requestedCycleId === undefined
+    || requestedCycleId === readingCycles.defaultCycle.value?.id
+
+  if (isFirstPaint && wantsDefault) {
+    await paintFromSummary()
+  } else if (requestedCycleId) {
+    await loadRecordsFor(requestedCycleId)
   }
 
   working.value = false

@@ -21,8 +21,15 @@ const newCycleOpen = ref(false)
 
 // Naming the cycle in the url is what switches it, so this one navigation both
 // selects the cycle and takes you to the thing it changes.
+//
+// The default is left unnamed rather than pinned. That keeps the common url clean,
+// and it means an unnamed url is always the default -- which is what lets the read
+// page paint from the shared summary instead of asking for records again.
 const readCycle = async (id: string) => {
-  await router.push({ path: '/read', query: queryForCycle(id) })
+  const isDefault = id === readingCycles.defaultCycle.value?.id
+  await router.push(isDefault
+    ? { path: '/read' }
+    : { path: '/read', query: queryForCycle(id) })
 }
 
 const logout = async () => {

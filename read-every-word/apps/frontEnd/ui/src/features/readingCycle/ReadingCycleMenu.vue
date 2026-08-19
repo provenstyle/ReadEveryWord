@@ -18,8 +18,16 @@ const isCompleted = computed(() => cycle.value?.dateCompleted !== undefined)
 const trimmedName = computed(() => name.value.trim())
 const nameIsValid = computed(() => trimmedName.value.length > 0)
 
+// The error is provider level, so clear it as a dialog opens rather than show one
+// left over from an earlier action.
 watch(renameOpen, (isOpen) => {
-  if (isOpen) name.value = cycle.value?.name ?? ''
+  if (!isOpen) return
+  name.value = cycle.value?.name ?? ''
+  readingCycles.errorMessage.value = undefined
+})
+
+watch(completeOpen, (isOpen) => {
+  if (isOpen) readingCycles.errorMessage.value = undefined
 })
 
 const submitRename = async () => {
@@ -90,6 +98,13 @@ const makeDefault = async () => {
           label="Name"
           @keyup.enter="submitRename()"
         />
+        <v-alert
+          v-if="readingCycles.errorMessage.value"
+          type="error"
+          density="compact"
+        >
+          {{ readingCycles.errorMessage.value }}
+        </v-alert>
       </v-card-text>
       <v-card-actions>
         <v-spacer />
@@ -119,6 +134,14 @@ const makeDefault = async () => {
     <v-card title="Mark Complete">
       <v-card-text>
         Mark <strong>{{ cycle?.name }}</strong> complete? This cannot be undone.
+        <v-alert
+          v-if="readingCycles.errorMessage.value"
+          type="error"
+          density="compact"
+          class="mt-4"
+        >
+          {{ readingCycles.errorMessage.value }}
+        </v-alert>
       </v-card-text>
       <v-card-actions>
         <v-spacer />

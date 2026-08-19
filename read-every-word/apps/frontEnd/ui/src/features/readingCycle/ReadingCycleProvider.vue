@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import { isErr } from '@read-every-word/foundation'
-import { type ReadingCycle } from '@read-every-word/domain'
+import { isErr, type Result } from '@read-every-word/foundation'
+import {
+  type GetReadSummaryFailed,
+  type ReadingCycle,
+  type ReadingSummary,
+} from '@read-every-word/domain'
 import { createAuthenticatedApiClient } from '@/api/client'
-import { fromTrpc } from '@/api/result'
+import { fromTrpc, type TransportFailed } from '@/api/result'
 import { cycleIdFromQuery } from '@/features/readingCycle/activeCycleUrl'
 import { useAuth0 } from '@auth0/auth0-vue'
 import { useRoute } from 'vue-router'
@@ -28,6 +32,8 @@ const route = useRoute()
  * Changing it is an explicit user action (makeDefault), not a side effect of
  * looking at another cycle.
  */
+export type ReadSummaryResult = Result<ReadingSummary, GetReadSummaryFailed | TransportFailed>
+
 export interface ReadingCycleContext {
   cycles: Ref<ReadingCycle[]>
   activeCycleId: ComputedRef<string | undefined>
@@ -35,8 +41,7 @@ export interface ReadingCycleContext {
   defaultCycle: ComputedRef<ReadingCycle | undefined>
   working: Ref<boolean>
   errorMessage: Ref<string | undefined>
-  fetch: () => Promise<void>
-  setAll: (cycles: ReadingCycle[]) => void
+  loadSummary: () => Promise<ReadSummaryResult>
   create: (name: string) => Promise<boolean>
   rename: (id: string, name: string) => Promise<boolean>
   markComplete: (id: string) => Promise<boolean>
@@ -77,25 +82,34 @@ const replace = (updated: ReadingCycle) => {
   setAll(cycles.value.map(c => c.id === updated.id ? updated : c))
 }
 
-// A brand new user has no cycles until readSummary.get creates their first one.
-// If that landed while this query was in flight, an empty response here is stale
-// and must not wipe out what it seeded.
-const isStaleEmpty = (fetched: ReadingCycle[]) =>
-  fetched.length === 0 && cycles.value.length > 0
+/**
+ * The one readSummary.get of the session, shared by everyone who needs it.
+ *
+ * readingCycle.get would return the same list, but readSummary is not optional:
+ * it is the only call that creates a first cycle for a brand new user, and it
+ * hands back the default cycle's records at the same time. Fetching both would
+ * mean asking for the cycle list twice.
+ *
+ * Memoising the promise rather than the result is what makes this
+ * order-independent: whoever asks first starts the request and everyone after
+ * awaits that same one, so no caller has to know whether another already ran.
+ */
+let summaryRequest: Promise<ReadSummaryResult> | undefined
 
-const fetch = async () => {
-  working.value = true
-  errorMessage.value = undefined
+const loadSummary = (): Promise<ReadSummaryResult> => {
+  summaryRequest ??= (async () => {
+    working.value = true
+    const result = await fromTrpc(() => client.readSummary.get.mutate())
+    if (isErr(result)) {
+      errorMessage.value = 'Failed to get Reading Cycles'
+    } else {
+      setAll(result.data.readingCycles)
+    }
+    working.value = false
+    return result
+  })()
 
-  // readingCycle.get is a principalQuery: identity is the whole input, so it
-  // takes no argument.
-  const result = await fromTrpc(() => client.readingCycle.get.query())
-  if (isErr(result)) {
-    errorMessage.value = 'Failed to get Reading Cycles'
-  } else if (!isStaleEmpty(result.data)) {
-    setAll(result.data)
-  }
-  working.value = false
+  return summaryRequest
 }
 
 const create = async (name: string): Promise<boolean> => {
@@ -167,8 +181,7 @@ provide('readingCycles', {
   defaultCycle,
   working,
   errorMessage,
-  fetch,
-  setAll,
+  loadSummary,
   create,
   rename,
   markComplete,
@@ -176,10 +189,13 @@ provide('readingCycles', {
 } satisfies ReadingCycleContext)
 
 // This provider is mounted in the default layout, which also wraps
-// unauthenticated pages, so it cannot fetch on mount: readingCycle.get needs a
+// unauthenticated pages, so it cannot fetch on mount: readSummary.get needs a
 // token. Wait for auth0 to report a session instead.
+//
+// The drawer needs cycle names on every page, so this runs even where there is no
+// Bible grid. On /read the grid asks for the same summary and gets this one.
 watch(() => auth.isAuthenticated.value, async (isAuthenticated) => {
-  if (isAuthenticated) await fetch()
+  if (isAuthenticated) await loadSummary()
 }, { immediate: true })
 
 </script>

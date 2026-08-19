@@ -9,7 +9,7 @@ import {
   type Result,
 } from '@read-every-word/foundation'
 
-type TransportFailed =
+export type TransportFailed =
   | Unauthorized
   | NotFound
   | ServerError
