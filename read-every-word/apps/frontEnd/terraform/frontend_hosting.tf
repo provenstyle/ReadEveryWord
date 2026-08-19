@@ -53,14 +53,15 @@ resource "cloudflare_workers_script" "edge" {
       name = "WEB_HOST"
       text = azurerm_storage_account.frontend.primary_web_host
     },
-    # The api function app, which the bff used to sit in front of. Referenced
-    # directly rather than through try(): if the api stack has not been applied
-    # this should fail at plan time, not ship a worker pointing at a fallback
-    # string. function_app_endpoint is a bare default_hostname, no scheme.
+    # The api function app, which the bff used to sit in front of.
+    # function_app_endpoint is a bare default_hostname, no scheme.
+    #
+    # Wrapped in try() so this stack can be destroyed after the api stack has
+    # already been destroyed
     {
       type = "plain_text"
       name = "API_HOST"
-      text = data.terraform_remote_state.api.outputs.function_app_endpoint
+      text = try(data.terraform_remote_state.api.outputs.function_app_endpoint, "MISSING-FUNCTION-APP-ENDPOINT")
     },
   ]
 }
