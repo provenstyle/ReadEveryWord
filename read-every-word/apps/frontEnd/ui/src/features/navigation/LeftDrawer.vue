@@ -3,6 +3,7 @@ import {  inject, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { type NavigationProvider } from './NavigationProvider.vue'
 import { type ReadingCycleContext } from '@/features/readingCycle/ReadingCycleProvider.vue'
+import { queryForCycle } from '@/features/readingCycle/activeCycleUrl'
 import NewCycleDialog from '@/features/readingCycle/NewCycleDialog.vue'
 import { useAuth0 } from '@auth0/auth0-vue'
 import { featureFlags } from '@/config/featureFlags'
@@ -18,10 +19,10 @@ if (!readingCycles) throw new Error('ReadingCycleContext is required')
 
 const newCycleOpen = ref(false)
 
-// Picking a cycle is only ui state, so it also takes you to the thing it changes.
+// Naming the cycle in the url is what switches it, so this one navigation both
+// selects the cycle and takes you to the thing it changes.
 const readCycle = async (id: string) => {
-  readingCycles.setActive(id)
-  await router.push('/read')
+  await router.push({ path: '/read', query: queryForCycle(id) })
 }
 
 const logout = async () => {

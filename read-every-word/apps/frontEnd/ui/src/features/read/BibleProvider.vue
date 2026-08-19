@@ -4,7 +4,9 @@ import { Bible, type ReadingRecord } from '@read-every-word/domain'
 import { createAuthenticatedApiClient } from '@/api/client'
 import { fromTrpc } from '@/api/result'
 import { type ReadingCycleContext } from '@/features/readingCycle/ReadingCycleProvider.vue'
+import { cycleIdFromQuery } from '@/features/readingCycle/activeCycleUrl'
 import { useAuth0 } from '@auth0/auth0-vue'
+import { useRoute } from 'vue-router'
 
 import {
   inject, onMounted, provide,
@@ -13,6 +15,7 @@ import {
 } from 'vue'
 
 const auth = useAuth0()
+const route = useRoute()
 
 const readingCycles = inject<ReadingCycleContext>('readingCycles')
 if (!readingCycles) throw new Error('ReadingCycleContext is required')
@@ -68,12 +71,12 @@ const bootstrap = async () => {
     return
   }
 
-  // Claim the cycle before seeding, because setAll makes it active and the
-  // watcher below would otherwise see a switch it has to reload for.
+  // Claim the cycle before seeding, because seeding is what lets activeCycleId
+  // resolve and the watcher below would otherwise see a switch to reload for.
   loadedCycleId.value = defaultReadingCycle.id
 
   // readSummary.get is more current than anything readingCycle.get returned, so
-  // share its list. setAll also starts the ui on the default cycle.
+  // share its list.
   readingCycles.setAll(readSummary.readingCycles)
   paintReadChapters(readSummary.readingRecords)
 }
@@ -93,9 +96,21 @@ const fetch = async () => {
   working.value = true
   errorMessage.value = undefined
 
-  const activeCycleId = readingCycles.activeCycleId.value
-  if (activeCycleId) {
-    await loadRecordsFor(activeCycleId)
+  // Once the cycle list is in, activeCycleId is the trustworthy answer: it has
+  // already checked the url against what the user actually has, and falls back to
+  // the default when the url names something stale.
+  //
+  // Before then, on a pinned refresh, take the url at face value. Bootstrapping to
+  // the default and correcting a moment later would cost a second round trip and
+  // show the wrong progress in between. If that optimism is wrong the watcher
+  // below repairs it as soon as the list lands.
+  const cyclesAreKnown = readingCycles.cycles.value.length > 0
+  const cycleId = cyclesAreKnown
+    ? readingCycles.activeCycleId.value
+    : cycleIdFromQuery(route.query)
+
+  if (cycleId) {
+    await loadRecordsFor(cycleId)
   } else {
     await bootstrap()
   }

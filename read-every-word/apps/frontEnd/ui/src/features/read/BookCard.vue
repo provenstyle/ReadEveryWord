@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { inject, computed } from 'vue'
 import { type BibleContext } from '@/features/read/BibleProvider.vue'
 
@@ -14,9 +14,12 @@ if (!bibleContext) throw new Error('BibleContext is required')
 
 const book = bibleContext.bible.books[props.id]
 const router = useRouter()
+const route = useRoute()
 
 const goToBook = () => {
-  router.push(`read/book/${props.id}`)
+  // The query carries which cycle is being read, so it has to come along or the
+  // book page silently drops back to the default cycle.
+  router.push({ path: `/read/book/${props.id}`, query: route.query })
 }
 
 const complete = computed(() => {

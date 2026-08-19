@@ -3,7 +3,9 @@ import { isErr } from '@read-every-word/foundation'
 import { type ReadingCycle } from '@read-every-word/domain'
 import { createAuthenticatedApiClient } from '@/api/client'
 import { fromTrpc } from '@/api/result'
+import { cycleIdFromQuery } from '@/features/readingCycle/activeCycleUrl'
 import { useAuth0 } from '@auth0/auth0-vue'
+import { useRoute } from 'vue-router'
 
 import {
   computed, type ComputedRef,
@@ -11,27 +13,30 @@ import {
 } from 'vue'
 
 const auth = useAuth0()
+const route = useRoute()
 
 /**
  * Active and default are deliberately different things.
  *
- * `active` is which cycle the ui is currently showing. It is ui state only and
- * is never persisted, so it resets to the default on every page load.
+ * `active` is which cycle the ui is currently showing. It is not persisted cycle
+ * state; it is read out of the url (see activeCycleUrl.ts), so it survives a
+ * refresh but belongs to the address rather than to the user's data. Change it by
+ * navigating with the cycle query key.
  *
  * `default` is the persisted flag on the row. It decides which cycle the ui
- * starts on, and it is the one readSummary.get reads. Changing it is an explicit
- * user action (makeDefault), not a side effect of looking at another cycle.
+ * starts on when the url names none, and it is the one readSummary.get reads.
+ * Changing it is an explicit user action (makeDefault), not a side effect of
+ * looking at another cycle.
  */
 export interface ReadingCycleContext {
   cycles: Ref<ReadingCycle[]>
-  activeCycleId: Ref<string | undefined>
+  activeCycleId: ComputedRef<string | undefined>
   activeCycle: ComputedRef<ReadingCycle | undefined>
   defaultCycle: ComputedRef<ReadingCycle | undefined>
   working: Ref<boolean>
   errorMessage: Ref<string | undefined>
   fetch: () => Promise<void>
   setAll: (cycles: ReadingCycle[]) => void
-  setActive: (id: string) => void
   create: (name: string) => Promise<boolean>
   rename: (id: string, name: string) => Promise<boolean>
   markComplete: (id: string) => Promise<boolean>
@@ -40,28 +45,32 @@ export interface ReadingCycleContext {
 
 const client = createAuthenticatedApiClient(auth)
 const cycles = ref<ReadingCycle[]>([])
-const activeCycleId = ref<string | undefined>()
 const working = ref(false)
 const errorMessage = ref<string | undefined>()
 
-const activeCycle = computed(() => cycles.value.find(c => c.id === activeCycleId.value))
 const defaultCycle = computed(() => cycles.value.find(c => c.default))
+
+/**
+ * The url wins, but only once it names a cycle the user actually has. An id that
+ * is stale, hand-edited, or from another account falls back to the default rather
+ * than leaving the ui pointed at nothing.
+ */
+const activeCycleId = computed(() => {
+  const requestedId = cycleIdFromQuery(route.query)
+  const requestIsUsable = requestedId !== undefined
+    && cycles.value.some(c => c.id === requestedId)
+
+  return requestIsUsable
+    ? requestedId
+    : defaultCycle.value?.id ?? cycles.value[0]?.id
+})
+
+const activeCycle = computed(() => cycles.value.find(c => c.id === activeCycleId.value))
 
 const byName = (a: ReadingCycle, b: ReadingCycle) => a.name.localeCompare(b.name)
 
 const setAll = (all: ReadingCycle[]) => {
   cycles.value = [...all].sort(byName)
-
-  // The ui has to be looking at something. Fall back to the default whenever
-  // there is no active cycle yet, or the active one is no longer in the list.
-  const activeIsStillPresent = cycles.value.some(c => c.id === activeCycleId.value)
-  if (!activeIsStillPresent) {
-    activeCycleId.value = defaultCycle.value?.id ?? cycles.value[0]?.id
-  }
-}
-
-const setActive = (id: string) => {
-  activeCycleId.value = id
 }
 
 const replace = (updated: ReadingCycle) => {
@@ -160,7 +169,6 @@ provide('readingCycles', {
   errorMessage,
   fetch,
   setAll,
-  setActive,
   create,
   rename,
   markComplete,
