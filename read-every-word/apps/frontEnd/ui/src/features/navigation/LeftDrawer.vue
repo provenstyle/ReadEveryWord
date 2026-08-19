@@ -60,7 +60,7 @@ const logout = async () => {
         :key="cycle.id"
         nav
         link
-        class="cycle"
+        class="nested"
         density="compact"
         :active="cycle.id === readingCycles.activeCycleId.value"
         :title="cycle.name"
@@ -75,6 +75,19 @@ const logout = async () => {
           />
         </template>
       </v-list-item>
+      <!--
+        Last in the list it adds to, and indented with it, so the + reads as
+        "another one of these" without needing a heading to explain itself.
+      -->
+      <v-list-item
+        nav
+        link
+        class="nested"
+        density="compact"
+        prepend-icon="mdi-plus"
+        title="New Reading Cycle"
+        @click.prevent="newCycleOpen = true"
+      />
       <v-list-item
         v-if="featureFlags.enablePray"
         nav
@@ -107,12 +120,6 @@ const logout = async () => {
       >
         <v-list-item
           link
-          prepend-icon="mdi-plus"
-          title="New Cycle"
-          @click.prevent="newCycleOpen = true"
-        />
-        <v-list-item
-          link
           prepend-icon="mdi-logout"
           title="Sign Out"
           @click.prevent="logout"
@@ -125,7 +132,8 @@ const logout = async () => {
 </template>
 
 <style scoped>
-.cycle {
+/* Indents the reading cycles, and the row that adds one, under Read. */
+.nested {
   padding-inline-start: 32px !important;
 }
 </style>
