@@ -3,7 +3,7 @@ resource "azurerm_storage_account" "func" {
   resource_group_name      = resource.azurerm_resource_group.this.name
   location                 = var.location
   account_tier             = "Standard"
-  account_replication_type = var.storage_account_replication_type
+  account_replication_type = "LRS"
   tags                     = local.tags
 }
 
