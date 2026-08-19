@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import {  inject, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { type NavigationProvider } from './NavigationProvider.vue'
 import { type ReadingCycleContext } from '@/features/readingCycle/ReadingCycleProvider.vue'
+import NewCycleDialog from '@/features/readingCycle/NewCycleDialog.vue'
 import { useAuth0 } from '@auth0/auth0-vue'
 import { featureFlags } from '@/config/featureFlags'
 
 const auth = useAuth0()
+const router = useRouter()
 
 const navigation = inject<NavigationProvider>('navigation')
 if (!navigation) throw new Error('NavigationProvider is required')
@@ -13,8 +16,13 @@ if (!navigation) throw new Error('NavigationProvider is required')
 const readingCycles = inject<ReadingCycleContext>('readingCycles')
 if (!readingCycles) throw new Error('ReadingCycleContext is required')
 
-// The group starts open so the active cycle is visible without a click.
-const openGroups = ref(['ReadingCycles'])
+const newCycleOpen = ref(false)
+
+// Picking a cycle is only ui state, so it also takes you to the thing it changes.
+const readCycle = async (id: string) => {
+  readingCycles.setActive(id)
+  await router.push('/read')
+}
 
 const logout = async () => {
   await auth.logout({
@@ -31,7 +39,6 @@ const logout = async () => {
     location="left"
   >
     <v-list
-      v-model:opened="openGroups"
       nav
       density="comfortable"
     >
@@ -42,33 +49,22 @@ const logout = async () => {
         title="Read"
         to="/read"
       />
-      <v-list-group value="ReadingCycles">
-        <template #activator="{ props: groupProps }">
-          <v-list-item
-            v-bind="groupProps"
-            nav
-            prepend-icon="mdi-book-multiple-outline"
-            title="Reading Cycles"
-          />
-        </template>
-        <v-list-item
-          v-for="cycle in readingCycles.cycles.value"
-          :key="cycle.id"
-          nav
-          link
-          :active="cycle.default"
-          :prepend-icon="cycle.default ? 'mdi-check-circle' : 'mdi-circle-outline'"
-          :title="cycle.name"
-          @click.prevent="readingCycles.setActive(cycle.id)"
-        />
-        <v-list-item
-          nav
-          link
-          prepend-icon="mdi-pencil"
-          title="Manage"
-          to="/reading-cycles"
-        />
-      </v-list-group>
+      <!--
+        The cycles sit under Read rather than behind a "Reading Cycles" heading:
+        a cycle is just which set of progress you are reading against, not a
+        separate part of the app.
+      -->
+      <v-list-item
+        v-for="cycle in readingCycles.cycles.value"
+        :key="cycle.id"
+        nav
+        link
+        class="cycle"
+        density="compact"
+        :active="cycle.id === readingCycles.activeCycleId.value"
+        :title="cycle.name"
+        @click.prevent="readCycle(cycle.id)"
+      />
       <v-list-item
         v-if="featureFlags.enablePray"
         nav
@@ -94,11 +90,17 @@ const logout = async () => {
         to="/journal"
       />
     </v-list>
-    <template v-slot:append>
+    <template #append>
       <v-list
         nav
         density="comfortable"
       >
+        <v-list-item
+          link
+          prepend-icon="mdi-plus"
+          title="New Cycle"
+          @click.prevent="newCycleOpen = true"
+        />
         <v-list-item
           link
           prepend-icon="mdi-logout"
@@ -108,7 +110,12 @@ const logout = async () => {
       </v-list>
     </template>
   </v-navigation-drawer>
+
+  <NewCycleDialog v-model="newCycleOpen" />
 </template>
 
 <style scoped>
+.cycle {
+  padding-inline-start: 32px !important;
+}
 </style>

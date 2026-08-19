@@ -12,32 +12,56 @@ import {
 
 const auth = useAuth0()
 
+/**
+ * Active and default are deliberately different things.
+ *
+ * `active` is which cycle the ui is currently showing. It is ui state only and
+ * is never persisted, so it resets to the default on every page load.
+ *
+ * `default` is the persisted flag on the row. It decides which cycle the ui
+ * starts on, and it is the one readSummary.get reads. Changing it is an explicit
+ * user action (makeDefault), not a side effect of looking at another cycle.
+ */
 export interface ReadingCycleContext {
   cycles: Ref<ReadingCycle[]>
+  activeCycleId: Ref<string | undefined>
   activeCycle: ComputedRef<ReadingCycle | undefined>
+  defaultCycle: ComputedRef<ReadingCycle | undefined>
   working: Ref<boolean>
   errorMessage: Ref<string | undefined>
   fetch: () => Promise<void>
   setAll: (cycles: ReadingCycle[]) => void
+  setActive: (id: string) => void
   create: (name: string) => Promise<boolean>
   rename: (id: string, name: string) => Promise<boolean>
   markComplete: (id: string) => Promise<boolean>
-  setActive: (id: string) => Promise<boolean>
+  makeDefault: (id: string) => Promise<boolean>
 }
 
 const client = createAuthenticatedApiClient(auth)
 const cycles = ref<ReadingCycle[]>([])
+const activeCycleId = ref<string | undefined>()
 const working = ref(false)
 const errorMessage = ref<string | undefined>()
 
-// Which cycle is active is not stored as a pointer anywhere; it is the one row
-// carrying default: true. setDefault guarantees there is exactly one.
-const activeCycle = computed(() => cycles.value.find(x => x.default))
+const activeCycle = computed(() => cycles.value.find(c => c.id === activeCycleId.value))
+const defaultCycle = computed(() => cycles.value.find(c => c.default))
 
 const byName = (a: ReadingCycle, b: ReadingCycle) => a.name.localeCompare(b.name)
 
 const setAll = (all: ReadingCycle[]) => {
   cycles.value = [...all].sort(byName)
+
+  // The ui has to be looking at something. Fall back to the default whenever
+  // there is no active cycle yet, or the active one is no longer in the list.
+  const activeIsStillPresent = cycles.value.some(c => c.id === activeCycleId.value)
+  if (!activeIsStillPresent) {
+    activeCycleId.value = defaultCycle.value?.id ?? cycles.value[0]?.id
+  }
+}
+
+const setActive = (id: string) => {
+  activeCycleId.value = id
 }
 
 const replace = (updated: ReadingCycle) => {
@@ -77,8 +101,8 @@ const create = async (name: string): Promise<boolean> => {
     return false
   }
 
-  // create only marks a cycle default when it is the user's first, so this does
-  // not change which cycle is active.
+  // Creating a cycle neither switches the ui to it nor changes the default; the
+  // user picks it from the drawer when they want to read it.
   setAll([...cycles.value, result.data])
   return true
 }
@@ -110,33 +134,37 @@ const markComplete = async (id: string): Promise<boolean> => {
   return true
 }
 
-const setActive = async (id: string): Promise<boolean> => {
-  if (activeCycle.value?.id === id) return true
+const makeDefault = async (id: string): Promise<boolean> => {
+  if (defaultCycle.value?.id === id) return true
   errorMessage.value = undefined
 
   const result = await fromTrpc(() => client.readingCycle.setDefault.mutate({ id }))
   if (isErr(result)) {
-    errorMessage.value = 'Failed to switch Reading Cycle'
+    errorMessage.value = 'Failed to set the default Reading Cycle'
     return false
   }
 
   // setDefault clears the flag on every other row server side; mirror that
-  // locally rather than paying for another round trip.
+  // locally rather than paying for another round trip. Which cycle is active is
+  // untouched.
   setAll(cycles.value.map(c => ({ ...c, default: c.id === id })))
   return true
 }
 
 provide('readingCycles', {
   cycles,
+  activeCycleId,
   activeCycle,
+  defaultCycle,
   working,
   errorMessage,
   fetch,
   setAll,
+  setActive,
   create,
   rename,
   markComplete,
-  setActive
+  makeDefault
 } satisfies ReadingCycleContext)
 
 // This provider is mounted in the default layout, which also wraps

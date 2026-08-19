@@ -1,2 +1,5 @@
 read-every-word/apps/frontEnd/ui/src/router/index.ts
   is there a better way to define authenticated routes?
+providers
+  read-every-word/apps/frontEnd/ui/src/layouts/default.vue
+  move all the providers to the same .vue so we can easily add, remove, and view the hierarchy

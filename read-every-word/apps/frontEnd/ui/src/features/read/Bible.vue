@@ -5,12 +5,17 @@ import { inject } from 'vue'
 import { chunk } from 'lodash-es'
 import { type NavigationProvider } from '@/features/navigation/NavigationProvider.vue'
 import { type BibleContext } from '@/features/read/BibleProvider.vue'
+import { type ReadingCycleContext } from '@/features/readingCycle/ReadingCycleProvider.vue'
+import ReadingCycleMenu from '@/features/readingCycle/ReadingCycleMenu.vue'
 
 const bibleContext = inject<BibleContext>('bible')
 if (!bibleContext) throw new Error('BibleContext is required')
 
 const navigation = inject<NavigationProvider>('navigation')
 if (!navigation) throw new Error('NavigationProvider is required')
+
+const readingCycles = inject<ReadingCycleContext>('readingCycles')
+if (!readingCycles) throw new Error('ReadingCycleContext is required')
 
 </script>
 
@@ -24,7 +29,11 @@ if (!navigation) throw new Error('NavigationProvider is required')
       <v-app-bar-nav-icon
         @click.prevent="navigation.toggleLeftDrawer()"
       />
+      <v-toolbar-title>
+        {{ readingCycles.activeCycle.value?.name }}
+      </v-toolbar-title>
       <v-spacer />
+      <ReadingCycleMenu />
     </v-toolbar>
 
     <div
