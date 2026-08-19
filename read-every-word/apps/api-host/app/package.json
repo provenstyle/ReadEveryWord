@@ -72,22 +72,14 @@
       },
       "serve": {
         "continuous": true,
-        "executor": "@nx/js:node",
-        "defaultConfiguration": "development",
+        "cache": false,
         "dependsOn": [
-          "build"
+          "deploy-manifest"
         ],
+        "executor": "nx:run-commands",
         "options": {
-          "buildTarget": "@read-every-word/api-host:build",
-          "runBuildTargetDependencies": false
-        },
-        "configurations": {
-          "development": {
-            "buildTarget": "@read-every-word/api-host:build:development"
-          },
-          "production": {
-            "buildTarget": "@read-every-word/api-host:build:production"
-          }
+          "command": "bash apps/api-host/app/scripts/serveLocal.sh",
+          "cwd": "{workspaceRoot}"
         }
       },
       "test": {

@@ -44,23 +44,34 @@ Running the UI locally (proxies `/api` to the function host on 7074):
 npx nx serve @read-every-word/ui     # http://localhost:3000
 ```
 
-Running the function host locally — note it runs **from `dist`**, which is a
-self-contained function app, and takes no `--typescript` flag:
+Running the function host locally:
 
 ```sh
-npx nx deploy-manifest api-host      # build, then write dist/package.json
-cd apps/api-host/app/dist && npm install --omit=dev
-func start --port 7074
+apps/api-host/cicd/functionFetchAppSettings.sh   # once per environment
+npx nx serve api-host                            # http://localhost:7074
 ```
 
-There is also a VS Code launch config, "Debug @read-every-word/api-host with Nx", which runs `nx serve` with `--inspect=9229`.
+`serve` is a `nx:run-commands` target wrapping [scripts/serveLocal.sh](read-every-word/apps/api-host/app/scripts/serveLocal.sh). It depends on `deploy-manifest`, then copies `local.settings.json` down into `dist`, runs `npm install --omit=dev` there, and `exec`s `func start`. All of that has to happen on **every** serve, because any build wipes `dist` — see the gotcha below.
+
+Two things about that shape are load-bearing:
+
+- **`func start` is the only way to run this app**, and it runs **from `dist`** (a self-contained function app) and takes no `--typescript` flag. `node dist/main.js` — which is what `serve` used to do via `@nx/js:node` — registers **zero functions and exits 0**: in the v4 programming model the HTTP listener is the Functions host, talking to the worker over gRPC, so with no host present `@azure/functions` drops to "test mode" and skips every `app.http()` call. It warns but does not fail, so don't reintroduce a node-based `serve`.
+- **`local.settings.json` is a Core Tools file**, read only by `func start`, and only from its own working directory — hence the copy into `dist`. `functionFetchAppSettings.sh` writes it to the app root, one level up. It cannot be an nx build asset: `@nx/js`'s `CopyAssetsHandler` filters files matched by the root `.gitignore`, and while it has an `includeIgnoredFiles` escape hatch, `@nx/esbuild`'s `assetPattern` schema sets `additionalProperties: false` and rejects it. Copying it into `dist` does not leak it — `dist/.funcignore` lists `local.settings.json`, so the zip `functionPush.sh` publishes from that same directory excludes it.
+
+Debugging is opt-in, because the inspector has to land on the node worker that the host spawns — not on nx or `func`:
+
+```sh
+INSPECT_PORT=9229 npx nx serve api-host
+```
+
+That sets `languageWorkers__node__arguments`, the env form of the `languageWorkers:node:arguments` host setting, so only the worker gets an inspector. Using `NODE_OPTIONS` instead puts one on every node process in the tree — nx's, npm's and the worker's — and they fight over the port. Attach to `127.0.0.1:9229` however you like; there is deliberately no checked-in launch config.
 
 ### Gotchas
 
 - **Every project needs its own `.spec.swcrc`.** Each `jest.config.cjs` does `readFileSync(`${__dirname}/.spec.swcrc`)` at module load, and the `@nx/jest` plugin loads those configs while building the project graph — so one missing file makes *every* `nx` command fail with `ENOENT`, not just `nx test`. They are byte-identical; copy one when scaffolding a project. This only applies to projects that *have* a `jest.config.cjs` — `apps/frontEnd/ui` has none, so it has no `test` target and needs no `.spec.swcrc`.
 - **`@swc/core` is pinned to an exact `1.13.20`.** The `1.13.21` darwin-arm64 binary ships a malformed code signature and fails `dlopen` with `code signature invalid` on Apple Silicon, which breaks all Jest runs. Don't loosen the pin back to a range without checking that the resolved version's native binding actually loads.
 - **`vue-router` is pinned to `~4.4.5` and declared at the workspace root.** 4.5 ships its own `vue-router-auto.d.ts`, which collides with the `vue-router/auto` module `unplugin-vue-router` declares. It sits at the root because `unplugin-vue-router` does `export * from 'vue-router'` from its own location — if npm nests `vue-router` under the ui project instead, that re-export resolves to nothing and `createRouter` appears to not exist.
-- **`nx build api-host` wipes `apps/api-host/app/dist`**, including the generated `package.json` and the `node_modules` you installed into it. Anything that builds — `nx run-many -t build`, and therefore the CI command — leaves a half-populated `dist` behind, and `func start` there reports "Worker failed to load package.json" and registers no functions. Re-run `nx deploy-manifest api-host` (it restores `package.json` from cache) and `npm install --omit=dev`. `functionPush.sh` already does both in that order.
+- **`nx build api-host` wipes `apps/api-host/app/dist`**, including the generated `package.json` and the `node_modules` you installed into it. Anything that builds — `nx run-many -t build`, and therefore the CI command — leaves a half-populated `dist` behind, and `func start` there reports "Worker failed to load package.json" and registers no functions. Re-run `nx deploy-manifest api-host` (it restores `package.json` from cache) and `npm install --omit=dev`. `functionPush.sh` and `nx serve api-host` both already do that in order, so this only bites when running `func start` by hand.
 - Two pre-existing `lint` errors block the CI command: the empty `GetHealthCheck` interface in [packages/domain/src/lib/healthCheck.ts:8](read-every-word/packages/domain/src/lib/healthCheck.ts#L8), and `@nx/dependency-checks` reporting `dotenv` declared but unused in `packages/api-integration-test/package.json` (the import went away in `64f4a8b`; the fix is deleting the dependency). The second only surfaces after `nx reset` — a stale cache entry reports the task as passing, so a green local `run-many` is not proof.
 - `apps/frontEnd/ui` reports ~200 `eslint` **warnings** (vue formatting). They do not fail CI. The legacy project hid them by running `eslint . --fix` as its lint script.
 
