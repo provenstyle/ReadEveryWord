@@ -64,7 +64,16 @@ const logout = async () => {
         :active="cycle.id === readingCycles.activeCycleId.value"
         :title="cycle.name"
         @click.prevent="readCycle(cycle.id)"
-      />
+      >
+        <template #append>
+          <!-- Marks the default: the cycle the ui starts on next time. -->
+          <v-icon
+            v-if="cycle.default"
+            icon="mdi-star"
+            size="x-small"
+          />
+        </template>
+      </v-list-item>
       <v-list-item
         v-if="featureFlags.enablePray"
         nav

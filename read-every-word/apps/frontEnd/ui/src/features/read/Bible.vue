@@ -31,6 +31,12 @@ if (!readingCycles) throw new Error('ReadingCycleContext is required')
       />
       <v-toolbar-title>
         {{ readingCycles.activeCycle.value?.name }}
+        <!-- Marks the default: the cycle the ui starts on next time. -->
+        <v-icon
+          v-if="readingCycles.activeCycle.value?.default"
+          icon="mdi-star"
+          size="x-small"
+        />
       </v-toolbar-title>
       <v-spacer />
       <ReadingCycleMenu />
