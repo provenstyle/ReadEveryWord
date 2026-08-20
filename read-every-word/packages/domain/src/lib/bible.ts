@@ -89,4 +89,39 @@ export class Bible {
   get newTestament (): Book[] {
     return this.books.slice(39, 66)
   }
+
+  get chapterCount (): number {
+    return chaptersIn(this.books)
+  }
+
+  get chaptersRead (): number {
+    return chaptersReadIn(this.books)
+  }
+
+  get oldTestamentPercentComplete (): number {
+    return percentCompleteOf(this.oldTestament)
+  }
+
+  get newTestamentPercentComplete (): number {
+    return percentCompleteOf(this.newTestament)
+  }
 }
+
+const chaptersIn = (books: Book[]): number =>
+  books.reduce((total, book) => total + book.chapterCount, 0)
+
+const chaptersReadIn = (books: Book[]): number =>
+  books.reduce((total, book) => total + book.chaptersRead, 0)
+
+const percentCompleteOf = (books: Book[]): number =>
+  chaptersReadIn(books) / chaptersIn(books)
+
+/**
+ * Every chapter in the Bible, for callers holding a chapter count but no Bible to
+ * divide it by -- the left drawer, which is not under the read page's BibleProvider.
+ *
+ * A literal rather than a sum over the book table: deriving it at module load would
+ * build 66 books and 1189 chapters in the browser's main chunk to produce one
+ * integer. bible.test.ts pins it against Bible.chapterCount so it cannot drift.
+ */
+export const BIBLE_CHAPTER_COUNT = 1189

@@ -115,7 +115,9 @@ if (isErr(validationResponse)) return validationResponse
 
 Each handler exports **two** things: the tRPC procedure and a plain `handle…(request, config)` function. Cross-aggregate calls go through the plain function, not the router — `readSummary/get/handler.ts` calls `handleGetReadingCycles` and `handleCreateReadingCycle` directly.
 
-Persistence placement is inconsistent by aggregate: `readingCycles` has one shared `persistence.ts` with a `Persistence` class; `readingRecord` has a `persistence.ts` per operation. Follow whichever aggregate you're in. Note also `readingRecord/count/handle.ts` (not `handler.ts`).
+Persistence placement is inconsistent by aggregate: `readingCycles` has one shared `persistence.ts` with a `Persistence` class; `readingRecord` has a `persistence.ts` per operation. Follow whichever aggregate you're in.
+
+Not every slice is a full one. `readSummary` is only `index.ts` + `get/handler.ts` — it has no `validation.ts` because the caller's identity is its whole input, so there is nothing to validate.
 
 ### Validation
 
@@ -181,6 +183,14 @@ Things that will bite:
 Procedures return `Result` values as their *payload* rather than throwing, and `isOk`/`isErr` discriminate on a plain `__result` string while the error classes carry `code`/`message` as instance fields — so all of that survives JSON and the UI's error branching works unchanged. Class prototypes do **not** survive; never use `instanceof` on the err side. `src/api/result.ts` (`fromTrpc`) exists only to map transport and middleware failures — which tRPC *does* throw — back onto the same error classes.
 
 Authenticated calls send no identity at all — `authId` is not part of any request type. `readSummary.get` and `readingCycle.get` take no argument whatsoever.
+
+### Progress percentages
+
+`Book.percentComplete` and the `Bible` testament getters are computed in the browser off the painted grid, so the read page and the book header cost no requests. `BIBLE_CHAPTER_COUNT` (1189) is a literal in `bible.ts` pinned against `Bible.chapterCount` by `bible.test.ts`, because the drawer needs a denominator but has no `Bible` to sum.
+
+The drawer's per-cycle percentage is **deliberately incomplete**, and this is the thing to understand before "fixing" a blank one. It reads `chaptersReadByReadingCycleId` on `ReadingCycleContext`, and a cycle earns an entry only once its records have been in the browser: the default cycle from `readSummary.get`'s records, a newly created cycle at 0, and any other cycle once the read page has painted it. **A missing key means "not known" and renders as nothing, which is distinct from a real `0%`.** There is no api that counts chapters per cycle on purpose — Table Storage has no `COUNT`, so one would walk up to 1189 rows per cycle on every app load, which was judged too much for a badge. Adding one later is additive: fill the same map through `setChaptersRead`.
+
+`BibleProvider` owns every write to `chapter.read` and pushes the count out to that map — from `paintReadChapters` and from a watcher on `bible.chaptersRead`. Derived from the grid rather than a ±1 at each toggle, because `readingRecord.create` treats an existing row as success, so a successful `readChapter` does not mean a row was added and counting calls would drift. `ChapterCard`/`Book.vue` used to flip the flag themselves after their own mutation resolved, which meant a late response could paint one cycle's reading onto another's grid; don't move it back.
 
 ## Deployment
 

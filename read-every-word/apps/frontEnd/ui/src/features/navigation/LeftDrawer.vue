@@ -7,6 +7,7 @@ import { queryForCycle } from '@/features/readingCycle/activeCycleUrl'
 import NewCycleDialog from '@/features/readingCycle/NewCycleDialog.vue'
 import { useAuth0 } from '@auth0/auth0-vue'
 import { featureFlags } from '@/config/featureFlags'
+import { formatPercentComplete, percentOfBible } from '@/features/read/percentComplete'
 
 const auth = useAuth0()
 const router = useRouter()
@@ -18,6 +19,16 @@ const readingCycles = inject<ReadingCycleContext>('readingCycles')
 if (!readingCycles) throw new Error('ReadingCycleContext is required')
 
 const newCycleOpen = ref(false)
+
+// How far through the Bible a cycle is, or undefined when that is not known -- see
+// chaptersReadByReadingCycleId. Absent reads as nothing at all rather than as 0%,
+// which is a real answer a cycle can give.
+const percentFor = (cycleId: string): string | undefined => {
+  const chaptersRead = readingCycles.chaptersReadByReadingCycleId.value[cycleId]
+  return chaptersRead === undefined
+    ? undefined
+    : formatPercentComplete(percentOfBible(chaptersRead))
+}
 
 // Naming the cycle in the url is what switches it, so this one navigation both
 // selects the cycle and takes you to the thing it changes.
@@ -74,11 +85,18 @@ const logout = async () => {
         @click.prevent="readCycle(cycle.id)"
       >
         <template #append>
+          <span
+            v-if="percentFor(cycle.id) !== undefined"
+            class="text-caption text-medium-emphasis"
+          >
+            {{ percentFor(cycle.id) }}
+          </span>
           <!-- Marks the default: the cycle the ui starts on next time. -->
           <v-icon
             v-if="cycle.default"
             icon="mdi-star"
             size="x-small"
+            class="ms-1"
           />
         </template>
       </v-list-item>

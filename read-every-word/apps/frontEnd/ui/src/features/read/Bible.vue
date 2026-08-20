@@ -7,6 +7,7 @@ import { type NavigationProvider } from '@/features/navigation/NavigationProvide
 import { type BibleContext } from '@/features/read/BibleProvider.vue'
 import { type ReadingCycleContext } from '@/features/readingCycle/ReadingCycleProvider.vue'
 import ReadingCycleMenu from '@/features/readingCycle/ReadingCycleMenu.vue'
+import { formatPercentComplete } from '@/features/read/percentComplete'
 
 const bibleContext = inject<BibleContext>('bible')
 if (!bibleContext) throw new Error('BibleContext is required')
@@ -70,7 +71,12 @@ if (!readingCycles) throw new Error('ReadingCycleContext is required')
         </v-alert>
       </div>
       <div v-if="!bibleContext.working.value && !bibleContext.errorMessage.value">
-        <h2 class="">Old Testament</h2>
+        <h2 class="">
+          Old Testament
+          <span class="text-caption text-medium-emphasis">
+            {{ formatPercentComplete(bibleContext.bible.oldTestamentPercentComplete) }}
+          </span>
+        </h2>
 
         <div
           v-for="(rowOfBooks, index1) in chunk<Book>(bibleContext.bible.oldTestament, 9)"
@@ -90,7 +96,12 @@ if (!readingCycles) throw new Error('ReadingCycleContext is required')
           </div>
         </div>
 
-        <h2 class="mt-4">New Testament</h2>
+        <h2 class="mt-4">
+          New Testament
+          <span class="text-caption text-medium-emphasis">
+            {{ formatPercentComplete(bibleContext.bible.newTestamentPercentComplete) }}
+          </span>
+        </h2>
 
         <div
           v-for="(rowOfBooks, index1) in chunk<Book>(bibleContext.bible.newTestament, 9)"

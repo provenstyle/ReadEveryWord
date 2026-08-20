@@ -5,6 +5,7 @@ import { useRouter } from 'vue-router'
 import ChapterCard from './ChapterCard.vue'
 import { chunk } from 'lodash-es'
 import { type BibleContext } from '@/features/read/BibleProvider.vue'
+import { formatPercentComplete } from '@/features/read/percentComplete'
 
 const router = useRouter()
 
@@ -17,17 +18,11 @@ if (!bibleContext) throw new Error('BibleContext is required')
 
 const book = bibleContext.bible.books[props.id]
 
+// Not awaited, so the chapters fill in as their writes land. readChapter skips what
+// is already read and owns the flag, so there is nothing to filter or set here.
 const readAll = () => {
   for (const chapter of book.chapters) {
-    if (!chapter.read) {
-      bibleContext
-        .readChapter(book.id, chapter.id)
-        .then((result) => {
-          if (result) {
-            chapter.read = true
-          }
-        })
-    }
+    bibleContext.readChapter(book.id, chapter.id)
   }
 }
 
@@ -49,6 +44,9 @@ const readAll = () => {
         </v-btn>
 
         {{ book.longName }}
+        <span class="text-caption text-medium-emphasis ms-2">
+          {{ formatPercentComplete(book.percentComplete) }}
+        </span>
 
         <v-spacer />
 

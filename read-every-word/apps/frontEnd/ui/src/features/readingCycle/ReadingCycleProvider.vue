@@ -36,12 +36,14 @@ export type ReadSummaryResult = Result<ReadingSummary, GetReadSummaryFailed | Tr
 
 export interface ReadingCycleContext {
   cycles: Ref<ReadingCycle[]>
+  chaptersReadByReadingCycleId: Ref<Record<string, number>>
   activeCycleId: ComputedRef<string | undefined>
   activeCycle: ComputedRef<ReadingCycle | undefined>
   defaultCycle: ComputedRef<ReadingCycle | undefined>
   working: Ref<boolean>
   errorMessage: Ref<string | undefined>
   loadSummary: () => Promise<ReadSummaryResult>
+  setChaptersRead: (id: string, chaptersRead: number) => void
   create: (name: string) => Promise<boolean>
   rename: (id: string, name: string) => Promise<boolean>
   markComplete: (id: string) => Promise<boolean>
@@ -52,6 +54,25 @@ const client = createAuthenticatedApiClient(auth)
 const cycles = ref<ReadingCycle[]>([])
 const working = ref(false)
 const errorMessage = ref<string | undefined>()
+
+/**
+ * How far through the Bible each cycle is, for the drawer to show beside the name.
+ *
+ * Deliberately incomplete. There is no api that counts chapters per cycle -- Table
+ * Storage has no COUNT, so one would have to walk up to 1189 rows per cycle on every
+ * load -- so a cycle earns an entry only once its records have been in the browser:
+ * the default cycle from the summary below, a new cycle at zero, and any other cycle
+ * once the read page has painted it. A missing key means "not known", which the
+ * drawer renders as nothing rather than as 0%.
+ *
+ * Kept beside the cycles rather than on ReadingCycle itself because replace() swaps
+ * in whole server objects on rename and complete, which would drop the count.
+ */
+const chaptersReadByReadingCycleId = ref<Record<string, number>>({})
+
+const setChaptersRead = (id: string, chaptersRead: number) => {
+  chaptersReadByReadingCycleId.value[id] = chaptersRead
+}
 
 const defaultCycle = computed(() => cycles.value.find(c => c.default))
 
@@ -104,6 +125,15 @@ const loadSummary = (): Promise<ReadSummaryResult> => {
       errorMessage.value = 'Failed to get Reading Cycles'
     } else {
       setAll(result.data.readingCycles)
+
+      // The summary's records are the default cycle's, and one row is one chapter
+      // (create keys on bookId-chapterId), so their count is that cycle's progress
+      // for free. It is the cycle most readers are on, and having it here rather
+      // than waiting on the read page is what gives the drawer a number on any page.
+      const defaultCycleId = result.data.readingCycles.find(c => c.default)?.id
+      if (defaultCycleId) {
+        setChaptersRead(defaultCycleId, result.data.readingRecords.length)
+      }
     }
     working.value = false
     return result
@@ -127,6 +157,8 @@ const create = async (name: string): Promise<boolean> => {
   // Creating a cycle neither switches the ui to it nor changes the default; the
   // user picks it from the drawer when they want to read it.
   setAll([...cycles.value, result.data])
+  // Nothing has been read against it yet, so this is exact rather than a placeholder.
+  setChaptersRead(result.data.id, 0)
   return true
 }
 
@@ -176,12 +208,14 @@ const makeDefault = async (id: string): Promise<boolean> => {
 
 provide('readingCycles', {
   cycles,
+  chaptersReadByReadingCycleId,
   activeCycleId,
   activeCycle,
   defaultCycle,
   working,
   errorMessage,
   loadSummary,
+  setChaptersRead,
   create,
   rename,
   markComplete,

@@ -40,7 +40,12 @@ const errorMessage = ref<string | undefined>()
 
 // Mutated in place. BookCard and ChapterCard capture their book/chapter object
 // at setup time, so replacing bible or its arrays would detach the whole grid.
-const paintReadChapters = (records: ReadingRecord[]) => {
+//
+// This provider owns every write to chapter.read -- painting here, and the toggles in
+// readChapter/unreadChapter below. The card components used to flip the flag
+// themselves after their mutation resolved, which left nothing able to tell that a
+// late response belonged to a cycle no longer on screen.
+const paintReadChapters = (records: ReadingRecord[], readingCycleId: string) => {
   for (const book of bible.books) {
     for (const chapter of book.chapters) {
       chapter.read = false
@@ -49,6 +54,11 @@ const paintReadChapters = (records: ReadingRecord[]) => {
   for (const record of records) {
     bible.books[record.bookId].chapters[record.chapterId].read = true
   }
+  // One row is one chapter, so this is exact. Reported here as well as from the
+  // watcher at the bottom because switching between two cycles that happen to have
+  // read the same number of chapters leaves the watched value unchanged, and a
+  // watcher that sees no change does not fire.
+  readingCycles.setChaptersRead(readingCycleId, records.length)
 }
 
 /**
@@ -73,7 +83,7 @@ const paintFromSummary = async () => {
   }
 
   loadedCycleId.value = defaultReadingCycle.id
-  paintReadChapters(summary.readingRecords)
+  paintReadChapters(summary.readingRecords, defaultReadingCycle.id)
 }
 
 /** Any cycle other than the one readSummary would have handed us. */
@@ -94,7 +104,7 @@ const loadRecordsFor = async (readingCycleId: string) => {
     errorMessage.value = 'Failed to get Reading Records'
     return
   }
-  paintReadChapters(result.data)
+  paintReadChapters(result.data, readingCycleId)
 }
 
 const fetch = async () => {
@@ -138,25 +148,42 @@ const readChapter = async (bookId: number, chapterId: number): Promise<boolean> 
   const readingCycleId = loadedCycleId.value
   if (!readingCycleId) return false
 
+  const chapter = bible.books[bookId].chapters[chapterId]
+  // Nothing to send, and answered before the await so a caller sweeping a whole book
+  // does not have to filter the chapters itself.
+  if (chapter.read) return true
+
   const createResult = await fromTrpc(() => client.readingRecord.create.mutate({
     bookId,
     chapterId,
     dateRead: new Date().toISOString(),
     readingCycleId
   }))
-  return (isErr(createResult)) ? false : true
+  if (isErr(createResult)) return false
+
+  // The row landed against readingCycleId, but the grid may have switched cycles
+  // while this was in flight -- painting it now would show one cycle's reading on
+  // another cycle's grid.
+  if (loadedCycleId.value === readingCycleId) chapter.read = true
+  return true
 }
 
 const unreadChapter = async (bookId: number, chapterId: number): Promise<boolean> => {
   const readingCycleId = loadedCycleId.value
   if (!readingCycleId) return false
 
+  const chapter = bible.books[bookId].chapters[chapterId]
+  if (!chapter.read) return true
+
   const deleteResult = await fromTrpc(() => client.readingRecord.delete.mutate({
     bookId,
     chapterId,
     readingCycleId
   }))
-  return (isErr(deleteResult)) ? false : true
+  if (isErr(deleteResult)) return false
+
+  if (loadedCycleId.value === readingCycleId) chapter.read = false
+  return true
 }
 
 provide('bible', {
@@ -181,6 +208,17 @@ watch(() => readingCycles.activeCycleId.value, async (activeCycleId) => {
   if (!activeCycleId) return
   if (activeCycleId === loadedCycleId.value) return
   await fetch()
+})
+
+// The drawer shows how far through the Bible each cycle is, but it lives outside this
+// provider and cannot see the grid, so the count has to be pushed to it.
+//
+// Derived from what is painted rather than adjusted by a delta at each toggle: create
+// treats an existing row as success, so a successful readChapter does not mean a row
+// was actually added, and counting the calls would drift. Reading the grid instead
+// cannot disagree with what the user is looking at.
+watch(() => bible.chaptersRead, (chaptersRead) => {
+  if (loadedCycleId.value) readingCycles.setChaptersRead(loadedCycleId.value, chaptersRead)
 })
 
 </script>

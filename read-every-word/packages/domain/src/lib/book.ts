@@ -22,8 +22,11 @@ export class Book {
     return this.chapters.every(x => x.read)
   }
 
+  get chaptersRead (): number {
+    return this.chapters.filter(x => x.read).length
+  }
+
   get percentComplete (): number {
-    const read = this.chapters.filter(x => x.read).length
-    return read/this.chapterCount
+    return this.chaptersRead/this.chapterCount
   }
 }

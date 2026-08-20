@@ -12,18 +12,12 @@ if (!bibleContext) throw new Error('BibleContext is required')
 
 const chapter = bibleContext.bible.books[props.bookId].chapters[props.chapterId]
 
+// The provider owns chapter.read and repaints on success, so there is nothing to
+// update here.
 const clicked = async () => {
-  if (!chapter.read) {
-    const result = await bibleContext.readChapter(props.bookId, props.chapterId)
-    if (result) {
-      chapter.read = true
-    }
-  } else {
-    const result = await bibleContext.unreadChapter(props.bookId, props.chapterId)
-    if (result) {
-      chapter.read = false
-    }
-  }
+  await (chapter.read
+    ? bibleContext.unreadChapter(props.bookId, props.chapterId)
+    : bibleContext.readChapter(props.bookId, props.chapterId))
 }
 
 const color = computed(() => {
