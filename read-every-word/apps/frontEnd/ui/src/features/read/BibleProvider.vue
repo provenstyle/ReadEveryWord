@@ -168,13 +168,15 @@ provide('bible', {
   unreadChapter
 } satisfies BibleContext)
 
+// Mounted with the /read route, so existing at all means the grid is wanted and
+// the user is past the auth guard.
 onMounted(async () => {
   await fetch()
 })
 
 // Picking a different cycle in the drawer only moves ui state, so reloading the
 // grid to match is this provider's job. Comparing against what is already painted
-// is what stops bootstrap's own setAll from bouncing straight back through here.
+// is what stops the cycle list arriving from bouncing straight back through here.
 watch(() => readingCycles.activeCycleId.value, async (activeCycleId) => {
   if (!activeCycleId) return
   if (activeCycleId === loadedCycleId.value) return
