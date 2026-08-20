@@ -8,19 +8,8 @@
 import { createRouter, createWebHistory } from 'vue-router/auto'
 import { setupLayouts } from 'virtual:generated-layouts'
 import { routes } from 'vue-router/auto-routes'
+import type { RouteNamedMap } from 'vue-router/auto-routes'
 import { authGuard } from '@auth0/auth0-vue'
-
-// Handle Authenticated Routes
-const authenticatedRoutes = [
-  '/read',
-  '/pray',
-  '/memorize',
-  '/journal',
-]
-const routesToAddAuthGuard = routes.filter(r => authenticatedRoutes.includes(r.path))
-for (const route of routesToAddAuthGuard){
-  route.beforeEnter = authGuard
-}
 
 // Handle Routes without a layout
 const routesWithoutLayout = [
@@ -44,6 +33,35 @@ const router = createRouter({
     }
   ]
 })
+
+/**
+ * Every route requires a session except the ones listed here.
+ *
+ * Authenticated by default, rather than an allowlist of protected routes. A new
+ * page is then guarded the moment it exists instead of when someone remembers to
+ * register it, and the list that has to be maintained is the short one that does
+ * not grow as the app does.
+ *
+ * Typed as keyof RouteNamedMap, so renaming or deleting one of these pages is a
+ * compile error. The previous version matched path strings with `filter`, where a
+ * stale entry matched nothing and quietly left the route public.
+ *
+ * Matching on the route name rather than the path is what makes the catch-all
+ * work: its path is whatever bad url was typed, but its name is stable.
+ * setupLayouts wraps each route in an unnamed layout parent and spreads the
+ * original into the child, so the name survives on the matched leaf.
+ */
+const publicRoutes: Array<keyof RouteNamedMap> = [
+  '/login/callback/',      // the auth0 redirect target; guarding it would loop
+  '/authorization-error/', // has to be reachable exactly when auth has failed
+  '/[...path]',            // a bad url should render not-found, not bounce to login
+]
+
+const isPublic = new Set<string>(publicRoutes)
+
+// An unnamed or unmatched route falls through to the guard, which is the safe way
+// round for anything unrecognised.
+router.beforeEach(to => isPublic.has(String(to.name)) ? true : authGuard(to))
 
 // Workaround for https://github.com/vitejs/vite/issues/11804
 router.onError((err, to) => {
