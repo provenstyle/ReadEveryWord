@@ -57,6 +57,49 @@ describe('readingCycle', () => {
         expect(Date.parse(readingCycle.dateCompleted ?? '')).toBeGreaterThan(Date.parse(readingCycle.dateStarted))
     }, 10 * 1000)
 
+    // Reopening a completed cycle. Worth an integration test rather than a unit one
+    // because the behaviour under test is Table Storage's: a Merge update only writes
+    // the properties it is handed and cannot remove one, so clearing dateCompleted
+    // depends on the persistence switching to Replace. A unit test of the handler
+    // would pass either way.
+    it('Can clear dateCompleted with null, reopening the cycle', async () => {
+        const user = await withUser()
+        const caller = await withCaller(user)
+
+        const createResult = await caller.readingCycle.create({
+          dateStarted: new Date().toISOString(),
+          name: 'name'
+        })
+        const created = expectOk(createResult)
+
+        expectOk(await caller.readingCycle.update({
+          id: created.id,
+          dateCompleted: new Date().toISOString()
+        }))
+        const completed = expectOk(await caller.readingCycle.get())
+        expect(completed[0].dateCompleted).toBeDefined()
+
+        // null, not undefined: undefined would mean "leave it alone", and json drops
+        // it on the way out so it would never reach the handler at all.
+        const reopenResult = await caller.readingCycle.update({
+          id: created.id,
+          dateCompleted: null
+        })
+        const reopened = expectOk(reopenResult)
+        expect(reopened.dateCompleted).toBeUndefined()
+
+        // Read back, because the response is built from the in-memory row and would
+        // look cleared even if the stored entity kept the property.
+        const readingCycles = expectOk(await caller.readingCycle.get())
+        expect(readingCycles.length).toEqual(1)
+        expect(readingCycles[0].dateCompleted).toBeUndefined()
+        // Replace drops whatever the entity does not carry, so check the fields that
+        // were only ever set at create time survived the round trip.
+        expect(readingCycles[0].name).toEqual('name')
+        expect(readingCycles[0].dateStarted).toBeDefined()
+        expect(readingCycles[0].default).toEqual(true)
+    }, 10 * 1000)
+
     it('First readingCycle created is default', async () => {
         const user = await withUser()
         const caller = await withCaller(user)

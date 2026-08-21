@@ -47,6 +47,7 @@ export interface ReadingCycleContext {
   create: (name: string) => Promise<boolean>
   rename: (id: string, name: string) => Promise<boolean>
   markComplete: (id: string) => Promise<boolean>
+  reopen: (id: string) => Promise<boolean>
   makeDefault: (id: string) => Promise<boolean>
 }
 
@@ -189,6 +190,28 @@ const markComplete = async (id: string): Promise<boolean> => {
   return true
 }
 
+/**
+ * Reopens a completed cycle so its reading history can be edited again.
+ *
+ * null rather than undefined: the update request tells absent ("leave it alone")
+ * apart from null ("clear it"), and JSON drops undefined on the way out, so
+ * undefined here would be a no-op round trip.
+ */
+const reopen = async (id: string): Promise<boolean> => {
+  errorMessage.value = undefined
+
+  const result = await fromTrpc(() => client.readingCycle.update.mutate({
+    id,
+    dateCompleted: null
+  }))
+  if (isErr(result)) {
+    errorMessage.value = 'Failed to reopen Reading Cycle'
+    return false
+  }
+  replace(result.data)
+  return true
+}
+
 const makeDefault = async (id: string): Promise<boolean> => {
   if (defaultCycle.value?.id === id) return true
   errorMessage.value = undefined
@@ -219,6 +242,7 @@ provide('readingCycles', {
   create,
   rename,
   markComplete,
+  reopen,
   makeDefault
 } satisfies ReadingCycleContext)
 

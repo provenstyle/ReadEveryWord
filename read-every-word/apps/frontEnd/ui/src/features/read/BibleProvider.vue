@@ -9,6 +9,7 @@ import { useAuth0 } from '@auth0/auth0-vue'
 import { useRoute } from 'vue-router'
 
 import {
+  computed, type ComputedRef,
   inject, onMounted, provide,
   ref, type Ref,
   reactive, type Reactive, watch,
@@ -22,6 +23,7 @@ if (!readingCycles) throw new Error('ReadingCycleContext is required')
 
 export interface BibleContext {
   bible: Reactive<Bible>
+  readOnly: ComputedRef<boolean>
   fetch: () => Promise<void>
   readChapter: (bookId: number, chapterId: number) => Promise<boolean>
   unreadChapter: (bookId: number, chapterId: number) => Promise<boolean>
@@ -37,6 +39,22 @@ const bible = reactive(new Bible())
 const loadedCycleId = ref<string | undefined>(undefined)
 const working = ref(false)
 const errorMessage = ref<string | undefined>()
+
+/**
+ * A completed cycle is a finished record, so its reading history stops being
+ * editable until it is reopened from the cycle menu.
+ *
+ * Keyed on loadedCycleId rather than the active cycle so it always describes the
+ * grid actually on screen, which is what the chapter buttons are bound to.
+ *
+ * This is the ui affordance, not a guarantee: the api still accepts writes to a
+ * completed cycle. It is here to stop a stray click undoing part of a finished
+ * year, which is the way that actually happens.
+ */
+const readOnly = computed(() => {
+  const loaded = readingCycles.cycles.value.find(c => c.id === loadedCycleId.value)
+  return loaded?.dateCompleted !== undefined
+})
 
 // Mutated in place. BookCard and ChapterCard capture their book/chapter object
 // at setup time, so replacing bible or its arrays would detach the whole grid.
@@ -147,6 +165,9 @@ const fetch = async () => {
 const readChapter = async (bookId: number, chapterId: number): Promise<boolean> => {
   const readingCycleId = loadedCycleId.value
   if (!readingCycleId) return false
+  // Checked here as well as on the buttons, so a caller that misses the disabled
+  // state -- Mark All As Read, say -- cannot write to a completed cycle either.
+  if (readOnly.value) return false
 
   const chapter = bible.books[bookId].chapters[chapterId]
   // Nothing to send, and answered before the await so a caller sweeping a whole book
@@ -171,6 +192,7 @@ const readChapter = async (bookId: number, chapterId: number): Promise<boolean> 
 const unreadChapter = async (bookId: number, chapterId: number): Promise<boolean> => {
   const readingCycleId = loadedCycleId.value
   if (!readingCycleId) return false
+  if (readOnly.value) return false
 
   const chapter = bible.books[bookId].chapters[chapterId]
   if (!chapter.read) return true
@@ -188,6 +210,7 @@ const unreadChapter = async (bookId: number, chapterId: number): Promise<boolean
 
 provide('bible', {
   bible,
+  readOnly,
   working,
   errorMessage,
   fetch,

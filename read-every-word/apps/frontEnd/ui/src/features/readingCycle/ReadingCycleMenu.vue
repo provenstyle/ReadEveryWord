@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, ref, watch } from 'vue'
+import { BIBLE_CHAPTER_COUNT } from '@read-every-word/domain'
 import { type ReadingCycleContext } from '@/features/readingCycle/ReadingCycleProvider.vue'
 
 const readingCycles = inject<ReadingCycleContext>('readingCycles')
@@ -14,6 +15,30 @@ const name = ref('')
 const cycle = computed(() => readingCycles.activeCycle.value)
 const isDefault = computed(() => cycle.value?.default === true)
 const isCompleted = computed(() => cycle.value?.dateCompleted !== undefined)
+
+/**
+ * Completing is what makes a cycle's history read only, so it is only offered once
+ * the whole Bible has actually been read -- a cycle should not be freezable halfway.
+ *
+ * undefined means the count is not known yet rather than zero, which is why this
+ * compares for equality instead of testing `>=`: unknown must not read as complete.
+ */
+const chaptersRead = computed(() => cycle.value
+  ? readingCycles.chaptersReadByReadingCycleId.value[cycle.value.id]
+  : undefined)
+
+const canComplete = computed(() => chaptersRead.value === BIBLE_CHAPTER_COUNT)
+
+// Says why the row is disabled, so it does not just look broken.
+const completeSubtitle = computed(() => {
+  if (canComplete.value) return undefined
+  if (chaptersRead.value === undefined) return 'Still loading progress'
+
+  const remaining = BIBLE_CHAPTER_COUNT - chaptersRead.value
+  return remaining === 1
+    ? '1 chapter still to read'
+    : `${remaining} chapters still to read`
+})
 
 const trimmedName = computed(() => name.value.trim())
 const nameIsValid = computed(() => trimmedName.value.length > 0)
@@ -39,16 +64,39 @@ const submitRename = async () => {
 }
 
 const submitComplete = async () => {
-  if (!cycle.value) return
+  // canComplete rechecked here, not just on the row: the dialog can be sitting open
+  // while a chapter is unmarked in another tab.
+  if (!cycle.value || !canComplete.value) return
   saving.value = true
   const completed = await readingCycles.markComplete(cycle.value.id)
   saving.value = false
   if (completed) completeOpen.value = false
 }
 
+/**
+ * Rename and Mark Complete report a failure inside their own dialog. Reopen and Make
+ * Default have no dialog to report into, so without this they set the provider's
+ * errorMessage and nothing ever renders it -- the row is clicked, the request fails,
+ * and the ui looks like it simply ignored you.
+ */
+const actionError = ref<string | undefined>()
+
+// No confirmation: this only re-enables editing, and it is the way back from an
+// accidental Mark Complete, so it should not itself be behind a gate.
+const reopen = async () => {
+  if (!cycle.value) return
+  actionError.value = undefined
+  if (!await readingCycles.reopen(cycle.value.id)) {
+    actionError.value = readingCycles.errorMessage.value ?? 'Failed to reopen Reading Cycle'
+  }
+}
+
 const makeDefault = async () => {
   if (!cycle.value) return
-  await readingCycles.makeDefault(cycle.value.id)
+  actionError.value = undefined
+  if (!await readingCycles.makeDefault(cycle.value.id)) {
+    actionError.value = readingCycles.errorMessage.value ?? 'Failed to set the default Reading Cycle'
+  }
 }
 </script>
 
@@ -80,8 +128,21 @@ const makeDefault = async () => {
       <v-list-item
         v-if="!isCompleted"
         title="Mark Complete"
+        :subtitle="completeSubtitle"
+        :disabled="!canComplete"
         prepend-icon="mdi-flag-checkered"
         @click.prevent="completeOpen = true"
+      />
+      <!--
+        Replaces Mark Complete rather than sitting alongside it: a cycle is either
+        finished or being read, and this is the one way back to editing.
+      -->
+      <v-list-item
+        v-if="isCompleted"
+        title="Reopen"
+        subtitle="Edit the reading history again"
+        prepend-icon="mdi-lock-open-variant-outline"
+        @click.prevent="reopen()"
       />
     </v-list>
   </v-menu>
@@ -126,14 +187,28 @@ const makeDefault = async () => {
     </v-card>
   </v-dialog>
 
-  <!-- Confirmed because there is no api to clear dateCompleted again. -->
+  <!-- The only feedback the dialog-less rows have, so failures are not swallowed. -->
+  <v-snackbar
+    :model-value="actionError !== undefined"
+    color="error"
+    timeout="6000"
+    @update:model-value="actionError = undefined"
+  >
+    {{ actionError }}
+  </v-snackbar>
+
+  <!--
+    Still confirmed, even though Reopen exists, because completing is what locks the
+    reading history. The confirmation is there to say so, not to warn of permanence.
+  -->
   <v-dialog
     v-model="completeOpen"
     max-width="420"
   >
     <v-card title="Mark Complete">
       <v-card-text>
-        Mark <strong>{{ cycle?.name }}</strong> complete? This cannot be undone.
+        Mark <strong>{{ cycle?.name }}</strong> complete? Its reading history becomes
+        read only. You can reopen it later if you need to change something.
         <v-alert
           v-if="readingCycles.errorMessage.value"
           type="error"

@@ -50,7 +50,11 @@ const readAll = () => {
 
         <v-spacer />
 
-        <v-menu>
+        <!--
+          The only thing in this menu edits the reading history, so a completed cycle
+          leaves nothing to show rather than a menu of one disabled row.
+        -->
+        <v-menu v-if="!bibleContext.readOnly.value">
           <template #activator="{ props: menuProps }">
             <v-btn
               icon

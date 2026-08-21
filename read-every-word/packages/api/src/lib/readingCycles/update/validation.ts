@@ -14,7 +14,9 @@ export const validate = async (request: UpdateReadingCycle)
     properties: {
       id: {type: 'string', format: 'uuid'},
       name: {type: 'string'},
-      dateCompleted: {type: 'string', format: 'date-time'}
+      // null is how a caller clears the value and reopens the cycle. `format` only
+      // constrains strings, so it still holds for the date case.
+      dateCompleted: {type: ['string', 'null'], format: 'date-time'}
     },
     required: [
       'id'

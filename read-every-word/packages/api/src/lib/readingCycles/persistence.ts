@@ -1,6 +1,6 @@
 import { Result, err, ok, PersistenceError, isErr, GetFailed, UpdateFailed, NotFound } from '@read-every-word/foundation'
 import { cacheTableClient, resourceDoesNotExist, withLock } from '@read-every-word/table-storage'
-import { TableClient, TableTransaction } from '@azure/data-tables'
+import { TableClient, TableTransaction, type UpdateMode } from '@azure/data-tables'
 import { Config } from '../config.js'
 import { type ReadingCycleRow, map } from './domain.js'
 import { v4 as uuid } from 'uuid'
@@ -141,11 +141,22 @@ export class Persistence {
         readingCycleRow.name = request.name
       }
 
-      if (request.dateCompleted) {
-        readingCycleRow.dateCompleted = request.dateCompleted
+      // Merge only writes the properties it is given, so it can set dateCompleted but
+      // never remove it. Clearing one -- reopening a completed cycle -- needs Replace,
+      // which drops whatever the entity does not carry. Safe here because the row was
+      // just read in full, so nothing else is lost.
+      let mode: UpdateMode = 'Merge'
+
+      if (request.dateCompleted !== undefined) {
+        if (request.dateCompleted === null) {
+          delete readingCycleRow.dateCompleted
+          mode = 'Replace'
+        } else {
+          readingCycleRow.dateCompleted = request.dateCompleted
+        }
       }
 
-      await this.tableClient.updateEntity<ReadingCycleRow>(readingCycleRow)
+      await this.tableClient.updateEntity<ReadingCycleRow>(readingCycleRow, mode)
 
       return ok(map(readingCycleRow))
 

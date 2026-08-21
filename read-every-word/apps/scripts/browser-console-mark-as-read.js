@@ -21,8 +21,6 @@
     // New Testament, books 39-65, 260 chapters
     'Matthew': 28,          'Mark': 16,            'Luke': 24,
     'John': 21,             'Acts': 28,            'Romans': 16,
-    // 'Galatians' mirrors the spelling in bible.ts, typo and all, so the two
-    // tables can be compared name by name. Only the numbers are used here.
     '1 Corinthians': 16,    '2 Corinthians': 13,   'Galatians': 6,
     'Ephesians': 6,         'Philippians': 4,      'Colossians': 4,
     '1 Thessalonians': 5,   '2 Thessalonians': 3,  '1 Timothy': 6,

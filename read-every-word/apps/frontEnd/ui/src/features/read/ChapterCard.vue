@@ -36,9 +36,16 @@ const complete = computed(() => {
 </script>
 
 <template>
+  <!--
+    A completed cycle is read only, but the chapter still has to show whether it was
+    read, so this stays a styled button rather than going grey and losing the colour
+    the whole grid is read by.
+  -->
   <v-btn
     :class="['w-100', color, complete]"
     variant="text"
+    :ripple="!bibleContext.readOnly.value"
+    :style="bibleContext.readOnly.value ? 'cursor: default' : undefined"
     @click.prevent="clicked"
   >
     <span class="">

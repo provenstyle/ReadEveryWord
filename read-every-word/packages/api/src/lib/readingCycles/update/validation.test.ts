@@ -44,4 +44,20 @@ describe('UpdateReadingCycle validation', () => {
     }))
     expectOk(response)
   })
+
+  // Reopening a completed cycle. null has to get past the date-time format, which is
+  // the whole reason the schema types this as ['string', 'null'] rather than 'string'.
+  it('dateCompleted may be null, to clear it', async () => {
+    const response = await validate(requestFactory.build({
+      dateCompleted: null
+    }))
+    expectOk(response)
+  })
+
+  it('dateCompleted still has to be a date-time when it is a string', async () => {
+    const response = await validate(requestFactory.build({
+      dateCompleted: 'not a date'
+    }))
+    expectErrorMessage(response, 'must match format "date-time"')
+  })
 })

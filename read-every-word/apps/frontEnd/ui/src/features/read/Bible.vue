@@ -44,7 +44,19 @@ if (!readingCycles) throw new Error('ReadingCycleContext is required')
           v-if="readingCycles.activeCycle.value?.default"
           icon="mdi-star"
           size="x-small"
-          class="cycle-star"
+          class="cycle-badge"
+        />
+        <!--
+          Says why the chapters have stopped responding. Without it a completed cycle
+          just looks broken: the buttons are still there and still coloured, they
+          simply do nothing.
+        -->
+        <v-icon
+          v-if="bibleContext.readOnly.value"
+          icon="mdi-lock-outline"
+          size="x-small"
+          class="cycle-badge"
+          title="Complete. Reopen it from the menu to edit the reading history."
         />
       </div>
       <ReadingCycleMenu />
@@ -153,7 +165,8 @@ if (!readingCycles) throw new Error('ReadingCycleContext is required')
   white-space: nowrap;
 }
 
-.cycle-star {
+/* The star and the completed lock: fixed size, so only the name ellipsises. */
+.cycle-badge {
   flex: 0 0 auto;
   margin-inline-start: 6px;
 }
