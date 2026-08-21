@@ -53,7 +53,7 @@ export class Bible {
       new Book(44, "Romans",          "Rom", 16),
       new Book(45, "1 Corinthians",   "1Co", 16),
       new Book(46, "2 Corinthians",   "2Co", 13),
-      new Book(47, "Galations",       "Gal", 6),
+      new Book(47, "Galatians",       "Gal", 6),
       new Book(48, "Ephesians",       "Eph", 6),
       new Book(49, "Philippians",     "Phi", 4),
       new Book(50, "Colossians",      "Col", 4),
